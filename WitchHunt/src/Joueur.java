@@ -7,7 +7,7 @@ public class Joueur {
 	private boolean revelee;
 	
 	public Joueur(String nom) {
-		this.nomJoueur=nom
+		this.nomJoueur=nom;
 	}
 	
 }
