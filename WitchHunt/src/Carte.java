@@ -41,7 +41,4 @@ public class Carte {
 		return carteBloquee;
 	}
 
-	public void setCarteBloquee(Carte carteBloquee) {
-		this.carteBloquee = carteBloquee;
-	}
 }
