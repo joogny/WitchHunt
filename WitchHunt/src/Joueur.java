@@ -18,4 +18,8 @@ public class Joueur {
 	public void setMain(ArrayList<Carte> main) {
 		this.main=main;
 	}
+	
+	public String getNomJoueur() {
+		return nomJoueur;
+	}
 }
