@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Collections;
+import java.util.InputMismatchException;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -44,16 +45,8 @@ public class Partie {
 
 		System.out.println("Welcome to WitchHunt");
 		System.out.println("************************");
-		System.out.println("How many real players are there? (3 to 6)");
-		while(true) {
-			playerCount = sc.nextInt();
-			if(playerCount<3 || playerCount>6) {
-				System.out.println("Please make sure that there are 3 to 6 players");
-			}
-			else {
-				break;
-			}
-		}
+		System.out.println("How many real players are there? (up to 6)");
+		playerCount = askNumber(sc,0,6);
 		
 		System.out.println("Enter each player's name");
 		for(int i=1;i<=playerCount;i++) {
@@ -84,6 +77,24 @@ public class Partie {
 		
 	}
 	
+	private int askNumber(Scanner sc, int min, int max) {
+		String ErrorMessage = "Please input a number between " + min + " and " + max+".";
+		System.out.println(ErrorMessage);
+		while(true) {
+		try {
+			int nextInt = sc.nextInt();
+			if(nextInt>=min && nextInt<=max) {
+				return nextInt;
+			}
+			else {
+				System.out.println(ErrorMessage);
+			}
+		} catch (InputMismatchException e){
+			System.out.println("Please input a number.");
+		}
+		}
+		
+	}
 	public void setup() {
 		//distribution des cartes 
 		distributionCartes();
