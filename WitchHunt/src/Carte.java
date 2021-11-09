@@ -4,15 +4,15 @@ public class Carte {
 	private boolean defausse;
 	private String nomCarte;
 	private boolean revelee;
-	private Carte carteBloquee;
+	private Carte carteBloquante;
 	
 	public Carte(String nom) {
 		this.nomCarte=nom;
 	}
 	
-	public Carte(Carte c, String nom) {
+	public Carte(String nom, Carte c) {
 		this(nom);
-		this.carteBloquee=c;
+		this.carteBloquante=c;
 	}
 	
 	//setters and getters 
@@ -37,8 +37,8 @@ public class Carte {
 		this.revelee = revelee;
 	}
 
-	public Carte getCarteBloquee() {
-		return carteBloquee;
+	public Carte getCarteBloquante() {
+		return carteBloquante;
 	}
 
 }

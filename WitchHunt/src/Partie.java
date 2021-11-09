@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -16,16 +17,9 @@ public class Partie {
 	public static Partie getInstance() {
 		if(instance==null) {
 			instance = new Partie();
-			instance.init();
 		}
 		return instance;
 	}
-	//initaliser les listes
-	private void init() {
-		this.cartes = new ArrayList<>();
-		this.joueurs = new LinkedList<>();
-	}
-	
 	
 	
 	public ArrayList<Carte> getCartes() {
@@ -44,6 +38,7 @@ public class Partie {
 		Scanner sc = new Scanner(System.in);
 		int playerCount;
 		String playerName;
+		this.joueurs = new LinkedList<>();
 
 		System.out.println("Welcome to WitchHunt");
 		System.out.println("************************");
@@ -65,6 +60,7 @@ public class Partie {
 			joueurs.add(new Joueur(playerName));
 		}
 		if(playerCount<MAX_PLAYER_COUNT) {
+			//Modifier ajout bot : demander nombre à user
 			System.out.println("We'll add " + (MAX_PLAYER_COUNT - playerCount) + " bots to make the game more fun : ");
 			for(int i = 0; i <(MAX_PLAYER_COUNT - playerCount);i++) {
 				boolean redoName = false;
@@ -82,13 +78,35 @@ public class Partie {
 				System.out.println(botName);
 			}
 		}
-			
+		
 	}
 	
 	public void setup() {
 		//distribution des cartes 
+		distributionCartes();
 		//afficher carte
 		//choix rôle
+	}
+	private void distributionCartes() {
+		this.cartes = new ArrayList<>();
+		Carte Broomstick = new Carte("Broomstick");
+		cartes.add(Broomstick);
+		cartes.add(new Carte("Angry Mob",Broomstick));
+		cartes.add(new Carte ("The Inquisition"));
+		cartes.add(new Carte("Pointed Hat"));
+		cartes.add(new Carte("Hooked Nose"));
+		Carte Wart = new Carte("Wart");
+		cartes.add(Wart);
+		cartes.add(new Carte("Ducking Stool",Wart));
+		cartes.add(new Carte("Cauldron"));
+		cartes.add(new Carte("Evil Eye"));
+		
+		Collections.shuffle(cartes);
+		
+		float cardsPerPlayer = cartes.size() / joueurs.size();
+		
+		//finir distribution
+		
 	}
 	
 	public static void main(String args[]) {
