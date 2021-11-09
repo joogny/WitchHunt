@@ -40,5 +40,6 @@ public class Carte {
 	public Carte getCarteBloquante() {
 		return carteBloquante;
 	}
+	
 
 }

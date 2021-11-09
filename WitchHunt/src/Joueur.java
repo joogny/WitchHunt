@@ -15,11 +15,19 @@ public class Joueur {
 	
 	
 	
-	public void setMain(ArrayList<Carte> main) {
-		this.main=main;
+	public void ajouterCarte(Carte c) {
+		if(!main.contains(c)) {
+			main.add(c);
+		}
 	}
 	
 	public String getNomJoueur() {
 		return nomJoueur;
 	}
+	
+	public ArrayList<Carte> getMain() {
+		return main;
+	}
+	
+	
 }

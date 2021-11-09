@@ -1,7 +1,9 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Scanner;
+
 
 public class Partie {
 	
@@ -68,8 +70,9 @@ public class Partie {
 				do {
 					redoName = false;
 					botName = JoueurVirtuel.getRandomName();
-					for(Joueur j : joueurs) {
-						if(botName==j.getNomJoueur()) {
+					Iterator<Joueur> it = joueurs.iterator();
+					while(it.hasNext()) {
+						if(botName==it.next().getNomJoueur()) {
 							redoName = true;
 						}
 					}
@@ -85,6 +88,19 @@ public class Partie {
 		//distribution des cartes 
 		distributionCartes();
 		//afficher carte
+		
+		System.out.println();
+		System.out.println("Liste carte :");
+		for(Joueur j : joueurs) {
+			for(Carte c : j.getMain()) {
+				System.out.println(j.getNomJoueur() + " : " + c.getNomCarte());
+			}
+		}
+		for(Carte c : cartes) {
+			if(c.isDefausse()) {
+				System.out.println("Defausse : " + c.getNomCarte());
+			}
+		}
 		//choix rôle
 	}
 	private void distributionCartes() {
@@ -100,13 +116,26 @@ public class Partie {
 		cartes.add(new Carte("Ducking Stool",Wart));
 		cartes.add(new Carte("Cauldron"));
 		cartes.add(new Carte("Evil Eye"));
-		
+		cartes.add(new Carte("Toad"));
+		cartes.add(new Carte("Black Cat"));
+		cartes.add(new Carte("Pet Newt"));
 		Collections.shuffle(cartes);
 		
 		float cardsPerPlayer = cartes.size() / joueurs.size();
-		
-		//finir distribution
-		
+		System.out.println(cardsPerPlayer);
+		Iterator<Joueur> itJ = joueurs.iterator();
+		Iterator<Carte> itC = cartes.iterator();
+		while(itJ.hasNext()) {
+			Joueur j = itJ.next();
+			for(int i=0;i<cardsPerPlayer;i++) {
+				if(itC.hasNext()) {
+					j.ajouterCarte(itC.next());
+				}
+			}
+		}
+		while(itC.hasNext()) {
+			itC.next().setDefausse(true);
+		}
 	}
 	
 	public static void main(String args[]) {
