@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Joueur {
 	private String nomJoueur;
@@ -27,6 +28,22 @@ public class Joueur {
 	
 	public ArrayList<Carte> getMain() {
 		return main;
+	}
+
+
+
+	public void displayHand() {
+		Iterator<Carte> it = main.iterator();
+		while(it.hasNext()) {
+			System.out.println(it.next().getNomCarte());
+		}
+		
+	}
+
+
+
+	public boolean isABot() {
+		return false;
 	}
 	
 	

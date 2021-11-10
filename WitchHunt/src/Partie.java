@@ -13,7 +13,7 @@ public class Partie {
 	private LinkedList<Joueur> joueurs;
 	
 	private static final int MAX_PLAYER_COUNT = 6;
-	
+	private static final int MIN_PLAYER_COUNT = 3;
 	private Partie() {
 	}
 	
@@ -47,17 +47,31 @@ public class Partie {
 		System.out.println("************************");
 		System.out.println("How many real players are there? (up to 6)");
 		playerCount = askNumber(sc,0,6);
-		
+		if(playerCount>0) {
 		System.out.println("Enter each player's name");
 		for(int i=1;i<=playerCount;i++) {
 			System.out.print("Player " + i + " : ");
 			playerName = sc.next();
 			joueurs.add(new Joueur(playerName));
 		}
+		}
 		if(playerCount<MAX_PLAYER_COUNT) {
 			//Modifier ajout bot : demander nombre à user
-			System.out.println("We'll add " + (MAX_PLAYER_COUNT - playerCount) + " bots to make the game more fun : ");
-			for(int i = 0; i <(MAX_PLAYER_COUNT - playerCount);i++) {
+			int maxBotCount = MAX_PLAYER_COUNT - playerCount;
+			int botCount;
+			int minBotCount;
+			if(MIN_PLAYER_COUNT-playerCount>0) {
+				minBotCount = MIN_PLAYER_COUNT-playerCount;
+			}
+			else {
+				minBotCount = 0;
+			}
+			System.out.println("How many bot are there? (from " + minBotCount+ " to "+maxBotCount+")");
+			botCount = askNumber(sc,minBotCount,maxBotCount);
+			if(botCount>0) {
+				System.out.println("\n"+"Here are the names we've chosen for the bots:" + "\n");
+			}
+			for(int i = 0; i <botCount;i++) {
 				boolean redoName = false;
 				String botName;
 				do {
@@ -81,38 +95,60 @@ public class Partie {
 		String ErrorMessage = "Please input a number between " + min + " and " + max+".";
 		System.out.println(ErrorMessage);
 		while(true) {
-		try {
-			int nextInt = sc.nextInt();
-			if(nextInt>=min && nextInt<=max) {
-				return nextInt;
+			if(sc.hasNextInt()) {
+				int nextInt = sc.nextInt();
+				if(nextInt>=min && nextInt<=max) {
+					return nextInt;
+				}
+				else {
+					System.out.println(ErrorMessage);
+				}
 			}
 			else {
+				sc.next();
 				System.out.println(ErrorMessage);
 			}
-		} catch (InputMismatchException e){
-			System.out.println("Please input a number.");
-		}
 		}
 		
 	}
 	public void setup() {
 		//distribution des cartes 
 		distributionCartes();
-		//afficher carte
+		//affichage des cartes
+		displayCards();
+		//choix des rôles
+		chooseIdentityCard();
+	}
+	private void displayCards() {
+		Iterator<Joueur> it = joueurs.iterator();
+		Scanner sc = new Scanner(System.in);
+		while(it.hasNext()) {
+			Joueur j = it.next();
+			if(!j.isABot()) {
+				System.out.println("\n \n"+ "Hello " + j.getNomJoueur() + ", if you're ready to look at your cards and that no one else is looking at the screen, press ENTER!");
+				sc.nextLine();
+				j.displayHand();
+				System.out.println("\n \n"+ "When you're done, looking at them, press ENTER!");
+				sc.nextLine();
+				clearScreen();
+			}
+		}
+	}
+	
+	private void chooseIdentityCard() {
+		Iterator<Joueur> it = joueurs.iterator();
+		Scanner sc = new Scanner(System.in);
+		while(it.hasNext()) {
+			Joueur j = it.next();
+			if(!j.isABot()) {
+				System.out.println("\n \n"+ "Hello " + j.getNomJoueur() + ", \n if you want to play as a Witch, type W \n if you want to play as a Villager, type V. ");
+			}
+		}
+	}
+	private void clearScreen() {
 		
-		System.out.println();
-		System.out.println("Liste carte :");
-		for(Joueur j : joueurs) {
-			for(Carte c : j.getMain()) {
-				System.out.println(j.getNomJoueur() + " : " + c.getNomCarte());
-			}
-		}
-		for(Carte c : cartes) {
-			if(c.isDefausse()) {
-				System.out.println("Defausse : " + c.getNomCarte());
-			}
-		}
-		//choix rôle
+		//méthode doit être modifé plus tard pour être plus propre
+		for (int i = 0; i < 50; ++i) System.out.println();
 	}
 	private void distributionCartes() {
 		this.cartes = new ArrayList<>();
@@ -133,7 +169,6 @@ public class Partie {
 		Collections.shuffle(cartes);
 		
 		float cardsPerPlayer = cartes.size() / joueurs.size();
-		System.out.println(cardsPerPlayer);
 		Iterator<Joueur> itJ = joueurs.iterator();
 		Iterator<Carte> itC = cartes.iterator();
 		while(itJ.hasNext()) {
@@ -145,7 +180,9 @@ public class Partie {
 			}
 		}
 		while(itC.hasNext()) {
-			itC.next().setDefausse(true);
+			Carte c = itC.next();
+			c.setDefausse(true);
+			System.out.println("The " + c.getNomCarte() + " card was discarded.");
 		}
 	}
 	

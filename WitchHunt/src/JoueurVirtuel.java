@@ -10,5 +10,10 @@ public class JoueurVirtuel extends Joueur {
 		int randomNum = (int)(Math.random() * randomNames.length);
 		return randomNames[randomNum];
 	}
+
+	@Override
+	public boolean isABot() {
+		return true;
+	}
 }
 ;
