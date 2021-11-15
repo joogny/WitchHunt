@@ -41,7 +41,9 @@ public class Joueur {
 	}
 
 
-
+	public void setEstSorciere(boolean role) {
+		this.estSorciere=role;
+	}
 	public boolean isABot() {
 		return false;
 	}

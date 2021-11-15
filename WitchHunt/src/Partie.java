@@ -3,6 +3,7 @@ import java.util.Iterator;
 import java.util.Collections;
 import java.util.InputMismatchException;
 import java.util.LinkedList;
+import java.util.Random;
 import java.util.Scanner;
 
 
@@ -116,8 +117,6 @@ public class Partie {
 		distributionCartes();
 		//affichage des cartes
 		displayCards();
-		//choix des rôles
-		chooseIdentityCard();
 	}
 	private void displayCards() {
 		Iterator<Joueur> it = joueurs.iterator();
@@ -128,22 +127,43 @@ public class Partie {
 				System.out.println("\n \n"+ "Hello " + j.getNomJoueur() + ", if you're ready to look at your cards and that no one else is looking at the screen, press ENTER!");
 				sc.nextLine();
 				j.displayHand();
-				System.out.println("\n \n"+ "When you're done, looking at them, press ENTER!");
+				//choix des rôles
+				chooseIdentityCard(j);
+				System.out.println("When you're ready and want to remove your cards from the screen, press ENTER");
 				sc.nextLine();
 				clearScreen();
+			}
+			else {
+				Random r = new Random();
+				j.setEstSorciere(r.nextBoolean());
+				System.out.println(j.getNomJoueur() + " chose their role!");
 			}
 		}
 	}
 	
-	private void chooseIdentityCard() {
-		Iterator<Joueur> it = joueurs.iterator();
+	private void chooseIdentityCard(Joueur j) {
 		Scanner sc = new Scanner(System.in);
-		while(it.hasNext()) {
-			Joueur j = it.next();
 			if(!j.isABot()) {
-				System.out.println("\n \n"+ "Hello " + j.getNomJoueur() + ", \n if you want to play as a Witch, type W \n if you want to play as a Villager, type V. ");
-			}
+				System.out.println("\n \n" +"If you want to play as a Witch, type W.\nIf you want to play as a Villager, type V. ");
+				//à finir
+				while(true) {
+				String s = sc.nextLine();
+					if(s.equals("W")|s.equals("w")) {
+						System.out.println("You're now a witch!");
+						j.setEstSorciere(true);
+						break;
+					}
+					else if(s.equals("V")|s.equals("v")) {
+						System.out.println("You're now a villager");
+						j.setEstSorciere(false);
+						break;
+					}
+					else {
+						System.out.println("Please type either W or V");
+					}
+				}
 		}
+			
 	}
 	private void clearScreen() {
 		
