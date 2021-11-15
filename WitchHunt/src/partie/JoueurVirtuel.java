@@ -1,3 +1,4 @@
+package partie;
 
 public class JoueurVirtuel extends Joueur {
 	private static final String[] randomNames = 

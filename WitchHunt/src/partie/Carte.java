@@ -1,3 +1,4 @@
+package partie;
 
 public class Carte {
 

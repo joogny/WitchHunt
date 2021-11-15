@@ -1,3 +1,4 @@
+package partie;
 
 public abstract class Effet {
 	private String NomEffet;
@@ -15,7 +16,9 @@ public abstract class Effet {
 	}
 	
 	
+	public abstract boolean estJouable();
 	
+	public abstract void activerEffet(Joueur joueurCarte);
 	
 	
 	

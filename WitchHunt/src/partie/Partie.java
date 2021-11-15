@@ -1,3 +1,4 @@
+package partie;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Collections;
@@ -145,7 +146,6 @@ public class Partie {
 		Scanner sc = new Scanner(System.in);
 			if(!j.isABot()) {
 				System.out.println("\n \n" +"If you want to play as a Witch, type W.\nIf you want to play as a Villager, type V. ");
-				//à finir
 				while(true) {
 				String s = sc.nextLine();
 					if(s.equals("W")|s.equals("w")) {
