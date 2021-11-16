@@ -4,14 +4,14 @@ import partie.Effet;
 import partie.Joueur;
 
 public class ChooseNextPlayer extends Effet {
-
+	private static final String enoncé = "Choose next player.";
 	public ChooseNextPlayer(String nomEffet, boolean needCarteRevelee, boolean needVillageoisRevelee) {
-		super(nomEffet, needCarteRevelee, needVillageoisRevelee);
+		super(enoncé, needCarteRevelee, needVillageoisRevelee);
 		// TODO Auto-generated constructor stub
 	}
 
 	public ChooseNextPlayer(String nomEffet) {
-		super(nomEffet);
+		super(enoncé);
 		// TODO Auto-generated constructor stub
 	}
 

@@ -4,14 +4,14 @@ import partie.Effet;
 import partie.Joueur;
 
 public class DiscardCardFromHand extends Effet {
-
+	private static final String enoncé = "Discard a card from your hand.";
 	public DiscardCardFromHand(String nomEffet, boolean needCarteRevelee, boolean needVillageoisRevelee) {
-		super(nomEffet, needCarteRevelee, needVillageoisRevelee);
+		super(enoncé, needCarteRevelee, needVillageoisRevelee);
 		// TODO Auto-generated constructor stub
 	}
 
 	public DiscardCardFromHand(String nomEffet) {
-		super(nomEffet);
+		super(enoncé);
 		// TODO Auto-generated constructor stub
 	}
 

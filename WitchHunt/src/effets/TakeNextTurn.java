@@ -4,15 +4,16 @@ import partie.Effet;
 import partie.Joueur;
 
 public class TakeNextTurn extends Effet {
+	private static final String enoncé = "Take next turn.";
 
-	public TakeNextTurn(String nomEffet) {
-		super(nomEffet);
+	public TakeNextTurn() {
+		super(enoncé);
 		// TODO Auto-generated constructor stub
 	}
 	
 	
 	public TakeNextTurn(String nomEffet, boolean needCarteRevelee, boolean needVillageoisRevelee) {
-		super(nomEffet, needCarteRevelee, needVillageoisRevelee);
+		super(enoncé, needCarteRevelee, needVillageoisRevelee);
 		// TODO Auto-generated constructor stub
 	}
 

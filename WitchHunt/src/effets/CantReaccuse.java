@@ -4,14 +4,14 @@ import partie.Effet;
 import partie.Joueur;
 
 public class CantReaccuse extends Effet {
-
+	private static final String enoncé = "On their turn they must accuse a player other than you, if possible.";
 	public CantReaccuse(String nomEffet, boolean needCarteRevelee, boolean needVillageoisRevelee) {
-		super(nomEffet, needCarteRevelee, needVillageoisRevelee);
+		super(enoncé, needCarteRevelee, needVillageoisRevelee);
 		// TODO Auto-generated constructor stub
 	}
 
 	public CantReaccuse(String nomEffet) {
-		super(nomEffet);
+		super(enoncé);
 		// TODO Auto-generated constructor stub
 	}
 

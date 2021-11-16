@@ -3,14 +3,14 @@ package effets;
 import partie.Effet;
 import partie.Joueur;
 
-public class AccuserDiscards extends Effet {
-	private static final String enoncé = "The player who accused you discards a random card from their hand.";
-	public AccuserDiscards(String nomEffet, boolean needCarteRevelee, boolean needVillageoisRevelee) {
+public class TakeCardFromHandBeforeTurn extends Effet {
+	private static final String enoncé = "Before their turn, take a random card from their hand and add it to your hand.";
+	public TakeCardFromHandBeforeTurn(String nomEffet, boolean needCarteRevelee, boolean needVillageoisRevelee) {
 		super(enoncé, needCarteRevelee, needVillageoisRevelee);
 		// TODO Auto-generated constructor stub
 	}
 
-	public AccuserDiscards(String nomEffet) {
+	public TakeCardFromHandBeforeTurn(String nomEffet) {
 		super(enoncé);
 		// TODO Auto-generated constructor stub
 	}
