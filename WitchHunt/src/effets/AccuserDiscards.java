@@ -15,11 +15,6 @@ public class AccuserDiscards extends Effet {
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public boolean estJouable() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	@Override
 	public void activerEffet(Joueur joueurCarte) {

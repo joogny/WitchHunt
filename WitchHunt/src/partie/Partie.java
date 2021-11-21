@@ -12,7 +12,7 @@ public class Partie {
 	
 	private static Partie instance;
 	private ArrayList<Carte> cartes;
-	private LinkedList<Joueur> joueurs;
+	private playerList listeJoueurs;
 	
 	private static final int MAX_PLAYER_COUNT = 6;
 	private static final int MIN_PLAYER_COUNT = 3;
@@ -30,21 +30,20 @@ public class Partie {
 	public ArrayList<Carte> getCartes() {
 		return cartes;
 	}
-
-	public LinkedList<Joueur> getJoueurs() {
-		return joueurs;
+	public playerList getListeJoueurs() {
+		return listeJoueurs;
 	}
 
 	public static int getMaxPlayerCount() {
 		return MAX_PLAYER_COUNT;
 	}
-
+	
 	private void demarrerPartie() {
 		Scanner sc = new Scanner(System.in);
 		int playerCount;
 		String playerName;
-		this.joueurs = new LinkedList<>();
-
+		this.listeJoueurs = new playerList();
+		LinkedList<Joueur> joueurs = listeJoueurs.getListeJoueurs();
 		System.out.println("Welcome to WitchHunt");
 		System.out.println("************************");
 		System.out.println("How many real players are there? (up to 6)");
@@ -93,7 +92,7 @@ public class Partie {
 		
 	}
 	
-	private int askNumber(Scanner sc, int min, int max) {
+	public int askNumber(Scanner sc, int min, int max) {
 		String ErrorMessage = "Please input a number between " + min + " and " + max+".";
 		System.out.println(ErrorMessage);
 		while(true) {
@@ -120,7 +119,7 @@ public class Partie {
 		displayCards();
 	}
 	private void displayCards() {
-		Iterator<Joueur> it = joueurs.iterator();
+		Iterator<Joueur> it = listeJoueurs.getListeJoueurs().iterator();
 		Scanner sc = new Scanner(System.in);
 		while(it.hasNext()) {
 			Joueur j = it.next();
@@ -165,6 +164,15 @@ public class Partie {
 		}
 			
 	}
+	
+	private void playTurn(Joueur j) {
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("What do you want to do?");
+		//check s'il a des cartes jouables
+		System.out.println("Type A to accuse another player of being a Witch");
+		System.out.println("Type R to reveal a Rumour card from your hand and play it face up in front of yourself, resolving it's Hunt! Effect.");
+	}
 	private void clearScreen() {
 		
 		//méthode doit être modifé plus tard pour être plus propre
@@ -188,8 +196,8 @@ public class Partie {
 		cartes.add(new Carte("Pet Newt"));
 		Collections.shuffle(cartes);
 		
-		float cardsPerPlayer = cartes.size() / joueurs.size();
-		Iterator<Joueur> itJ = joueurs.iterator();
+		float cardsPerPlayer = cartes.size() / listeJoueurs.getListeJoueurs().size();
+		Iterator<Joueur> itJ = listeJoueurs.getListeJoueurs().iterator();
 		Iterator<Carte> itC = cartes.iterator();
 		while(itJ.hasNext()) {
 			Joueur j = itJ.next();
