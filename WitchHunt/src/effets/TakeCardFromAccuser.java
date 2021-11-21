@@ -16,12 +16,6 @@ public class TakeCardFromAccuser extends Effet {
 	}
 
 	@Override
-	public boolean estJouable() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public void activerEffet(Joueur joueurCarte) {
 		// TODO Auto-generated method stub
 		
