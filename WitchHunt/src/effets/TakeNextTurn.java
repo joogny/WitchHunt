@@ -2,6 +2,7 @@ package effets;
 
 import partie.Effet;
 import partie.Joueur;
+import partie.Partie;
 
 public class TakeNextTurn extends Effet {
 	private static final String enoncé = "Take next turn.";
@@ -18,15 +19,9 @@ public class TakeNextTurn extends Effet {
 	}
 
 	@Override
-	public boolean estJouable() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public void activerEffet(Joueur joueurCarte) {
-		// TODO Auto-generated method stub
-		
+		Partie.getInstance().getListeJoueurs().movePlayerFirst(joueurCarte);
+		System.out.println(joueurCarte.getNomJoueur()+" will take the next turn");
 	}
 	
 }
