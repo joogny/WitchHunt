@@ -5,12 +5,16 @@ import java.util.LinkedList;
 
 public class playerList {
 	private LinkedList<Joueur> listeJoueurs;
+	private Joueur accuser;
 	public playerList() {
 		this.listeJoueurs=new LinkedList<>();
+		accuser=null;
 	}
+	
 	public LinkedList<Joueur> getListeJoueurs() {
 		return this.listeJoueurs;
 	}
+	
 	public void movePlayerFirst(Joueur j) {
 		Iterator<Joueur> it = listeJoueurs.iterator();
 		boolean playerFound = false;
@@ -21,5 +25,12 @@ public class playerList {
 				playerFound = true;
 			}
 		}
+	}
+
+	public Joueur getAccuser() {
+		return accuser;
+	}
+	public void setAccuser(Joueur j) {
+		this.accuser=j;
 	}
 }

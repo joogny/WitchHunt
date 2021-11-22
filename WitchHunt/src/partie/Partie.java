@@ -16,6 +16,7 @@ public class Partie {
 	
 	private static final int MAX_PLAYER_COUNT = 6;
 	private static final int MIN_PLAYER_COUNT = 3;
+	
 	private Partie() {
 	}
 	
@@ -57,7 +58,6 @@ public class Partie {
 		}
 		}
 		if(playerCount<MAX_PLAYER_COUNT) {
-			//Modifier ajout bot : demander nombre à user
 			int maxBotCount = MAX_PLAYER_COUNT - playerCount;
 			int botCount;
 			int minBotCount;
@@ -67,7 +67,7 @@ public class Partie {
 			else {
 				minBotCount = 0;
 			}
-			System.out.println("How many bot are there? (from " + minBotCount+ " to "+maxBotCount+")");
+			System.out.println("How many bots are there? (from " + minBotCount+ " to "+maxBotCount+")");
 			botCount = askNumber(sc,minBotCount,maxBotCount);
 			if(botCount>0) {
 				System.out.println("\n"+"Here are the names we've chosen for the bots:" + "\n");
@@ -139,30 +139,32 @@ public class Partie {
 				System.out.println(j.getNomJoueur() + " chose their role!");
 			}
 		}
+		sc.close();
 	}
 	
 	private void chooseIdentityCard(Joueur j) {
 		Scanner sc = new Scanner(System.in);
+		boolean roleChosen = false;
 			if(!j.isABot()) {
 				System.out.println("\n \n" +"If you want to play as a Witch, type W.\nIf you want to play as a Villager, type V. ");
-				while(true) {
+				while(!roleChosen) {
 				String s = sc.nextLine();
 					if(s.equals("W")|s.equals("w")) {
 						System.out.println("You're now a witch!");
 						j.setEstSorciere(true);
-						break;
+						roleChosen = true;
 					}
 					else if(s.equals("V")|s.equals("v")) {
 						System.out.println("You're now a villager");
 						j.setEstSorciere(false);
-						break;
+						roleChosen = false;
 					}
 					else {
 						System.out.println("Please type either W or V");
 					}
 				}
 		}
-			
+		sc.close();	
 	}
 	
 	private void playTurn(Joueur j) {
@@ -172,6 +174,9 @@ public class Partie {
 		//check s'il a des cartes jouables
 		System.out.println("Type A to accuse another player of being a Witch");
 		System.out.println("Type R to reveal a Rumour card from your hand and play it face up in front of yourself, resolving it's Hunt! Effect.");
+		
+		
+		sc.close();
 	}
 	private void clearScreen() {
 		
@@ -218,4 +223,5 @@ public class Partie {
 		Partie.getInstance().demarrerPartie();
 		Partie.getInstance().setup();
 	}
+
 }

@@ -30,13 +30,23 @@ public class Joueur {
 	public ArrayList<Carte> getMain() {
 		return main;
 	}
-
+	public ArrayList<Carte> getPlayableCards() {
+		ArrayList<Carte> playableCards = new ArrayList<Carte>();
+		Iterator<Carte> it = main.iterator();
+		while(it.hasNext()) {
+			Carte c = it.next();
+			if(!c.isDefausse()) {
+				playableCards.add(c);
+			}
+		}
+		return playableCards;
+	}
 
 
 	public void displayHand() {
 		Iterator<Carte> it = main.iterator();
 		while(it.hasNext()) {
-			System.out.println(it.next().getNomCarte());
+			System.out.println(it.next().toString());
 		}
 		
 	}

@@ -1,7 +1,13 @@
 package effets;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+
+import partie.Carte;
 import partie.Effet;
 import partie.Joueur;
+import partie.Partie;
 
 public class AccuserDiscards extends Effet {
 	private static final String enoncé = "The player who accused you discards a random card from their hand.";
@@ -18,8 +24,19 @@ public class AccuserDiscards extends Effet {
 
 	@Override
 	public void activerEffet(Joueur joueurCarte) {
-		// TODO Auto-generated method stub
-		
+			Joueur accuser = Partie.getInstance().getListeJoueurs().getAccuser();
+			if(accuser!=null) {
+			ArrayList<Carte> cartes = accuser.getPlayableCards();
+			if(cartes.size()!=0) {
+				int randomNum = (int)(Math.random() * (cartes.size() + 1));
+				Carte c = cartes.get(randomNum);
+				c.setDefausse(true);
+				System.out.println(c.getNomCarte()+" was discarded from " + accuser.toString()+"'s hand");
+			}
+			else {
+				System.out.println(accuser.toString() + "didn't have any cards to discard");
+			}
+		}
 	}
 	
 }

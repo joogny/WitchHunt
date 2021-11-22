@@ -19,7 +19,9 @@ public abstract class Effet {
 	public boolean estJouable() {
 		return !needCarteRevelee && !needVillageoisRevelee;
 	}
-	
+	public String toString() {
+		return NomEffet;
+	}
 	public abstract void activerEffet(Joueur joueurCarte);
 	
 	
