@@ -31,7 +31,7 @@ public class AccuserDiscards extends Effet {
 				int randomNum = (int)(Math.random() * (cartes.size() + 1));
 				Carte c = cartes.get(randomNum);
 				c.setDefausse(true);
-				System.out.println(c.getNomCarte()+" was discarded from " + accuser.toString()+"'s hand");
+				System.out.println(c.toString() +"\n  was discarded from " + accuser.toString()+"'s hand");
 			}
 			else {
 				System.out.println(accuser.toString() + "didn't have any cards to discard");

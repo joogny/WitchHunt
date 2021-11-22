@@ -41,7 +41,18 @@ public class Joueur {
 		}
 		return playableCards;
 	}
-
+	
+	public ArrayList<Carte> getRevealedCards() {
+		ArrayList<Carte> playableCards = new ArrayList<Carte>();
+		Iterator<Carte> it = main.iterator();
+		while(it.hasNext()) {
+			Carte c = it.next();
+			if(c.isDefausse()) {
+				playableCards.add(c);
+			}
+		}
+		return playableCards;
+	}
 
 	public void displayHand() {
 		Iterator<Carte> it = main.iterator();

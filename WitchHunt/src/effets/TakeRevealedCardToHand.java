@@ -24,25 +24,16 @@ public class TakeRevealedCardToHand extends Effet{
 
 	@Override
 	public void activerEffet(Joueur joueurCarte) {
-		ArrayList<Carte> revealedCards = new ArrayList<>();
-		
-		Iterator<Carte> it = joueurCarte.getMain().iterator();
-		while(it.hasNext()) {
-			Carte c = it.next();
-			if(c.isRevelee()) {
-				revealedCards.add(c);
-			}
-		}
-		
+		ArrayList<Carte> revealedCards = joueurCarte.getRevealedCards();
 		if(revealedCards.size()==0) {
 			System.out.println("You have no revealed cards");
 		}
 		else {
 			int index=0;
-			it = revealedCards.iterator();
+			Iterator<Carte> it = revealedCards.iterator();
 			while(it.hasNext()) {
 				index++;
-				System.out.println(index+ " : " +it.next().getNomCarte());
+				System.out.println(index+ " : \n" +it.next().toString());
 			}
 			Scanner sc = new Scanner(System.in);
 			System.out.println("Please enter the number of the card you want");

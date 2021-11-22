@@ -10,7 +10,7 @@ public abstract class Effet {
 		this.needCarteRevelee = needCarteRevelee;
 		this.needVillageoisRevelee = needVillageoisRevelee;
 	}
-
+	
 	public Effet(String nomEffet) {
 		this(nomEffet,false,false);
 	}
