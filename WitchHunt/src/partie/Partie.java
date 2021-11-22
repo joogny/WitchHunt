@@ -174,6 +174,7 @@ public class Partie {
 		//check s'il a des cartes jouables
 		if(j.getPlayableCards().size()==0) {
 			System.out.println("Because you have no playable cards you have to accuse someone!");
+			
 		}
 		else {
 			System.out.println("Type A to accuse another player of being a Witch");
