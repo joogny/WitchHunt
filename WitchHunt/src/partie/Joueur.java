@@ -64,13 +64,14 @@ public class Joueur {
 	}
 	
 	private void playTurn() {
+		//check si le joeur n'est pas éliminé...
 		Scanner sc = new Scanner(System.in);
-		
+		//check Effets de départ...
 		System.out.println("What do you want to do?");
 		//check s'il a des cartes jouables
 		if(this.getPlayableCards().size()==0) {
 			System.out.println("Because you have no playable cards you have to accuse someone!");
-			
+			accuser();
 		}
 		else {
 			System.out.println("Type A to accuse another player of being a Witch");
@@ -106,7 +107,7 @@ public class Joueur {
 	private void accuser() {
 		// TODO Auto-generated method stub
 		System.out.println("Choose a player to accuse!");
-
+		
 	}
 
 
