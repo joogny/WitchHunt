@@ -167,24 +167,7 @@ public class Partie {
 		sc.close();	
 	}
 	
-	private void playTurn(Joueur j) {
-		Scanner sc = new Scanner(System.in);
-		
-		System.out.println("What do you want to do?");
-		//check s'il a des cartes jouables
-		if(j.getPlayableCards().size()==0) {
-			System.out.println("Because you have no playable cards you have to accuse someone!");
-			
-		}
-		else {
-			System.out.println("Type A to accuse another player of being a Witch");
-			System.out.println("Type R to reveal a Rumour card from your hand and play it face up in front of yourself, resolving it's Hunt! Effect.");
 	
-		}
-		
-		
-		sc.close();
-	}
 	private void clearScreen() {
 		
 		//méthode doit être modifé plus tard pour être plus propre
