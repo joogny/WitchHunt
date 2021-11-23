@@ -44,6 +44,19 @@ public class Carte {
 	public Carte getCarteBloquante() {
 		return carteBloquante;
 	}
+	public void activerEffets(Joueur j,Effet[] effets) {
+		for(Effet e : effetsWitch) {
+			if(e.estJouable()) {
+				e.activerEffet(j);
+			}
+		}
+	}
+	public void activerEffetHunt(Joueur j) {
+		activerEffets(j,this.effetsHunt);
+	}
+	public void activerEffetWitch(Joueur j) {
+		activerEffets(j,this.effetsWitch);
+	}
 	
 	public String toString() {
 		StringBuffer sb = new StringBuffer();

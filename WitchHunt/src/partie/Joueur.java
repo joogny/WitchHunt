@@ -99,7 +99,21 @@ public class Joueur {
 
 	private void playHuntCard() {
 		// TODO Auto-generated method stub
+		int index=0;
+		Scanner sc = new Scanner(System.in);
 		System.out.println("Choose a card to play!");
+		ArrayList<Carte> cartes = this.getPlayableCards();
+		Iterator<Carte> it = cartes.iterator();
+		while(it.hasNext()) {
+			index++;
+			System.out.println(index+" : \n" + it.next().toString());
+		}
+		System.out.println("Choose a card to play!");
+		int number = Partie.getInstance().askNumber(null, 1, index);
+		
+		Carte c = cartes.get(number);
+		c.activerEffetHunt(this);
+		//à finir
 	}
 
 
