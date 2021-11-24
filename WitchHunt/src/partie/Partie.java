@@ -16,7 +16,6 @@ public class Partie {
 	
 	private static final int MAX_PLAYER_COUNT = 6;
 	private static final int MIN_PLAYER_COUNT = 3;
-	private static final int MAX_SCORE = 5;
 	private Scanner sc;
 	private Partie() {
 	}
@@ -88,18 +87,58 @@ public class Partie {
 		System.out.println();
 		
 	}
-	
+	public String chooseBetween2Options(String a, String b) {
+		boolean actionChosen=false;
+		String s = sc.next();
+		if(s.equals(a)) {
+			return a;
+			}
+		else if(s.equals(b)) {
+			return b;	
+		}
+		else {
+			System.out.println("Please type either "+ a+ " or " + b);
+			chooseBetween2Options(a, b);
+		}
+		return null;
+	}
 	public void demarrerPartie() {
 		boolean partieFini = false;
 		while(!partieFini) {
 			Joueur j = this.listeJoueurs.getFirstPlayer();
-			//j.playTurn();
-			System.out.println(j.toString());
-			sc.nextLine();
+				
+			j.playTurn();
+				
+				
+				
+				
+				
+				
+				
+				
+			//fin de la partie
+			if(listeJoueurs.getJoueursNonRevelées().size()==1) {
+				partieFini=true;
+			}
+			//cycle des joueurs
 			this.listeJoueurs.movePlayerLast(j);
 		}
+
+		finPartie();			
 	}
-	
+	public void finPartie() {
+		Joueur dernierJoueur = listeJoueurs.getJoueursNonRevelées().getFirst();
+		if(dernierJoueur.estSorciere()) {
+			System.out.println(dernierJoueur.toString() + " was a Witch! They gain 2 points");
+			dernierJoueur.addToScore(2);
+		}
+		else {
+			System.out.println(dernierJoueur.toString() + " was a Witch! They gain 1 point");
+			dernierJoueur.addToScore(1);
+		}
+		
+		//displayEndScore
+	}
 	public int askNumber(int min, int max) {
 		String ErrorMessage = "Please input a number between " + min + " and " + max+".";
 		System.out.println(ErrorMessage);
@@ -198,6 +237,11 @@ public class Partie {
 	public static void main(String args[]) {
 		Partie.getInstance().setup();
 		Partie.getInstance().demarrerPartie();
+	}
+
+	public void eliminerJoueur(Joueur joueur) {
+		System.out.println(joueur.toString() + " is out of the game!");
+		
 	}
 
 

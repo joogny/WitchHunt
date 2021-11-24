@@ -1,24 +1,28 @@
 package partie;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
 public class playerList {
 	private LinkedList<Joueur> listeJoueurs;
 	private Joueur accuser;
-	
+	private ArrayList<Joueur> listeJoueursElimine;
 	
 	public playerList() {
 		this.listeJoueurs=new LinkedList<>();
 		accuser=null;
+		this.listeJoueursElimine=new ArrayList<>();
 	}
 	
 	public LinkedList<Joueur> getListeJoueurs() {
 		return this.listeJoueurs;
 	}
+	
 	public Joueur getFirstPlayer() {
 		return listeJoueurs.getFirst();
 	}
+	
 	public void movePlayerLast(Joueur j ) {
 		Iterator<Joueur> it = listeJoueurs.iterator();
 		boolean playerFound = false;
@@ -49,15 +53,23 @@ public class playerList {
 	
 	
 	public LinkedList<Joueur> getJoueursNonEliminées() {
-		LinkedList<Joueur> list = new LinkedList<>();
-		Iterator<Joueur> it = listeJoueurs.iterator();
+		return listeJoueurs;
+	}
+	
+	public LinkedList<Joueur> getJoueursNonRevelées() {
+		LinkedList<Joueur> joueursNonRevelées = new LinkedList<>();
+		Iterator<Joueur> it = this.listeJoueurs.iterator();
 		while(it.hasNext()) {
 			Joueur j = it.next();
-			if(!j.estEliminee()) {
-				list.add(j);
+			if(!j.estRevelee()) {
+				joueursNonRevelées.add(j);
 			}
 		}
-		return list;
+		return joueursNonRevelées;
+	}
+	public void eliminerJoueur(Joueur j) {
+		listeJoueurs.remove(j);
+		listeJoueursElimine.add(j);
 	}
 	public void setAccuser(Joueur j) {
 		this.accuser=j;
