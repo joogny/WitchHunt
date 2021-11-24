@@ -35,9 +35,8 @@ public class TakeRevealedCardToHand extends Effet{
 				index++;
 				System.out.println(index+ " : \n" +it.next().toString());
 			}
-			Scanner sc = new Scanner(System.in);
 			System.out.println("Please enter the number of the card you want");
-			int nbCarte = Partie.getInstance().askNumber(sc, 1, index);
+			int nbCarte = Partie.getInstance().askNumber(1, index);
 			
 			Carte carteChoisie = revealedCards.get(nbCarte-1);
 			

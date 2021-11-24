@@ -1,6 +1,7 @@
 package partie;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 public class Joueur {
@@ -36,7 +37,7 @@ public class Joueur {
 		Iterator<Carte> it = main.iterator();
 		while(it.hasNext()) {
 			Carte c = it.next();
-			if(!c.isDefausse()) {
+			if(!c.isDefausse() && !c.isRevelee()) {
 				playableCards.add(c);
 			}
 		}
@@ -48,7 +49,7 @@ public class Joueur {
 		Iterator<Carte> it = main.iterator();
 		while(it.hasNext()) {
 			Carte c = it.next();
-			if(c.isDefausse()) {
+			if(c.isRevelee()&& !c.isDefausse()) {
 				playableCards.add(c);
 			}
 		}
@@ -63,7 +64,7 @@ public class Joueur {
 		
 	}
 	
-	private void playTurn() {
+	public void playTurn() {
 		//check si le joeur n'est pas éliminé...
 		Scanner sc = new Scanner(System.in);
 		//check Effets de départ...
@@ -109,7 +110,7 @@ public class Joueur {
 			System.out.println(index+" : \n" + it.next().toString());
 		}
 		System.out.println("Choose a card to play!");
-		int number = Partie.getInstance().askNumber(null, 1, index);
+		int number = Partie.getInstance().askNumber(1, index);
 		
 		Carte c = cartes.get(number);
 		c.activerEffetHunt(this);
@@ -121,17 +122,71 @@ public class Joueur {
 	private void accuser() {
 		// TODO Auto-generated method stub
 		System.out.println("Choose a player to accuse!");
+		LinkedList<Joueur> joueurs = Partie.getInstance().getListeJoueurs().getJoueursNonEliminées();
+		Iterator<Joueur> it = joueurs.iterator();
+		Scanner sc = new Scanner(System.in);
+		int index=0;
+		while(it.hasNext()) {
+			index++;
+			System.out.println(index + " : " +it.next().toString());
+		}
+		int number = Partie.getInstance().askNumber(1, index);
+		sc.close();
+		Joueur jAccusée = joueurs.get(number);
+		System.out.println(this.toString() + "accused " + jAccusée.toString() + " of being a Witch!");
+		jAccusée.etreAccuse(this);
+	}
+
+
+	private void etreAccuse(Joueur j) {
+		//if()
+		System.out.println("What'll + " + this.toString() + " do to answer this accusation?");
 		
 	}
 
 
 
+	public boolean estEliminee() {
+		return this.elimine;
+	}
 	public void setEstSorciere(boolean role) {
 		this.estSorciere=role;
 	}
 	public boolean isABot() {
 		return false;
 	}
-	
+
+
+	public void discoverHand() {
+		Scanner sc = Partie.getInstance().getScanner();
+		System.out.println("\n \n"+ "Hello " + this.getNomJoueur() + ", if you're ready to look at your cards and that no one else is looking at the screen, press ENTER!");
+		sc.nextLine();
+		this.displayHand();
+	}
+	public void chooseIdentityCard() {
+		Scanner sc = Partie.getInstance().getScanner();
+		boolean roleChosen = false;
+		System.out.println("\n \n" +"If you want to play as a Witch, type W.\nIf you want to play as a Villager, type V. ");
+		while(!roleChosen) {
+			String s = sc.nextLine();
+			if(s.equals("W")|s.equals("w")) {
+				System.out.println("You're now a witch!");
+				this.setEstSorciere(true);
+				roleChosen = true;
+			}
+			else if(s.equals("V")|s.equals("v")) {
+				System.out.println("You're now a villager");
+				this.setEstSorciere(false);
+				roleChosen = true;
+			}
+			else {
+				System.out.println("Please type either W or V");
+				roleChosen = false;
+			}
+	}
+	}
+	public String toString() {
+		return this.nomJoueur;
+	}
 	
 }
