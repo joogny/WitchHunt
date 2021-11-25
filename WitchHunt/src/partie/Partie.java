@@ -106,20 +106,13 @@ public class Partie {
 		boolean partieFini = false;
 		while(!partieFini) {
 			Joueur j = this.listeJoueurs.getFirstPlayer();
-				
 			j.playTurn();
-				
-				
-				
-				
-				
-				
-				
-				
+			
 			//fin de la partie
-			if(listeJoueurs.getJoueursNonRevelées().size()==1) {
+			if(listeJoueurs.getJoueursNonEliminées().size()==1) {
 				partieFini=true;
 			}
+			
 			//cycle des joueurs
 			this.listeJoueurs.movePlayerLast(j);
 		}
@@ -240,8 +233,8 @@ public class Partie {
 	}
 
 	public void eliminerJoueur(Joueur joueur) {
-		System.out.println(joueur.toString() + " is out of the game!");
-		
+		System.out.println(joueur.toString() + " is out of the game! \n");
+		listeJoueurs.eliminerJoueur(joueur);
 	}
 
 

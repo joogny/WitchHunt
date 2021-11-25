@@ -31,7 +31,9 @@ public class Carte {
 	public String getNomCarte() {
 		return nomCarte;
 	}
-
+	public boolean estJouable() {
+		return (!this.revelee && !this.defausse);
+	}
 
 	public boolean isRevelee() {
 		return revelee;
@@ -45,10 +47,8 @@ public class Carte {
 		return carteBloquante;
 	}
 	public void activerEffets(Joueur j,Effet[] effets) {
-		for(Effet e : effetsWitch) {
-			if(e.estJouable()) {
+		for(Effet e : effets) {
 				e.activerEffet(j);
-			}
 		}
 	}
 	public void activerEffetHunt(Joueur j) {
@@ -72,6 +72,18 @@ public class Carte {
 		}
 		sb.append("**************************"+"\n");
 		return sb.toString();
+	}
+	
+	public boolean equals(Object o) {
+		if(o instanceof Carte) {
+			Carte c = (Carte) o;
+			if(!(c.nomCarte==this.nomCarte)) {
+				return false;
+			}
+			return (this.effetsHunt==c.effetsHunt && this.effetsWitch == c.effetsWitch);
+			
+		}
+		return false;
 	}
 	
 

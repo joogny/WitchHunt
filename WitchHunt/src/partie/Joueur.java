@@ -39,7 +39,7 @@ public class Joueur {
 		Iterator<Carte> it = main.iterator();
 		while(it.hasNext()) {
 			Carte c = it.next();
-			if(!c.isDefausse() && !c.isRevelee()) {
+			if(c.estJouable()) {
 				playableCards.add(c);
 			}
 		}
@@ -70,8 +70,7 @@ public class Joueur {
 		
 		Scanner sc = Partie.getInstance().getScanner();
 		
-		System.out.println("It's " + this.toString()+"'s turn. Press ENTER to start!");
-		sc.nextLine();
+		System.out.println("It's " + this.toString()+"'s turn!\n");
 		
 		//check Effets de départ...
 		
@@ -97,42 +96,30 @@ public class Joueur {
 	
 	}
 
-	private void playHuntCard() {
-		// TODO Auto-generated method stub
-		int index=0;
-		Scanner sc = Partie.getInstance().getScanner();
-		System.out.println("Choose a card to play!");
+	private Carte choisirCarteAJouer() {
 		ArrayList<Carte> cartes = this.getPlayableCards();
 		Iterator<Carte> it = cartes.iterator();
+		int index=0;
+		System.out.println("Choose a card to play!");
+		//lors de l'activation de l'effet : vérif playable if you have rumour card etc...
 		while(it.hasNext()) {
 			index++;
 			System.out.println(index+" : \n" + it.next().toString());
 		}
-		System.out.println("Choose a card to play!");
 		int number = Partie.getInstance().askNumber(1, index);
-		
-		Carte c = cartes.get(number);
+		return cartes.get(number-1);
+	}
+	private void playHuntCard() {
+		Carte c = choisirCarteAJouer();
 		c.activerEffetHunt(this);
-		//à finir
 	}
 		
 
-
 	private void accuser() {
-		// TODO Auto-generated method stub
 		System.out.println("Choose a player to accuse!");
-		LinkedList<Joueur> joueurs = Partie.getInstance().getListeJoueurs().getJoueursNonEliminées();
-		Iterator<Joueur> it = joueurs.iterator();
-		Scanner sc = Partie.getInstance().getScanner();
-		int index=0;
-		while(it.hasNext()) {
-			index++;
-			System.out.println(index + " : " +it.next().toString());
-		}
-		int number = Partie.getInstance().askNumber(1, index);
-		Joueur jAccusée = joueurs.get(number);
-		System.out.println(this.toString() + " accused " + jAccusée.toString() + " of being a Witch! \n");
-		jAccusée.etreAccuse(this);
+		Joueur jAccusee = Partie.getInstance().getListeJoueurs().choisirJoueur(this);
+		System.out.println(this.toString() + " accused " + jAccusee.toString() + " of being a Witch! \n");
+		jAccusee.etreAccuse(this);
 	}
 
 	public void addToScore(int points) {
@@ -159,8 +146,8 @@ public class Joueur {
 	}
 	
 	private void playWitchCard(Joueur accusateur) {
-		//méthode à faire
-		System.out.println("A FAIRE");
+		Carte c = choisirCarteAJouer();
+		c.activerEffetWitch(this);
 	}
 
 
@@ -168,12 +155,12 @@ public class Joueur {
 	private void revelerIdentite(Joueur accusateur) {
 		this.revelee=true;
 		if(this.estSorciere) {
-			System.out.println(this.toString() + " was a Witch!");
+			System.out.println(this.toString() + " was a Witch! \n");
 			Partie.getInstance().eliminerJoueur(this);
 			accusateur.addToScore(1);
 		}
 		else {
-			System.out.println(this.toString() + " was a Villager");
+			System.out.println(this.toString() + " was a Villager! \n");
 			Partie.getInstance().getListeJoueurs().movePlayerFirst(this);
 		}
 	}
@@ -210,17 +197,39 @@ public class Joueur {
 		System.out.println("\n \n" +"If you want to play as a Witch, type W.\nIf you want to play as a Villager, type V. ");
 		
 		String resultat = Partie.getInstance().chooseBetween2Options("W", "V");
-		if(resultat.equals("W")) {
+		if(resultat == "W") {
 			System.out.println("You're now a witch!");
 			this.setEstSorciere(true);
 		}
-		else if(resultat.equals("V")) {
+		else if(resultat == "V") {
 			System.out.println("You're now a villager");
 			this.setEstSorciere(false);
 		}
 	}
 	public String toString() {
 		return this.nomJoueur;
+	}
+	
+	
+	public boolean equals(Object o) {
+		if(o instanceof Joueur) {
+			Joueur j = (Joueur) o;
+			if(!(j.nomJoueur==this.nomJoueur)) {
+				return false;
+			}
+			if(!(j.main.size()==this.main.size())) {
+				return false;
+			}
+			Iterator<Carte> it1 = this.main.iterator();
+			Iterator<Carte> it2 = j.main.iterator();
+			while(it1.hasNext()&&it2.hasNext()) {
+				if(!it1.next().equals(it2.next()))  {
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
 	}
 	
 }

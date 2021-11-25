@@ -14,15 +14,19 @@ public abstract class Effet {
 	public Effet(String nomEffet) {
 		this(nomEffet,false,false);
 	}
-	
-	
-	public boolean estJouable() {
-		return !needCarteRevelee && !needVillageoisRevelee;
+	public boolean needCarteRevelee() {
+		return this.needCarteRevelee;
 	}
+	
+	public boolean needVillageoisRevelee() {
+		return this.needVillageoisRevelee;
+	}
+	
 	public String toString() {
 		return NomEffet;
 	}
 	public abstract void activerEffet(Joueur joueurCarte);
+
 	
 	
 	
