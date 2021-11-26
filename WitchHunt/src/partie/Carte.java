@@ -1,17 +1,26 @@
 package partie;
 
+import java.util.Iterator;
+
 public class Carte {
 
 	private boolean defausse;
 	private String nomCarte;
 	private boolean revelee;
 	private Carte carteBloquante;
-	private Effet[] effetsWitch;
-	private Effet[] effetsHunt;
+	private listeEffets effetsWitch;
+	private listeEffets effetsHunt;
+	
 	public Carte(String nom) {
 		this.nomCarte=nom;
-		this.effetsWitch= new Effet[0];
-		this.effetsHunt = new Effet[0];
+		this.effetsWitch= new listeEffets();
+		this.effetsHunt = new listeEffets();
+	}
+	
+	public Carte(String nom,listeEffets witch, listeEffets hunt) {
+		this(nom);
+		this.effetsWitch=witch;
+		this.effetsHunt=hunt;
 	}
 	
 	public Carte(String nom, Carte c) {
@@ -19,6 +28,7 @@ public class Carte {
 		this.carteBloquante=c;
 	}
 	
+
 	//setters and getters 
 	public boolean isDefausse() {
 		return defausse;
@@ -31,8 +41,22 @@ public class Carte {
 	public String getNomCarte() {
 		return nomCarte;
 	}
+	
 	public boolean estJouable() {
-		return (!this.revelee && !this.defausse);
+		return !this.defausse && !this.revelee;
+	}
+	public boolean estJouableWitch(Joueur j ) {
+		if(!estJouable()) {
+			return false;
+		}
+		return this.effetsWitch.estJouable(j);
+	}
+	
+	public boolean estJouableHunt(Joueur j ) {
+		if(!estJouable()) {
+			return false;
+		}
+		return this.effetsHunt.estJouable(j);
 	}
 
 	public boolean isRevelee() {
@@ -46,28 +70,31 @@ public class Carte {
 	public Carte getCarteBloquante() {
 		return carteBloquante;
 	}
-	public void activerEffets(Joueur j,Effet[] effets) {
-		for(Effet e : effets) {
-				e.activerEffet(j);
-		}
-	}
-	public void activerEffetHunt(Joueur j) {
-		activerEffets(j,this.effetsHunt);
-	}
-	public void activerEffetWitch(Joueur j) {
-		activerEffets(j,this.effetsWitch);
-	}
 	
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("**************************"+"\n");
 		sb.append(this.nomCarte+"\n");
-		sb.append("\n"+"Witch?"+"\n");
-		for(Effet e :effetsWitch) {
+		sb.append("\n"+"Witch?");
+		if(effetsWitch.needRevealedCard()) {
+			sb.append("(Only playable if you have a revealed Rumour Card.)");
+		}
+		if(effetsWitch.needRevealedVillager()) {
+			sb.append("(Only playable if you have been revealed as a Villager.)");
+		}
+		sb.append("\n");
+		for(Effet e :effetsWitch.getEffets()) {
 			sb.append(e.toString()+"\n");
 		}
-		sb.append("\n"+"Hunt!"+"\n");
-		for(Effet e : effetsHunt) {
+		sb.append("\n"+"Hunt!");
+		if(effetsHunt.needRevealedCard()) {
+			sb.append("(Only playable if you have a revealed Rumour Card.)");
+		}
+		if(effetsHunt.needRevealedVillager()) {
+			sb.append("(Only playable if you have been revealed as a Villager.)");
+		}
+		sb.append("\n");
+		for(Effet e : effetsHunt.getEffets()) {
 			sb.append(e.toString()+"\n");
 		}
 		sb.append("**************************"+"\n");
@@ -84,6 +111,19 @@ public class Carte {
 			
 		}
 		return false;
+	}
+
+	public void activerEffetWitch(Joueur joueur, Joueur accusateur) {
+		for(Effet e : effetsWitch.getEffets()) {
+			e.activerEffet(joueur,accusateur); //
+		}
+	}
+
+	public void activerEffetHunt(Joueur joueur) {
+		for(Effet e : effetsHunt.getEffets()) {
+			e.activerEffet(joueur); //
+		}
+		
 	}
 	
 

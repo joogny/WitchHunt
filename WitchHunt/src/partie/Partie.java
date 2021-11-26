@@ -7,6 +7,9 @@ import java.util.LinkedList;
 import java.util.Random;
 import java.util.Scanner;
 
+import effets.RevealAnIdentity;
+import effets.TakeNextTurn;
+
 
 public class Partie {
 	
@@ -188,11 +191,24 @@ public class Partie {
 		for (int i = 0; i < 50; ++i) System.out.println();
 	}
 	private void distributionCartes() {
+		Effet TakeNextTurn = new TakeNextTurn();
+		Effet RevealAnIdentity = new RevealAnIdentity();
 		this.cartes = new ArrayList<>();
+		
+		listeEffets witchAngryMob = new listeEffets();
+		witchAngryMob.ajouterEffet(TakeNextTurn);
+		
+		listeEffets huntAngryMob = new listeEffets(false,true);
+		huntAngryMob.ajouterEffet(RevealAnIdentity);
+		
+		Carte angryMob = new Carte("Angry Mob",witchAngryMob,huntAngryMob);
+		System.out.println(angryMob.toString());
+		cartes.add(angryMob);
+		
+		
 		Carte Broomstick = new Carte("Broomstick");
 		cartes.add(Broomstick);
-		cartes.add(new Carte("Angry Mob",Broomstick));
-		cartes.add(new Carte ("The Inquisition"));
+		/*cartes.add(new Carte ("The Inquisition"));
 		cartes.add(new Carte("Pointed Hat"));
 		cartes.add(new Carte("Hooked Nose"));
 		Carte Wart = new Carte("Wart");
@@ -202,7 +218,7 @@ public class Partie {
 		cartes.add(new Carte("Evil Eye"));
 		cartes.add(new Carte("Toad"));
 		cartes.add(new Carte("Black Cat"));
-		cartes.add(new Carte("Pet Newt"));
+		cartes.add(new Carte("Pet Newt"));*/
 		Collections.shuffle(cartes);
 		
 		float cardsPerPlayer = cartes.size() / listeJoueurs.getListeJoueurs().size();
@@ -229,7 +245,7 @@ public class Partie {
 	
 	public static void main(String args[]) {
 		Partie.getInstance().setup();
-		Partie.getInstance().demarrerPartie();
+		//Partie.getInstance().demarrerPartie();
 	}
 
 	public void eliminerJoueur(Joueur joueur) {

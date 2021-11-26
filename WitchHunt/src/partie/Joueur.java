@@ -46,6 +46,9 @@ public class Joueur {
 		return playableCards;
 	}
 	
+	public void setScore(int score) {
+		this.score=score;
+	}
 	public ArrayList<Carte> getRevealedCards() {
 		ArrayList<Carte> playableCards = new ArrayList<Carte>();
 		Iterator<Carte> it = main.iterator();
@@ -67,8 +70,6 @@ public class Joueur {
 	}
 	
 	public void playTurn() {
-		
-		Scanner sc = Partie.getInstance().getScanner();
 		
 		System.out.println("It's " + this.toString()+"'s turn!\n");
 		
@@ -117,7 +118,7 @@ public class Joueur {
 
 	private void accuser() {
 		System.out.println("Choose a player to accuse!");
-		Joueur jAccusee = Partie.getInstance().getListeJoueurs().choisirJoueur(this);
+		Joueur jAccusee = this.choisirJoueur();
 		System.out.println(this.toString() + " accused " + jAccusee.toString() + " of being a Witch! \n");
 		jAccusee.etreAccuse(this);
 	}
@@ -147,7 +148,7 @@ public class Joueur {
 	
 	private void playWitchCard(Joueur accusateur) {
 		Carte c = choisirCarteAJouer();
-		c.activerEffetWitch(this);
+		c.activerEffetWitch(this,accusateur);
 	}
 
 
@@ -182,6 +183,9 @@ public class Joueur {
 	public void setEstSorciere(boolean role) {
 		this.estSorciere=role;
 	}
+	public void setEstRevele() {
+		this.revelee=true;
+	}
 	public boolean isABot() {
 		return false;
 	}
@@ -210,7 +214,6 @@ public class Joueur {
 		return this.nomJoueur;
 	}
 	
-	
 	public boolean equals(Object o) {
 		if(o instanceof Joueur) {
 			Joueur j = (Joueur) o;
@@ -231,5 +234,7 @@ public class Joueur {
 		}
 		return false;
 	}
-	
+	public Joueur choisirJoueur() {
+		return Partie.getInstance().getListeJoueurs().choisirJoueur(this);
+	}
 }
