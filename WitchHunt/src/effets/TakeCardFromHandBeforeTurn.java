@@ -5,10 +5,7 @@ import partie.Joueur;
 
 public class TakeCardFromHandBeforeTurn extends Effet {
 	private static final String enoncé = "Before their turn, take a random card from their hand and add it to your hand.";
-	public TakeCardFromHandBeforeTurn(String nomEffet, boolean needCarteRevelee, boolean needVillageoisRevelee) {
-		super(enoncé, needCarteRevelee, needVillageoisRevelee);
-		// TODO Auto-generated constructor stub
-	}
+	
 
 	public TakeCardFromHandBeforeTurn(String nomEffet) {
 		super(enoncé);

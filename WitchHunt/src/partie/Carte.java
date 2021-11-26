@@ -73,14 +73,17 @@ public class Carte {
 	
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
-		sb.append("**************************"+"\n");
+		for(int i=0;i<80;i++) {
+			sb.append("*");
+		}
+		sb.append("\n");
 		sb.append(this.nomCarte+"\n");
 		sb.append("\n"+"Witch?");
 		if(effetsWitch.needRevealedCard()) {
-			sb.append("(Only playable if you have a revealed Rumour Card.)");
+			sb.append(" (Only playable if you have a revealed Rumour Card.)");
 		}
 		if(effetsWitch.needRevealedVillager()) {
-			sb.append("(Only playable if you have been revealed as a Villager.)");
+			sb.append(" (Only playable if you have been revealed as a Villager.)");
 		}
 		sb.append("\n");
 		for(Effet e :effetsWitch.getEffets()) {
@@ -88,16 +91,19 @@ public class Carte {
 		}
 		sb.append("\n"+"Hunt!");
 		if(effetsHunt.needRevealedCard()) {
-			sb.append("(Only playable if you have a revealed Rumour Card.)");
+			sb.append(" (Only playable if you have a revealed Rumour Card.)");
 		}
 		if(effetsHunt.needRevealedVillager()) {
-			sb.append("(Only playable if you have been revealed as a Villager.)");
+			sb.append(" (Only playable if you have been revealed as a Villager.)");
 		}
 		sb.append("\n");
 		for(Effet e : effetsHunt.getEffets()) {
 			sb.append(e.toString()+"\n");
 		}
-		sb.append("**************************"+"\n");
+		for(int i=0;i<80;i++) {
+			sb.append("*");
+		}
+		sb.append("\n");
 		return sb.toString();
 	}
 	

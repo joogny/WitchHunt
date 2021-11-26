@@ -3,12 +3,8 @@ package partie;
 public abstract class Effet {
 	private String NomEffet;
 	
-	public Effet(String nomEffet, boolean needCarteRevelee, boolean needVillageoisRevelee) {
-		NomEffet = nomEffet;
-	}
-	
 	public Effet(String nomEffet) {
-		this(nomEffet,false,false);
+		this.NomEffet=nomEffet;
 	}
 	
 	public String toString() {

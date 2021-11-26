@@ -5,10 +5,6 @@ import partie.Joueur;
 
 public class TakeCardFromAccuser extends Effet {
 	private static final String enoncé = "Take one card from the hand of the player who accused you.";
-	public TakeCardFromAccuser(String nomEffet, boolean needCarteRevelee, boolean needVillageoisRevelee) {
-		super(enoncé, needCarteRevelee, needVillageoisRevelee);
-		// TODO Auto-generated constructor stub
-	}
 
 	public TakeCardFromAccuser(String nomEffet) {
 		super(enoncé);

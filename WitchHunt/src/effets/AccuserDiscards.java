@@ -11,10 +11,6 @@ import partie.Partie;
 
 public class AccuserDiscards extends Effet {
 	private static final String enoncé = "The player who accused you discards a random card from their hand.";
-	public AccuserDiscards(String nomEffet, boolean needCarteRevelee, boolean needVillageoisRevelee) {
-		super(enoncé, needCarteRevelee, needVillageoisRevelee);
-		// TODO Auto-generated constructor stub
-	}
 
 	public AccuserDiscards(String nomEffet) {
 		super(enoncé);

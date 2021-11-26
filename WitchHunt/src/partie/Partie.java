@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.Random;
 import java.util.Scanner;
 
+import effets.DiscardCardFromHand;
 import effets.RevealAnIdentity;
 import effets.TakeNextTurn;
 
@@ -191,19 +192,30 @@ public class Partie {
 		for (int i = 0; i < 50; ++i) System.out.println();
 	}
 	private void distributionCartes() {
-		Effet TakeNextTurn = new TakeNextTurn();
-		Effet RevealAnIdentity = new RevealAnIdentity();
+		
+		
+		
 		this.cartes = new ArrayList<>();
 		
 		listeEffets witchAngryMob = new listeEffets();
-		witchAngryMob.ajouterEffet(TakeNextTurn);
+		witchAngryMob.ajouterEffet(EffetNom.TAKENEXTTURN);
 		
 		listeEffets huntAngryMob = new listeEffets(false,true);
-		huntAngryMob.ajouterEffet(RevealAnIdentity);
+		huntAngryMob.ajouterEffet(EffetNom.REVEALANIDENTITY);
 		
 		Carte angryMob = new Carte("Angry Mob",witchAngryMob,huntAngryMob);
 		System.out.println(angryMob.toString());
 		cartes.add(angryMob);
+		
+		listeEffets witchInquisition = new listeEffets();
+		witchInquisition.ajouterEffet(EffetNom.DISCARDCARDFROMHAND);
+		witchInquisition.ajouterEffet(EffetNom.TAKENEXTTURN);
+		listeEffets huntInquisition = new listeEffets(false,true);
+		huntInquisition.ajouterEffet(EffetNom.LOOKATIDENTITYBEFORETURN);
+		Carte Inquisition = new Carte("The Inquisition",witchInquisition,huntInquisition);
+		System.out.println(Inquisition.toString());
+		cartes.add(Inquisition);
+		
 		
 		
 		Carte Broomstick = new Carte("Broomstick");

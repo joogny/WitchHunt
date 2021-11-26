@@ -18,17 +18,17 @@ public class RevealAnIdentity extends Effet {
 
 	@Override
 	public void activerEffet(Joueur joueurCarte) {
-		Joueur j = Partie.getInstance().getListeJoueurs().choisirJoueurNonRevelee(joueurCarte);
+		Joueur j = joueurCarte.choisirJoueurNonRevelee();
 		j.setEstRevele();
 		if(j.estSorciere()) {
-			j.addToScore(2);
+			joueurCarte.addToScore(2);
 		}
 		else {
-			if(j.getScore()<=2) {
-				j.setScore(0);
+			if(joueurCarte.getScore()<=2) {
+				joueurCarte.setScore(0);
 			}
 			else {
-				j.setScore(j.getScore()-2);
+				joueurCarte.setScore(joueurCarte.getScore()-2);
 			}
 		}
 	}

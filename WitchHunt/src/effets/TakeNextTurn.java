@@ -12,11 +12,6 @@ public class TakeNextTurn extends Effet {
 		// TODO Auto-generated constructor stub
 	}
 	
-	
-	public TakeNextTurn(String nomEffet, boolean needCarteRevelee, boolean needVillageoisRevelee) {
-		super(enoncé, needCarteRevelee, needVillageoisRevelee);
-		// TODO Auto-generated constructor stub
-	}
 
 	@Override
 	public void activerEffet(Joueur joueurCarte) {

@@ -83,31 +83,4 @@ public class playerList {
 		return this.listeJoueurs.size();
 	}
 	
-	public Joueur choisirJoueur(Joueur joueurExclu) {
-		ArrayList<Joueur> joueurs = new ArrayList<Joueur>();
-		joueurs.addAll(this.listeJoueurs);
-		joueurs.remove(joueurExclu);
-		Iterator<Joueur> it = joueurs.iterator();
-		int index=0;
-		while(it.hasNext()) {
-			index++;
-			System.out.println(index + " : " +it.next().toString());
-		}
-		int number = Partie.getInstance().askNumber(1, index);
-		return joueurs.get(number-1);
-	}
-	
-	public Joueur choisirJoueurNonRevelee(Joueur joueurExclu) {
-		ArrayList<Joueur> joueurs = new ArrayList<Joueur>();
-		joueurs.addAll(this.getJoueursNonRevelées());
-		joueurs.remove(joueurExclu);
-		Iterator<Joueur> it = joueurs.iterator();
-		int index=0;
-		while(it.hasNext()) {
-			index++;
-			System.out.println(index + " : " +it.next().toString());
-		}
-		int number = Partie.getInstance().askNumber(1, index);
-		return joueurs.get(number-1);
-	}
 }

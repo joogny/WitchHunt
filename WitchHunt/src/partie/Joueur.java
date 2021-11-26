@@ -4,6 +4,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Scanner;
 
+import effets.EffetAvantTour;
+
 public class Joueur {
 	private String nomJoueur;
 	private boolean estSorciere;
@@ -11,12 +13,13 @@ public class Joueur {
 	private boolean elimine;
 	private boolean revelee;
 	private ArrayList<Carte> main;
-	
+	private ArrayList<EffetAvantTour> effetsAvantTour;
 	public Joueur(String nom) {
 		this.nomJoueur=nom;
 		this.main=new ArrayList<Carte>();
 		this.score=0;
 		this.revelee=false;
+		effetsAvantTour = new ArrayList<EffetAvantTour>();
 	}
 	
 	
@@ -49,6 +52,11 @@ public class Joueur {
 	public void setScore(int score) {
 		this.score=score;
 	}
+	
+	public void defausseCarte(Carte c) {
+		main.remove(c);
+		c.setDefausse(true);
+	}
 	public ArrayList<Carte> getRevealedCards() {
 		ArrayList<Carte> playableCards = new ArrayList<Carte>();
 		Iterator<Carte> it = main.iterator();
@@ -74,6 +82,13 @@ public class Joueur {
 		System.out.println("It's " + this.toString()+"'s turn!\n");
 		
 		//check Effets de départ...
+		Iterator<EffetAvantTour> itAvantTour = this.effetsAvantTour.iterator();
+		while(itAvantTour.hasNext()) {
+			EffetAvantTour e = itAvantTour.next();
+			e.lancerEffet(this);
+			this.effetsAvantTour.remove(e);
+		}
+		
 		
 		System.out.println("What do you want to do?");
 		//check s'il a des cartes jouables
@@ -90,27 +105,37 @@ public class Joueur {
 				accuser();
 			}
 			else if (resultat.equals("R")) {
-				playHuntCard();
+				try {
+					playHuntCard();
+				} catch (NoCardsToChooseFromException e) {
+					System.out.println(e);
+					playTurn();
+				}
 			}
 		}
 		
 	
 	}
 
-	private Carte choisirCarteAJouer() {
+	public Carte choisirCarteAJouer() throws NoCardsToChooseFromException {
 		ArrayList<Carte> cartes = this.getPlayableCards();
-		Iterator<Carte> it = cartes.iterator();
-		int index=0;
-		System.out.println("Choose a card to play!");
-		//lors de l'activation de l'effet : vérif playable if you have rumour card etc...
-		while(it.hasNext()) {
-			index++;
-			System.out.println(index+" : \n" + it.next().toString());
+		if(cartes.size()!=0) {
+			Iterator<Carte> it = cartes.iterator();
+			int index=0;
+			//lors de l'activation de l'effet : vérif playable if you have rumour card etc...
+			while(it.hasNext()) {
+				index++;
+				System.out.println(index+" : \n" + it.next().toString());
+			}
+			int number = Partie.getInstance().askNumber(1, index);
+			return cartes.get(number-1);
 		}
-		int number = Partie.getInstance().askNumber(1, index);
-		return cartes.get(number-1);
+		else {
+			throw new NoCardsToChooseFromException(this.toString() + " has no cards to choose from!");
+		}
 	}
-	private void playHuntCard() {
+	private void playHuntCard() throws NoCardsToChooseFromException {
+		System.out.println("Choose a card to play!");
 		Carte c = choisirCarteAJouer();
 		c.activerEffetHunt(this);
 	}
@@ -137,7 +162,12 @@ public class Joueur {
 				this.revelerIdentite(accusateur);
 			}
 			else if(resultat.equals("R")) {
-				this.playWitchCard(accusateur);
+				try {
+					this.playWitchCard(accusateur);
+				} catch (NoCardsToChooseFromException e) {
+					System.out.println(e);
+					etreAccuse(accusateur);
+				}
 			}
 		}
 		else {
@@ -146,7 +176,8 @@ public class Joueur {
 		}
 	}
 	
-	private void playWitchCard(Joueur accusateur) {
+	private void playWitchCard(Joueur accusateur) throws NoCardsToChooseFromException {
+		System.out.println("Choose a card to play!");
 		Carte c = choisirCarteAJouer();
 		c.activerEffetWitch(this,accusateur);
 	}
@@ -234,7 +265,55 @@ public class Joueur {
 		}
 		return false;
 	}
+	
 	public Joueur choisirJoueur() {
-		return Partie.getInstance().getListeJoueurs().choisirJoueur(this);
+		ArrayList<Joueur> joueurs = new ArrayList<Joueur>();
+		joueurs.addAll(Partie.getInstance().getListeJoueurs().getListeJoueurs());
+		joueurs.remove(this);
+		Iterator<Joueur> it = joueurs.iterator();
+		int index=0;
+		while(it.hasNext()) {
+			index++;
+			System.out.println(index + " : " +it.next().toString());
+		}
+		int number = Partie.getInstance().askNumber(1, index);
+		return joueurs.get(number-1);
+	}
+	
+	public Joueur choisirJoueurNonRevelee() {
+		ArrayList<Joueur> joueurs = new ArrayList<Joueur>();
+		joueurs.addAll(Partie.getInstance().getListeJoueurs().getJoueursNonRevelées());
+		joueurs.remove(this);
+		Iterator<Joueur> it = joueurs.iterator();
+		int index=0;
+		while(it.hasNext()) {
+			index++;
+			System.out.println(index + " : " +it.next().toString());
+		}
+		int number = Partie.getInstance().askNumber(1, index);
+		return joueurs.get(number-1);
+	}
+
+
+
+	public void ajouterEffetDebutTour(EffetAvantTour effet) {
+		// TODO Auto-generated method stub
+		this.effetsAvantTour.add(effet);
+	}
+
+
+
+	public void secretlyLookAtIdentity(Joueur joueurVisé) {
+		System.out.println("\n \n"+ "Hello " + this.getNomJoueur() + ", if you're ready to look at "+ joueurVisé.getNomJoueur() + "'s identity, press ENTER!");
+		Scanner sc = Partie.getInstance().getScanner();
+		sc.nextLine();
+		if(joueurVisé.estSorciere) {
+			System.out.println("They were a Witch!");
+		}
+		else {
+			System.out.println("They were a Villager!");
+		}
+		System.out.println("Press ENTER to hide the screen!");
+		sc.nextLine();
 	}
 }
