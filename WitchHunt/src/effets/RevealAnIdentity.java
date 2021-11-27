@@ -17,7 +17,7 @@ public class RevealAnIdentity extends Effet {
 	
 
 	@Override
-	public void activerEffet(Joueur joueurCarte) {
+	public void activerEffet(Joueur joueurCarte,Joueur accusateur) {
 		Joueur j = joueurCarte.choisirJoueurNonRevelee();
 		j.setEstRevele();
 		if(j.estSorciere()) {

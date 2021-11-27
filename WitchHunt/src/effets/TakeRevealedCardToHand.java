@@ -7,6 +7,7 @@ import java.util.Scanner;
 import partie.Carte;
 import partie.Effet;
 import partie.Joueur;
+import partie.NoCardsToChooseFromException;
 import partie.Partie;
 
 public class TakeRevealedCardToHand extends Effet{
@@ -19,25 +20,20 @@ public class TakeRevealedCardToHand extends Effet{
 
 
 	@Override
-	public void activerEffet(Joueur joueurCarte) {
+	public void activerEffet(Joueur joueurCarte,Joueur accusateur) {
 		ArrayList<Carte> revealedCards = joueurCarte.getRevealedCards();
 		if(revealedCards.size()==0) {
-			System.out.println("You have no revealed cards");
+			System.out.println(joueurCarte.toString()  +" has no revealed cards");
 		}
 		else {
-			int index=0;
-			Iterator<Carte> it = revealedCards.iterator();
-			while(it.hasNext()) {
-				index++;
-				System.out.println(index+ " : \n" +it.next().toString());
+			Carte carteChoisie;
+			try {
+				carteChoisie = joueurCarte.choisirCarte(revealedCards);
+				System.out.println("You chose to take "+ carteChoisie.getNomCarte() +" back to your hand");
+				carteChoisie.setRevelee(false);
+			} catch (NoCardsToChooseFromException e) {
+				System.out.println(joueurCarte.toString()  +" has no revealed cards");
 			}
-			System.out.println("Please enter the number of the card you want");
-			int nbCarte = Partie.getInstance().askNumber(1, index);
-			
-			Carte carteChoisie = revealedCards.get(nbCarte-1);
-			
-			System.out.println("You chose to take "+ carteChoisie.getNomCarte() +" back to your hand");
-			carteChoisie.setRevelee(false);
 			
 		}
 	}

@@ -10,12 +10,8 @@ public abstract class Effet {
 	public String toString() {
 		return NomEffet;
 	}
-	public abstract void activerEffet(Joueur joueurCarte);
+	public abstract void activerEffet(Joueur joueurCarte, Joueur accusateur);
 
-	public void activerEffet(Joueur joueur, Joueur accusateur) {
-		//modif
-		
-	}
 
 	
 	

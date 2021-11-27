@@ -5,7 +5,7 @@ import partie.Joueur;
 import partie.Partie;
 
 public class LookAtIdentityBeforeTurn extends EffetAvantTour {
-	private static final String enoncé = "Before their turn, secretly look at their identity.";
+	private static final String enoncé = "Choose next player.\nBefore their turn, secretly look at their identity.";
 	
 	public LookAtIdentityBeforeTurn() {
 		super(enoncé);
@@ -14,22 +14,18 @@ public class LookAtIdentityBeforeTurn extends EffetAvantTour {
 
 
 	@Override
-	public void activerEffet(Joueur joueurCarte) {
+	public void activerEffet(Joueur joueurCarte,Joueur accusateur) {
 		// Choose next player
-		Joueur j = joueurCarte.choisirJoueur();
+		Joueur j = joueurCarte.choisirJoueurNonRevelee();
 		Partie.getInstance().getListeJoueurs().movePlayerFirst(j);
-		if(j.estRevelee()) {
-			System.out.println("We already know " + j.toString() + "'s role!");
-		}
-		else {
-			j.ajouterEffetDebutTour(this);
-		}
+		System.out.println(j.toString() + "will take next turn and " + joueurCarte.toString() + " will secretly look at their identity!");
+		j.ajouterEffetDebutTour(this);
 	}
 
 
 	@Override
 	public void lancerEffet(Joueur joueurVisé) {
-		System.out.println(super.getJoueurCarte()+ " will secretly look at " + joueurVisé.toString() + "'s identity ");
+		System.out.println("Because of their last card, " + super.getJoueurCarte()+ " will secretly look at " + joueurVisé.toString() + "'s identity ");
 		super.getJoueurCarte().secretlyLookAtIdentity(joueurVisé);
 	}
 	

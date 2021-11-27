@@ -196,7 +196,7 @@ public class Partie {
 		
 		
 		this.cartes = new ArrayList<>();
-		
+		//AngryMob
 		listeEffets witchAngryMob = new listeEffets();
 		witchAngryMob.ajouterEffet(EffetNom.TAKENEXTTURN);
 		
@@ -207,16 +207,35 @@ public class Partie {
 		System.out.println(angryMob.toString());
 		cartes.add(angryMob);
 		
+		//The Inquisition
 		listeEffets witchInquisition = new listeEffets();
 		witchInquisition.ajouterEffet(EffetNom.DISCARDCARDFROMHAND);
 		witchInquisition.ajouterEffet(EffetNom.TAKENEXTTURN);
 		listeEffets huntInquisition = new listeEffets(false,true);
 		huntInquisition.ajouterEffet(EffetNom.LOOKATIDENTITYBEFORETURN);
 		Carte Inquisition = new Carte("The Inquisition",witchInquisition,huntInquisition);
-		System.out.println(Inquisition.toString());
 		cartes.add(Inquisition);
 		
+		//PointedHat
+		listeEffets witchPointedHat = new listeEffets(true,false);
+		witchPointedHat.ajouterEffet(EffetNom.TAKEREVEALEDCARDTOHAND);
+		witchPointedHat.ajouterEffet(EffetNom.TAKENEXTTURN);
+		listeEffets huntPointedHat = new listeEffets(false,true);
+		huntPointedHat.ajouterEffet(EffetNom.TAKEREVEALEDCARDTOHAND);
+		huntPointedHat.ajouterEffet(EffetNom.CHOOSENEXTPLAYER);
+		Carte PointedHat = new Carte("Pointed Hat",witchPointedHat,huntPointedHat);
+		cartes.add(PointedHat);
 		
+		//Hooked Nose 
+		listeEffets witchHookedNose = new listeEffets();
+		witchHookedNose.ajouterEffet(EffetNom.TAKECARDFROMACCUSER);
+		witchHookedNose.ajouterEffet(EffetNom.TAKENEXTTURN);
+		listeEffets huntHookedNose = new listeEffets();
+		huntHookedNose.ajouterEffet(EffetNom.TAKECARDFROMHANDBEFORETURN);
+		Carte HookedNose = new Carte("Hooked Nose",witchHookedNose,huntHookedNose);
+		cartes.add(HookedNose);
+		
+		//Broomstick
 		
 		Carte Broomstick = new Carte("Broomstick");
 		cartes.add(Broomstick);

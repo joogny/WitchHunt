@@ -138,6 +138,7 @@ public class Joueur {
 		System.out.println("Choose a card to play!");
 		Carte c = choisirCarteAJouer();
 		c.activerEffetHunt(this);
+		c.setRevelee(true);
 	}
 		
 
@@ -180,6 +181,7 @@ public class Joueur {
 		System.out.println("Choose a card to play!");
 		Carte c = choisirCarteAJouer();
 		c.activerEffetWitch(this,accusateur);
+		c.setRevelee(true);
 	}
 
 
@@ -315,5 +317,36 @@ public class Joueur {
 		}
 		System.out.println("Press ENTER to hide the screen!");
 		sc.nextLine();
+	}
+
+
+
+	public Carte choisirCarte(ArrayList<Carte> cartes) throws NoCardsToChooseFromException {
+		if(cartes.size()!=0) {
+			Iterator<Carte> it = cartes.iterator();
+			int index=0;
+			//lors de l'activation de l'effet : vérif playable if you have rumour card etc...
+			while(it.hasNext()) {
+				index++;
+				System.out.println(index+" : \n" + it.next().toString());
+			}
+			int number = Partie.getInstance().askNumber(1, index);
+			return cartes.get(number-1);
+		}
+		else {
+			throw new NoCardsToChooseFromException(this.toString() + " has no cards to choose from!");
+		}
+	}
+
+
+
+	public void removeCardFromHand(Carte c) {
+		main.remove(c);
+	}
+
+
+
+	public void addCardToHand(Carte c) {
+		main.add(c);
 	}
 }

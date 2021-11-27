@@ -13,7 +13,7 @@ public class DiscardCardFromHand extends Effet {
 	}
 
 	@Override
-	public void activerEffet(Joueur joueurCarte) {
+	public void activerEffet(Joueur joueurCarte,Joueur accusateur) {
 		try {
 			System.out.println(joueurCarte.toString() + ": choose a card to discard!");
 			Carte c = joueurCarte.choisirCarteAJouer();

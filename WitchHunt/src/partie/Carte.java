@@ -127,7 +127,7 @@ public class Carte {
 
 	public void activerEffetHunt(Joueur joueur) {
 		for(Effet e : effetsHunt.getEffets()) {
-			e.activerEffet(joueur); //
+			e.activerEffet(joueur,null); //
 		}
 		
 	}

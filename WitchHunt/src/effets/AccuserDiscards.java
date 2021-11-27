@@ -19,8 +19,8 @@ public class AccuserDiscards extends Effet {
 
 
 	@Override
-	public void activerEffet(Joueur joueurCarte) {
-			Joueur accuser = Partie.getInstance().getListeJoueurs().getAccuser();
+	public void activerEffet(Joueur joueurCarte,Joueur accusateur) {
+			Joueur accuser = Partie.getInstance().getListeJoueurs().getAccuser(); //A MODIF
 			if(accuser!=null) {
 			ArrayList<Carte> cartes = accuser.getPlayableCards();
 			if(cartes.size()!=0) {

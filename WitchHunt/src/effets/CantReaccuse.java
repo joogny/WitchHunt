@@ -13,7 +13,7 @@ public class CantReaccuse extends Effet {
 
 
 	@Override
-	public void activerEffet(Joueur joueurCarte) {
+	public void activerEffet(Joueur joueurCarte,Joueur accusateur) {
 		// TODO Auto-generated method stub
 		
 	}
