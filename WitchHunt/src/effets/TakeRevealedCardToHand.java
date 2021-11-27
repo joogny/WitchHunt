@@ -22,7 +22,7 @@ public class TakeRevealedCardToHand extends Effet{
 	@Override
 	public void activerEffet(Joueur joueurCarte,Joueur accusateur) {
 		ArrayList<Carte> revealedCards = joueurCarte.getRevealedCards();
-		if(revealedCards.size()==0) {
+ 		if(revealedCards.size()==0) {
 			System.out.println(joueurCarte.toString()  +" has no revealed cards");
 		}
 		else {

@@ -267,13 +267,37 @@ public class Partie {
 		cartes.add(Cauldron);
 
 		//Evil Eye
+		listeEffets witchEvilEye = new listeEffets();
+		listeEffets huntEvilEye = new listeEffets();
+		huntEvilEye.ajouterEffet(EffetNom.CANTREACCUSE);
+		witchEvilEye.ajouterEffet(EffetNom.CANTREACCUSE);
+		Carte EvilEye = new Carte("Evil Eye",witchEvilEye,huntEvilEye);
+		cartes.add(EvilEye);
 		
 		//Toad
+		listeEffets witchToad = new listeEffets();
+		listeEffets huntToad = new listeEffets();
+		witchToad.ajouterEffet(EffetNom.TAKENEXTTURN);
+		huntToad.ajouterEffet(EffetNom.REVEALYOURIDENTITY);
+		Carte Toad = new Carte("Toad",witchToad,huntToad);
+		cartes.add(Toad);
 		
 		//Black Cat
+		listeEffets witchBlackCat = new listeEffets();
+		witchBlackCat.ajouterEffet(EffetNom.TAKENEXTTURN);
+		listeEffets huntBlackCat = new listeEffets();
+		huntBlackCat.ajouterEffet(EffetNom.ADDDISCARDEDCARDTOHAND);
+		huntBlackCat.ajouterEffet(EffetNom.TAKENEXTTURN);
+		Carte BlackCat = new Carte("Black Cat",witchBlackCat,huntBlackCat);
+		cartes.add(BlackCat);
 		
 		
 		//Pet Newt
+		listeEffets witchPetNewt = new listeEffets();
+		witchPetNewt.ajouterEffet(EffetNom.TAKENEXTTURN);
+		listeEffets huntPetNewt = new listeEffets();
+		huntPetNewt.ajouterEffet(EffetNom.TAKEREVEALEDCARDFROMANYPLAYERS);
+		huntPetNewt.ajouterEffet(EffetNom.CHOOSENEXTPLAYER);
 		Collections.shuffle(cartes);
 		
 		float cardsPerPlayer = cartes.size() / listeJoueurs.getListeJoueurs().size();
@@ -306,6 +330,18 @@ public class Partie {
 	public void eliminerJoueur(Joueur joueur) {
 		System.out.println(joueur.toString() + " is out of the game! \n");
 		listeJoueurs.eliminerJoueur(joueur);
+	}
+
+	public ArrayList<Carte> getDiscardedCards() {
+		ArrayList<Carte> listeCartes = new ArrayList<>();
+		Iterator<Carte> it = cartes.iterator();
+		while(it.hasNext()) {
+			Carte c = it.next();
+			if(c.isDefausse()) {
+				listeCartes.add(c);
+			}
+		}
+		return listeCartes;
 	}
 
 

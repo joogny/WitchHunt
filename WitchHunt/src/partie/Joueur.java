@@ -1,5 +1,6 @@
 package partie;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -12,13 +13,16 @@ public class Joueur {
 	private int score;
 	private boolean elimine;
 	private boolean revelee;
+	private HashSet<Joueur> untargetablePlayer;
 	private ArrayList<Carte> main;
 	private ArrayList<EffetAvantTour> effetsAvantTour;
+	
 	public Joueur(String nom) {
 		this.nomJoueur=nom;
 		this.main=new ArrayList<Carte>();
 		this.score=0;
 		this.revelee=false;
+		this.untargetablePlayer = new HashSet<>();
 		effetsAvantTour = new ArrayList<EffetAvantTour>();
 	}
 	
@@ -149,9 +153,14 @@ public class Joueur {
 
 	private void accuser() {
 		System.out.println("Choose a player to accuse!");
-		Joueur jAccusee = this.choisirJoueur();
-		System.out.println(this.toString() + " accused " + jAccusee.toString() + " of being a Witch! \n");
-		jAccusee.etreAccuse(this);
+		Joueur jAccusee;
+		try {
+			jAccusee = this.choisirJoueurAccusation();
+			System.out.println(this.toString() + " accused " + jAccusee.toString() + " of being a Witch! \n");
+			jAccusee.etreAccuse(this);
+		} catch (NoPlayersToChooseFromException e) {
+			System.out.println("You can't accuse anyone that's still playing!");
+		}
 	}
 
 	public void addToScore(int points) {
@@ -298,6 +307,27 @@ public class Joueur {
 		return joueurs.get(number-1);
 	}
 	
+	public Joueur choisirJoueurAccusation() throws NoPlayersToChooseFromException {
+		ArrayList<Joueur> joueurs = new ArrayList<Joueur>();
+		joueurs.addAll(Partie.getInstance().getListeJoueurs().getJoueursNonRevelées());
+		joueurs.remove(this);
+		Iterator itUntargetablePlayers = this.untargetablePlayer.iterator();
+		
+		while(itUntargetablePlayers.hasNext()) {
+			 joueurs.remove(itUntargetablePlayers.next());
+		}
+		if(joueurs.size()==0) {
+			throw new NoPlayersToChooseFromException("There are no players to choose from!");
+		}
+		Iterator<Joueur> it = joueurs.iterator();
+		int index=0;
+		while(it.hasNext()) {
+			index++;
+			System.out.println(index + " : " +it.next().toString());
+		}
+		int number = Partie.getInstance().askNumber(1, index);
+		return joueurs.get(number-1);
+	}
 	public Joueur choisirJoueurNonRevelee() {
 		ArrayList<Joueur> joueurs = new ArrayList<Joueur>();
 		joueurs.addAll(Partie.getInstance().getListeJoueurs().getJoueursNonRevelées());
@@ -414,5 +444,11 @@ public class Joueur {
 			System.out.println("You have no cards to discard and your identity is already revealed so you don't have to do anything!");
 		}
 		
+	}
+
+
+
+	public void addUntargetablePlayer(Joueur j) {
+		untargetablePlayer.add(j);
 	}
 }

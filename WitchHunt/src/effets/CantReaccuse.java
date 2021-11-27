@@ -2,11 +2,12 @@ package effets;
 
 import partie.Effet;
 import partie.Joueur;
+import partie.Partie;
 
 public class CantReaccuse extends Effet {
-	private static final String enoncé = "On their turn they must accuse a player other than you, if possible.";
+	private static final String enoncé = "Choose next player.\nOn their turn they must accuse a player other than you, if possible.";
 
-	public CantReaccuse(String nomEffet) {
+	public CantReaccuse() {
 		super(enoncé);
 		// TODO Auto-generated constructor stub
 	}
@@ -14,8 +15,12 @@ public class CantReaccuse extends Effet {
 
 	@Override
 	public void activerEffet(Joueur joueurCarte,Joueur accusateur) {
-		// TODO Auto-generated method stub
-		
+		Joueur j = joueurCarte.choisirJoueur();
+		System.out.println(j.toString() + " will take next turn!");
+		Partie.getInstance().getListeJoueurs().movePlayerFirst(j);
+		j.addUntargetablePlayer(joueurCarte);
 	}
+
+
 	
 }
