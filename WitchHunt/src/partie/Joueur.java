@@ -50,7 +50,12 @@ public class Joueur {
 	}
 	
 	public void setScore(int score) {
-		this.score=score;
+		if(score<0) {
+			this.score=0;
+		}
+		else {
+			this.score=score;
+		}
 	}
 	
 	public void defausseCarte(Carte c) {
@@ -186,12 +191,13 @@ public class Joueur {
 
 
 
-	private void revelerIdentite(Joueur accusateur) {
+	public void revelerIdentite(Joueur accusateur) {
 		this.revelee=true;
 		if(this.estSorciere) {
 			System.out.println(this.toString() + " was a Witch! \n");
 			Partie.getInstance().eliminerJoueur(this);
 			accusateur.addToScore(1);
+			System.out.println(accusateur.toString() + "gets 1 point!");
 		}
 		else {
 			System.out.println(this.toString() + " was a Villager! \n");
@@ -199,7 +205,17 @@ public class Joueur {
 		}
 	}
 
-
+	public void revelerIdentite() {
+		this.revelee=true;
+		if(this.estSorciere) {
+			System.out.println(this.toString() + " was a Witch! \n");
+			Partie.getInstance().eliminerJoueur(this);
+		}
+		else {
+			System.out.println(this.toString() + " was a Villager! \n");
+			Partie.getInstance().getListeJoueurs().movePlayerFirst(this);
+		}
+	}
 
 	public boolean estEliminee() {
 		return this.elimine;
@@ -348,5 +364,55 @@ public class Joueur {
 
 	public void addCardToHand(Carte c) {
 		main.add(c);
+	}
+
+
+
+	public void chooseRevealOrIdentity(Joueur accusateur) {
+		if(!this.revelee&&!(this.getPlayableCards().size()==0)) {
+			System.out.println("Do you want to discard a card or reveal your identity?");
+			System.out.println("Type D to discard a card");
+			System.out.println("Type R to reveal your identity");
+			String s = Partie.getInstance().chooseBetween2Options("D","R");
+			if(s=="D") {
+				Carte c;
+				try {
+					c = this.choisirCarteAJouer();
+					this.defausseCarte(c);
+					Partie.getInstance().getListeJoueurs().movePlayerFirst(this);
+				} catch (NoCardsToChooseFromException e) {
+					System.out.println(e);
+				}
+			}
+			else {
+				if(this.estSorciere) {
+					System.out.println(this.toString() + "was a Witch!");
+					Partie.getInstance().getListeJoueurs().eliminerJoueur(this);
+					this.revelee=true;
+					accusateur.addToScore(1);
+					Partie.getInstance().getListeJoueurs().movePlayerFirst(accusateur);
+				}
+				else {
+					this.revelee=true;
+					
+					accusateur.setScore(accusateur.score-1);
+					Partie.getInstance().getListeJoueurs().movePlayerFirst(this);
+				}
+			}
+		}
+		else if(this.revelee&&!(this.getPlayableCards().size()==0)) {
+			try {
+				System.out.println("Your identity is already revealed so you have to discard a card!");
+				Carte c;
+				c = this.choisirCarteAJouer();
+				this.defausseCarte(c);
+			} catch (NoCardsToChooseFromException e) {
+				System.out.println("You have no cards to discard and your identity is already revealed so you don't have to do anything!");
+			}
+		}
+		else {
+			System.out.println("You have no cards to discard and your identity is already revealed so you don't have to do anything!");
+		}
+		
 	}
 }

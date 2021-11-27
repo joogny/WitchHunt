@@ -235,21 +235,45 @@ public class Partie {
 		Carte HookedNose = new Carte("Hooked Nose",witchHookedNose,huntHookedNose);
 		cartes.add(HookedNose);
 		
-		//Broomstick
 		
-		Carte Broomstick = new Carte("Broomstick");
+		
+		
+		//Broomstick et Wart
+		listeEffets witchBroomstickWartCauldron = new listeEffets();
+		witchBroomstickWartCauldron.ajouterEffet(EffetNom.TAKENEXTTURN);
+		listeEffets huntBroomstickWart = new listeEffets();
+		huntBroomstickWart.ajouterEffet(EffetNom.CHOOSENEXTPLAYER);
+		
+		Carte Broomstick = new Carte("Broomstick",witchBroomstickWartCauldron,huntBroomstickWart);
 		cartes.add(Broomstick);
-		/*cartes.add(new Carte ("The Inquisition"));
-		cartes.add(new Carte("Pointed Hat"));
-		cartes.add(new Carte("Hooked Nose"));
-		Carte Wart = new Carte("Wart");
+		
+		Carte Wart = new Carte("Wart",witchBroomstickWartCauldron,huntBroomstickWart);
 		cartes.add(Wart);
-		cartes.add(new Carte("Ducking Stool",Wart));
-		cartes.add(new Carte("Cauldron"));
-		cartes.add(new Carte("Evil Eye"));
-		cartes.add(new Carte("Toad"));
-		cartes.add(new Carte("Black Cat"));
-		cartes.add(new Carte("Pet Newt"));*/
+		
+		//Ducking Stool
+		listeEffets witchDuckingStool = new listeEffets();
+		witchDuckingStool.ajouterEffet(EffetNom.CHOOSENEXTPLAYER);
+		listeEffets huntDuckingStool = new listeEffets();
+		huntDuckingStool.ajouterEffet(EffetNom.REVEALORDISCARD);
+		Carte DuckingStool = new Carte("Ducking Stool",witchDuckingStool,huntDuckingStool);
+		cartes.add(DuckingStool);
+		
+		//Cauldron
+		listeEffets witchCauldron = new listeEffets();
+		witchCauldron.ajouterEffet(EffetNom.ACCUSERDISCARDS);
+		listeEffets huntCauldron = new listeEffets();
+		huntCauldron.ajouterEffet(EffetNom.REVEALYOURIDENTITY);
+		Carte Cauldron = new Carte("Cauldron",witchCauldron,huntCauldron);
+		cartes.add(Cauldron);
+
+		//Evil Eye
+		
+		//Toad
+		
+		//Black Cat
+		
+		
+		//Pet Newt
 		Collections.shuffle(cartes);
 		
 		float cardsPerPlayer = cartes.size() / listeJoueurs.getListeJoueurs().size();

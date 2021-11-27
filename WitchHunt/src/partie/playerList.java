@@ -36,6 +36,7 @@ public class playerList {
 		}
 	}
 	public void movePlayerFirst(Joueur j) {
+		System.out.println(j.toString() + " will take next turn");
 		Iterator<Joueur> it = listeJoueurs.iterator();
 		boolean playerFound = false;
 		while(it.hasNext()&&!playerFound) {
@@ -70,6 +71,7 @@ public class playerList {
 	}
 	public void eliminerJoueur(Joueur j) {
 		listeJoueurs.remove(j);
+		System.out.println(j.toString() + " is eliminated");
 		listeJoueursElimine.add(j);
 	}
 	public void setAccuser(Joueur j) {

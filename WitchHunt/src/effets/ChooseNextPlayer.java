@@ -13,6 +13,7 @@ public class ChooseNextPlayer extends Effet {
 
 	@Override
 	public void activerEffet(Joueur joueurCarte,Joueur accusateur) {
+		System.out.println(enoncé);
 		Joueur j = joueurCarte.choisirJoueur();
 		Partie.getInstance().getListeJoueurs().movePlayerFirst(j);
 		System.out.println(joueurCarte.toString() + " chose " + j.toString() + " so they will take the next turn!");

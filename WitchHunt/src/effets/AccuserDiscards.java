@@ -7,12 +7,13 @@ import java.util.LinkedList;
 import partie.Carte;
 import partie.Effet;
 import partie.Joueur;
+import partie.NoCardsToChooseFromException;
 import partie.Partie;
 
 public class AccuserDiscards extends Effet {
 	private static final String enoncé = "The player who accused you discards a random card from their hand.";
 
-	public AccuserDiscards(String nomEffet) {
+	public AccuserDiscards() {
 		super(enoncé);
 		// TODO Auto-generated constructor stub
 	}
@@ -20,19 +21,14 @@ public class AccuserDiscards extends Effet {
 
 	@Override
 	public void activerEffet(Joueur joueurCarte,Joueur accusateur) {
-			Joueur accuser = Partie.getInstance().getListeJoueurs().getAccuser(); //A MODIF
-			if(accuser!=null) {
-			ArrayList<Carte> cartes = accuser.getPlayableCards();
-			if(cartes.size()!=0) {
-				int randomNum = (int)(Math.random() * (cartes.size() + 1));
-				Carte c = cartes.get(randomNum);
-				c.setDefausse(true);
-				System.out.println(c.toString() +"\n  was discarded from " + accuser.toString()+"'s hand");
+			Carte c;
+			try {
+				c = accusateur.choisirCarteAJouer();
+				accusateur.defausseCarte(c);
+			} catch (NoCardsToChooseFromException e) {
+				System.out.println(accusateur.toString() + " had no cards left to discard");
 			}
-			else {
-				System.out.println(accuser.toString() + "didn't have any cards to discard");
-			}
+			
 		}
 	}
 	
-}
