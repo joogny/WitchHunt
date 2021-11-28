@@ -42,18 +42,27 @@ public class JoueurVirtuel extends Joueur {
 	}
 	
 	
-	@Override
-	public int askNumber(int min, int max) {
-		return strategy.askNumber(min,max);
-	}
 
 	
 	public String toString() {
 		return this.getNomJoueur()+"(bot)";
 	}
 
+	@Override
 	public String chooseBetween2Options(String a, String b) {
-		return strategy.chooseBetween2Options(a, b);
+		Random rd = new Random();
+		if(rd.nextBoolean()) {
+			return a;
+		}
+		return b;
+	}
+	@Override
+	public int askNumber(int min, int max) {
+		Random rd = new Random();
+		if(min==max) {
+			return min;
+		}
+		return rd.nextInt(max + 1 - min) + min;
 	}
 	
 	public Carte choisirCarte(ArrayList<Carte> cartes) throws NoCardsToChooseFromException {

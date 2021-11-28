@@ -121,7 +121,7 @@ public class Joueur {
 		}
 		
 		
-		System.out.println("What do you want to do?");
+		System.out.println("What do you want to do?\n");
 		ArrayList<Joueur> joueurs = new ArrayList<>();
 		joueurs.addAll(Partie.getInstance().getListeJoueurs().getJoueursNonRevelées());
 		joueurs.remove(this);
@@ -184,7 +184,7 @@ public class Joueur {
 		return Partie.getInstance().askNumber(min, max);
 	}
 	public void playHuntCard() throws NoCardsToChooseFromException {
-		System.out.println("Choose a card to play!");
+		System.out.println("Choose a card to play!\n");
 		Carte c = choisirCarte(this.getPlayableHuntCards());
 		c.activerEffetHunt(this);
 		c.setRevelee(true);
@@ -247,7 +247,7 @@ public class Joueur {
 			System.out.println(this.toString() + " was a Witch! \n");
 			Partie.getInstance().eliminerJoueur(this);
 			accusateur.addToScore(1);
-			System.out.println(accusateur.toString() + "gets 1 point!");
+			System.out.println(accusateur.toString() + " gets 1 point!");
 		}
 		else {
 			System.out.println(this.toString() + " was a Villager! \n");
@@ -341,7 +341,10 @@ public class Joueur {
 		int index=0;
 		while(it.hasNext()) {
 			index++;
-			System.out.println(index + " : " +it.next().toString());
+			Joueur j   = it.next();
+			if(!this.isABot()) {
+				System.out.println(index + " : " +j.toString());
+			}
 		}
 		int number = this.askNumber(1, index);
 		return joueurs.get(number-1);
@@ -386,7 +389,10 @@ public class Joueur {
 			int index=0;
 			while(it.hasNext()) {
 				index++;
-				System.out.println(index + " : " +it.next().toString());
+				Joueur j = it.next();
+				if(!this.isABot()) {
+					System.out.println(index + " : " +j.toString());
+				}
 			}
 			int number = this.askNumber(1, index);
 			return joueurs.get(number-1);
@@ -435,7 +441,10 @@ public class Joueur {
 			//lors de l'activation de l'effet : vérif playable if you have rumour card etc...
 			while(it.hasNext()) {
 				index++;
-				System.out.println(index+" : \n" + it.next().toString());
+				Carte c  = it.next();
+				if(!this.isABot()) {
+					System.out.println(index+" : \n" + c.toString());
+				}
 			}
 			int number = this.askNumber(1, index);
 			System.out.println(this.toString() + " chose " + cartes.get(number-1));
