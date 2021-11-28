@@ -23,6 +23,7 @@ public class TakeCardFromHandBeforeTurn extends EffetAvantTour {
 		Joueur j = joueurCarte.choisirJoueur();
 		Partie.getInstance().getListeJoueurs().movePlayerFirst(j);
 		System.out.println(j.toString() + "will take next turn and will have a random card stolen!");
+		super.setJoueurCarte(joueurCarte);
 		j.ajouterEffetDebutTour(this);
 	}
 
@@ -35,12 +36,13 @@ public class TakeCardFromHandBeforeTurn extends EffetAvantTour {
 			System.out.println(joueurVisé.toString() + " has no cards to take!");
 		}
 		else {
-			int randomNumber = (int) (Math.random()*cartes.size()+1);
+			int randomNumber = (int) (Math.random()*cartes.size());
 			Carte c =  cartes.get(randomNumber);
 			joueurVisé.removeCardFromHand(c);
 			super.getJoueurCarte().addCardToHand(c);
 		}
-		
+		super.setJoueurCarte(null);	
 	}
+	
 	
 }

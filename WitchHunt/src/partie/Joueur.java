@@ -52,7 +52,28 @@ public class Joueur {
 		}
 		return playableCards;
 	}
-	
+	public ArrayList<Carte> getPlayableHuntCards() {
+		ArrayList<Carte> playableCards = new ArrayList<Carte>();
+		Iterator<Carte> it = main.iterator();
+		while(it.hasNext()) {
+			Carte c = it.next();
+			if(c.estJouableHunt(this)) {
+				playableCards.add(c);
+			}
+		}
+		return playableCards;
+	}
+	public ArrayList<Carte> getPlayableWitchCards() {
+		ArrayList<Carte> playableCards = new ArrayList<Carte>();
+		Iterator<Carte> it = main.iterator();
+		while(it.hasNext()) {
+			Carte c = it.next();
+			if(c.estJouableWitch(this)) {
+				playableCards.add(c);
+			}
+		}
+		return playableCards;
+	}
 	public void setScore(int score) {
 		if(score<0) {
 			this.score=0;
@@ -95,26 +116,53 @@ public class Joueur {
 		while(itAvantTour.hasNext()) {
 			EffetAvantTour e = itAvantTour.next();
 			e.lancerEffet(this);
-			this.effetsAvantTour.remove(e);
+			itAvantTour.remove();
 		}
 		
 		
 		System.out.println("What do you want to do?");
 		//check s'il a des cartes jouables
-		
-		if(this.getPlayableCards().size()==0) {
+		ArrayList<Joueur> joueurs = new ArrayList<>();
+		joueurs.addAll(Partie.getInstance().getListeJoueurs().getJoueursNonRevelées());
+		joueurs.remove(this);
+		if(joueurs.size()==0 && this.getPlayableCards().size()==0) {
+			System.out.println("You don't have any cards to play and you can't accuse anyone so you have to skip your turn!");
+			System.exit(score);
+		}
+		else if(joueurs.size()==0) {
+			System.out.println("There isn't anyone left to accuse so you have to play a card");
+			try {
+				playHuntCard();
+			} catch (NoCardsToChooseFromException e) {
+				System.out.println("ERROR");
+			}
+		}
+		else if(this.getPlayableCards().size()==0) {
 			System.out.println("Because you have no playable cards you have to accuse someone!");
-			accuser();
+			
+			try {
+				accuser();
+			} catch (NoPlayersToChooseFromException e) {
+				System.out.println("ERROR");
+			}
 		}
 		else {
-			System.out.println("Type A to accuse another player of being a Witch");
-			System.out.println("Type R to reveal a Rumour card from your hand and play it face up in front of yourself, resolving it's Hunt! Effect.");
-			String resultat = Partie.getInstance().chooseBetween2Options("A", "R");
+			if(!this.isABot()) {
+				System.out.println("Type A to accuse another player of being a Witch");
+				System.out.println("Type R to reveal a Rumour card from your hand and play it face up in front of yourself, resolving it's Hunt! Effect.");
+			}
+				String resultat = this.chooseBetween2Options("A", "R");
 			if(resultat.equals("A")) {
-				accuser();
+				System.out.println(this.toString() + " decided to accuse someone");
+				try {
+					accuser();
+				} catch (NoPlayersToChooseFromException e) {
+					System.out.println("You can't accuse anyone that's still playing!\nYou have to play a HuntCard");
+				}
 			}
 			else if (resultat.equals("R")) {
 				try {
+					System.out.println(this.toString() + " decided to reveal a Rumour Card");
 					playHuntCard();
 				} catch (NoCardsToChooseFromException e) {
 					System.out.println(e);
@@ -127,40 +175,26 @@ public class Joueur {
 	}
 
 	public Carte choisirCarteAJouer() throws NoCardsToChooseFromException {
-		ArrayList<Carte> cartes = this.getPlayableCards();
-		if(cartes.size()!=0) {
-			Iterator<Carte> it = cartes.iterator();
-			int index=0;
-			//lors de l'activation de l'effet : vérif playable if you have rumour card etc...
-			while(it.hasNext()) {
-				index++;
-				System.out.println(index+" : \n" + it.next().toString());
-			}
-			int number = Partie.getInstance().askNumber(1, index);
-			return cartes.get(number-1);
-		}
-		else {
-			throw new NoCardsToChooseFromException(this.toString() + " has no cards to choose from!");
-		}
+		return this.choisirCarte(this.getPlayableCards());
+	}
+	
+	public int askNumber(int min, int max) {
+		return Partie.getInstance().askNumber(min, max);
 	}
 	private void playHuntCard() throws NoCardsToChooseFromException {
 		System.out.println("Choose a card to play!");
-		Carte c = choisirCarteAJouer();
+		Carte c = choisirCarte(this.getPlayableHuntCards());
 		c.activerEffetHunt(this);
 		c.setRevelee(true);
 	}
 		
 
-	private void accuser() {
+	private void accuser() throws NoPlayersToChooseFromException{
 		System.out.println("Choose a player to accuse!");
 		Joueur jAccusee;
-		try {
-			jAccusee = this.choisirJoueurAccusation();
-			System.out.println(this.toString() + " accused " + jAccusee.toString() + " of being a Witch! \n");
-			jAccusee.etreAccuse(this);
-		} catch (NoPlayersToChooseFromException e) {
-			System.out.println("You can't accuse anyone that's still playing!");
-		}
+		jAccusee = this.choisirJoueurAccusation();
+		System.out.println(this.toString() + " accused " + jAccusee.toString() + " of being a Witch! \n");
+		jAccusee.etreAccuse(this);
 	}
 
 	public void addToScore(int points) {
@@ -172,12 +206,14 @@ public class Joueur {
 		if(this.getPlayableCards().size()!=0) {
 			System.out.println("Type I to reveal your Identity Card");
 			System.out.println("Type R to reveal a Rumour card from your hand and play it face up in front of yourself, resolving it's Hunt? Effect.");
-			String resultat = Partie.getInstance().chooseBetween2Options("I", "R");
+			String resultat = this.chooseBetween2Options("I", "R");
 			if(resultat.equals("I")) {
+				System.out.println(this.toString() + "decided to reveal their identity!");
 				this.revelerIdentite(accusateur);
 			}
 			else if(resultat.equals("R")) {
 				try {
+					System.out.println(this.toString() + "decided to reveal a Rumour Card!");
 					this.playWitchCard(accusateur);
 				} catch (NoCardsToChooseFromException e) {
 					System.out.println(e);
@@ -186,14 +222,14 @@ public class Joueur {
 			}
 		}
 		else {
-			System.out.println("Because you have no playable cards you have reveal your Identity Card!");
+			System.out.println("Because you have no playable cards you have to reveal your Identity Card!");
 			this.revelerIdentite(accusateur);
 		}
 	}
 	
 	private void playWitchCard(Joueur accusateur) throws NoCardsToChooseFromException {
 		System.out.println("Choose a card to play!");
-		Carte c = choisirCarteAJouer();
+		Carte c = choisirCarte(this.getPlayableWitchCards());
 		c.activerEffetWitch(this,accusateur);
 		c.setRevelee(true);
 	}
@@ -222,7 +258,6 @@ public class Joueur {
 		}
 		else {
 			System.out.println(this.toString() + " was a Villager! \n");
-			Partie.getInstance().getListeJoueurs().movePlayerFirst(this);
 		}
 	}
 
@@ -258,7 +293,7 @@ public class Joueur {
 	public void chooseIdentityCard() {
 		System.out.println("\n \n" +"If you want to play as a Witch, type W.\nIf you want to play as a Villager, type V. ");
 		
-		String resultat = Partie.getInstance().chooseBetween2Options("W", "V");
+		String resultat = this.chooseBetween2Options("W", "V");
 		if(resultat == "W") {
 			System.out.println("You're now a witch!");
 			this.setEstSorciere(true);
@@ -303,43 +338,57 @@ public class Joueur {
 			index++;
 			System.out.println(index + " : " +it.next().toString());
 		}
-		int number = Partie.getInstance().askNumber(1, index);
+		int number = this.askNumber(1, index);
 		return joueurs.get(number-1);
 	}
+	
+	
+	
+	public String chooseBetween2Options(String a, String b) {
+		boolean actionChosen=false;
+		Scanner sc = Partie.getInstance().getScanner();
+		String s = sc.next();
+		if(s.equals(a)) {
+			return a;
+			}
+		else if(s.equals(b)) {
+			return b;	
+		}
+		else {
+			System.out.println("Please type either "+ a+ " or " + b);
+			chooseBetween2Options(a, b);
+		}
+		return null;
+	}
+	
 	
 	public Joueur choisirJoueurAccusation() throws NoPlayersToChooseFromException {
 		ArrayList<Joueur> joueurs = new ArrayList<Joueur>();
 		joueurs.addAll(Partie.getInstance().getListeJoueurs().getJoueursNonRevelées());
 		joueurs.remove(this);
-		Iterator itUntargetablePlayers = this.untargetablePlayer.iterator();
-		
-		while(itUntargetablePlayers.hasNext()) {
-			 joueurs.remove(itUntargetablePlayers.next());
-		}
-		if(joueurs.size()==0) {
-			throw new NoPlayersToChooseFromException("There are no players to choose from!");
-		}
-		Iterator<Joueur> it = joueurs.iterator();
-		int index=0;
-		while(it.hasNext()) {
-			index++;
-			System.out.println(index + " : " +it.next().toString());
-		}
-		int number = Partie.getInstance().askNumber(1, index);
-		return joueurs.get(number-1);
+		return this.choisirJoueur(joueurs);
 	}
-	public Joueur choisirJoueurNonRevelee() {
+	public Joueur choisirJoueur(ArrayList<Joueur> joueurs) throws NoPlayersToChooseFromException {
+		if(joueurs.size()!=0) {
+			Iterator<Joueur> it = joueurs.iterator();
+			int index=0;
+			while(it.hasNext()) {
+				index++;
+				System.out.println(index + " : " +it.next().toString());
+			}
+			int number = this.askNumber(1, index);
+			return joueurs.get(number-1);
+		}
+		else {
+			throw new NoPlayersToChooseFromException("There are no unrevealed players to choose from");
+		}
+
+	}
+	public Joueur choisirJoueurNonRevelee() throws NoPlayersToChooseFromException {
 		ArrayList<Joueur> joueurs = new ArrayList<Joueur>();
 		joueurs.addAll(Partie.getInstance().getListeJoueurs().getJoueursNonRevelées());
 		joueurs.remove(this);
-		Iterator<Joueur> it = joueurs.iterator();
-		int index=0;
-		while(it.hasNext()) {
-			index++;
-			System.out.println(index + " : " +it.next().toString());
-		}
-		int number = Partie.getInstance().askNumber(1, index);
-		return joueurs.get(number-1);
+		return choisirJoueur(joueurs);
 	}
 
 
@@ -376,7 +425,8 @@ public class Joueur {
 				index++;
 				System.out.println(index+" : \n" + it.next().toString());
 			}
-			int number = Partie.getInstance().askNumber(1, index);
+			int number = this.askNumber(1, index);
+			System.out.println(this.toString() + " chose " + cartes.get(number-1));
 			return cartes.get(number-1);
 		}
 		else {
@@ -403,7 +453,7 @@ public class Joueur {
 			System.out.println("Do you want to discard a card or reveal your identity?");
 			System.out.println("Type D to discard a card");
 			System.out.println("Type R to reveal your identity");
-			String s = Partie.getInstance().chooseBetween2Options("D","R");
+			String s = this.chooseBetween2Options("D","R");
 			if(s=="D") {
 				Carte c;
 				try {

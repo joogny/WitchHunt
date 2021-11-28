@@ -1,6 +1,7 @@
 package partie;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -52,7 +53,18 @@ public class playerList {
 		return accuser;
 	}
 	
+	public ArrayList<Joueur> getAllPlayers() {
+		ArrayList<Joueur> allPlayers = new ArrayList<>();
+		allPlayers.addAll(this.listeJoueurs);
+		allPlayers.addAll(this.listeJoueursElimine);
+		return allPlayers;
+	}
 	
+	public ArrayList<Joueur> sortedListByScore() {
+		ArrayList<Joueur> allPlayers = this.getAllPlayers();
+		allPlayers.sort(Comparator.comparing(a -> a.getScore()));
+		return allPlayers;
+	}
 	
 	public LinkedList<Joueur> getJoueursNonEliminées() {
 		return listeJoueurs;

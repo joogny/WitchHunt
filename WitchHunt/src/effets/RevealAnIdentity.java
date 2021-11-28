@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import partie.Effet;
 import partie.Joueur;
+import partie.NoPlayersToChooseFromException;
 import partie.Partie;
 
 public class RevealAnIdentity extends Effet {
@@ -18,18 +19,24 @@ public class RevealAnIdentity extends Effet {
 
 	@Override
 	public void activerEffet(Joueur joueurCarte,Joueur accusateur) {
-		Joueur j = joueurCarte.choisirJoueurNonRevelee();
-		j.setEstRevele();
-		if(j.estSorciere()) {
-			joueurCarte.addToScore(2);
-		}
-		else {
-			if(joueurCarte.getScore()<=2) {
-				joueurCarte.setScore(0);
+		Joueur j;
+		try {
+			j = joueurCarte.choisirJoueurNonRevelee();
+			j.setEstRevele();
+			if(j.estSorciere()) {
+				joueurCarte.addToScore(2);
 			}
 			else {
-				joueurCarte.setScore(joueurCarte.getScore()-2);
+				if(joueurCarte.getScore()<=2) {
+					joueurCarte.setScore(0);
+				}
+				else {
+					joueurCarte.setScore(joueurCarte.getScore()-2);
+				}
 			}
+		} catch (NoPlayersToChooseFromException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	

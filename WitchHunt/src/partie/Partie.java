@@ -7,6 +7,8 @@ import java.util.LinkedList;
 import java.util.Random;
 import java.util.Scanner;
 
+import bots.JoueurVirtuel;
+import bots.RandomStrategy;
 import effets.DiscardCardFromHand;
 import effets.RevealAnIdentity;
 import effets.TakeNextTurn;
@@ -42,8 +44,8 @@ public class Partie {
 		return MAX_PLAYER_COUNT;
 	}
 	private void askForRealPlayers() {
-		System.out.println("How many real players are there? (up to 6)");
-		int playerCount = askNumber(0,6);
+		System.out.println("How many l players are there? (up to 6)");
+		int playerCount = this.askNumber(0,6);
 		String playerName;
 		if(playerCount>0) {
 			System.out.println("Enter each player's name");
@@ -67,7 +69,7 @@ public class Partie {
 				minBotCount = 0;
 			}
 			System.out.println("How many bots are there? (from " + minBotCount+ " to "+maxBotCount+")");
-			botCount = askNumber(minBotCount,maxBotCount);
+			botCount = this.askNumber(minBotCount,maxBotCount);
 			if(botCount>0) {
 				System.out.println("\n"+"Here are the names we've chosen for the bots:" + "\n");
 			}
@@ -84,27 +86,12 @@ public class Partie {
 						}
 					}
 				} while(redoName);
-				listeJoueurs.addPlayer(new JoueurVirtuel(botName));
+				listeJoueurs.addPlayer(new JoueurVirtuel(botName,new RandomStrategy()));
 				System.out.println(botName);
 			}
 		}
 		System.out.println();
 		
-	}
-	public String chooseBetween2Options(String a, String b) {
-		boolean actionChosen=false;
-		String s = sc.next();
-		if(s.equals(a)) {
-			return a;
-			}
-		else if(s.equals(b)) {
-			return b;	
-		}
-		else {
-			System.out.println("Please type either "+ a+ " or " + b);
-			chooseBetween2Options(a, b);
-		}
-		return null;
 	}
 	public void demarrerPartie() {
 		boolean partieFini = false;
@@ -113,7 +100,7 @@ public class Partie {
 			j.playTurn();
 			
 			//fin de la partie
-			if(listeJoueurs.getJoueursNonEliminées().size()==1) {
+			if(listeJoueurs.getJoueursNonRevelées().size()<=1) {
 				partieFini=true;
 			}
 			
@@ -124,38 +111,31 @@ public class Partie {
 		finPartie();			
 	}
 	public void finPartie() {
+		System.out.println("GAME OVER!");
 		Joueur dernierJoueur = listeJoueurs.getJoueursNonRevelées().getFirst();
 		if(dernierJoueur.estSorciere()) {
 			System.out.println(dernierJoueur.toString() + " was a Witch! They gain 2 points");
 			dernierJoueur.addToScore(2);
 		}
 		else {
-			System.out.println(dernierJoueur.toString() + " was a Witch! They gain 1 point");
+			System.out.println(dernierJoueur.toString() + " was a Villager! They gain 1 point");
 			dernierJoueur.addToScore(1);
 		}
-		
+		this.displayEndScore();
 		//displayEndScore
 	}
-	public int askNumber(int min, int max) {
-		String ErrorMessage = "Please input a number between " + min + " and " + max+".";
-		System.out.println(ErrorMessage);
-		while(true) {
-			if(sc.hasNextInt()) {
-				int nextInt = sc.nextInt();
-				if(nextInt>=min && nextInt<=max) {
-					return nextInt;
-				}
-				else {
-					System.out.println(ErrorMessage);
-				}
-			}
-			else {
-				System.out.println(ErrorMessage);
-				sc.next();
-			}
+	private void displayEndScore() {
+		ArrayList<Joueur> joueurs = listeJoueurs.sortedListByScore();
+		
+		Iterator<Joueur> it = joueurs.iterator();
+		while(it.hasNext()) {
+			Joueur j = it.next();
+			System.out.println(j.toString() + " : " + j.getScore() + "pts");
 		}
 		
+		
 	}
+
 	public void setup() {
 		
 		this.listeJoueurs = new playerList();
@@ -204,7 +184,6 @@ public class Partie {
 		huntAngryMob.ajouterEffet(EffetNom.REVEALANIDENTITY);
 		
 		Carte angryMob = new Carte("Angry Mob",witchAngryMob,huntAngryMob);
-		System.out.println(angryMob.toString());
 		cartes.add(angryMob);
 		
 		//The Inquisition
@@ -324,7 +303,7 @@ public class Partie {
 	
 	public static void main(String args[]) {
 		Partie.getInstance().setup();
-		//Partie.getInstance().demarrerPartie();
+		Partie.getInstance().demarrerPartie();
 	}
 
 	public void eliminerJoueur(Joueur joueur) {
@@ -344,5 +323,26 @@ public class Partie {
 		return listeCartes;
 	}
 
-
+	public int askNumber(int min, int max) {
+		String ErrorMessage = "Please input a number between " + min + " and " + max+".";
+		System.out.println(ErrorMessage);
+		while(true) {
+			if(sc.hasNextInt()) {
+				int nextInt = sc.nextInt();
+				if(nextInt>=min && nextInt<=max) {
+					return nextInt;
+				}
+				else {
+					System.out.println(ErrorMessage);
+				}
+			}
+			else {
+				System.out.println(ErrorMessage);
+				sc.next();
+			}
+		}
+			
+	}
 }
+
+

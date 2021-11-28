@@ -2,6 +2,7 @@ package effets;
 
 import partie.Effet;
 import partie.Joueur;
+import partie.NoPlayersToChooseFromException;
 import partie.Partie;
 
 public class LookAtIdentityBeforeTurn extends EffetAvantTour {
@@ -16,10 +17,16 @@ public class LookAtIdentityBeforeTurn extends EffetAvantTour {
 	@Override
 	public void activerEffet(Joueur joueurCarte,Joueur accusateur) {
 		// Choose next player
-		Joueur j = joueurCarte.choisirJoueurNonRevelee();
-		Partie.getInstance().getListeJoueurs().movePlayerFirst(j);
-		System.out.println(j.toString() + "will take next turn and " + joueurCarte.toString() + " will secretly look at their identity!");
-		j.ajouterEffetDebutTour(this);
+		Joueur j;
+		try {
+			j = joueurCarte.choisirJoueurNonRevelee();
+			Partie.getInstance().getListeJoueurs().movePlayerFirst(j);
+			System.out.println(j.toString() + "will take next turn and " + joueurCarte.toString() + " will secretly look at their identity!");
+			super.setJoueurCarte(joueurCarte);
+			j.ajouterEffetDebutTour(this);
+		} catch (NoPlayersToChooseFromException e) {
+			System.out.println(e);
+		}
 	}
 
 
@@ -27,6 +34,7 @@ public class LookAtIdentityBeforeTurn extends EffetAvantTour {
 	public void lancerEffet(Joueur joueurVisé) {
 		System.out.println("Because of their last card, " + super.getJoueurCarte()+ " will secretly look at " + joueurVisé.toString() + "'s identity ");
 		super.getJoueurCarte().secretlyLookAtIdentity(joueurVisé);
+		super.setJoueurCarte(null);
 	}
 	
 }
