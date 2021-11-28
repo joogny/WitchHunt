@@ -8,6 +8,7 @@ import java.util.Scanner;
 import partie.Carte;
 import partie.Joueur;
 import partie.NoCardsToChooseFromException;
+import partie.NoPlayersToChooseFromException;
 import partie.Partie;
 
 public class JoueurVirtuel extends Joueur {
@@ -66,7 +67,14 @@ public class JoueurVirtuel extends Joueur {
 		}
 	}
 	
-	
+	public void accuseOrUseCard() throws NoPlayersToChooseFromException, NoCardsToChooseFromException {
+		if(strategy.accuseInsteadOfCard()) {
+			super.accuser();
+		}
+		else {
+			super.playHuntCard();
+		}
+	}
 	public void secretlyLookAtIdentity(Joueur joueurVisé) {
 		System.out.println("\n \n" + this.toString() + "secretly looked at "+ joueurVisé.getNomJoueur() + "'s identity!");
 	}

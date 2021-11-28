@@ -150,30 +150,32 @@ public class Joueur {
 			if(!this.isABot()) {
 				System.out.println("Type A to accuse another player of being a Witch");
 				System.out.println("Type R to reveal a Rumour card from your hand and play it face up in front of yourself, resolving it's Hunt! Effect.");
+				
 			}
-				String resultat = this.chooseBetween2Options("A", "R");
-			if(resultat.equals("A")) {
-				System.out.println(this.toString() + " decided to accuse someone");
-				try {
-					accuser();
-				} catch (NoPlayersToChooseFromException e) {
-					System.out.println("You can't accuse anyone that's still playing!\nYou have to play a HuntCard");
-				}
-			}
-			else if (resultat.equals("R")) {
-				try {
-					System.out.println(this.toString() + " decided to reveal a Rumour Card");
-					playHuntCard();
-				} catch (NoCardsToChooseFromException e) {
-					System.out.println(e);
-					playTurn();
-				}
+			try {
+				accuseOrUseCard();
+			} catch (NoPlayersToChooseFromException e) {
+				System.out.println("You can't accuse anyone that's still playing!\nYou have to play a HuntCard");
+				playTurn();
+			} catch (NoCardsToChooseFromException e) {
+				System.out.println(e);
+				playTurn();
 			}
 		}
 		
 	
 	}
-
+	public void accuseOrUseCard() throws NoPlayersToChooseFromException, NoCardsToChooseFromException  {
+		String resultat = this.chooseBetween2Options("A", "R");
+		if(resultat.equals("A")) {
+			System.out.println(this.toString() + " decided to accuse someone");
+				accuser();
+		}
+		else if (resultat.equals("R")) {
+				System.out.println(this.toString() + " decided to reveal a Rumour Card");
+				playHuntCard();
+		}
+	}
 	public Carte choisirCarteAJouer() throws NoCardsToChooseFromException {
 		return this.choisirCarte(this.getPlayableCards());
 	}
@@ -181,7 +183,7 @@ public class Joueur {
 	public int askNumber(int min, int max) {
 		return Partie.getInstance().askNumber(min, max);
 	}
-	private void playHuntCard() throws NoCardsToChooseFromException {
+	public void playHuntCard() throws NoCardsToChooseFromException {
 		System.out.println("Choose a card to play!");
 		Carte c = choisirCarte(this.getPlayableHuntCards());
 		c.activerEffetHunt(this);
@@ -189,7 +191,7 @@ public class Joueur {
 	}
 		
 
-	private void accuser() throws NoPlayersToChooseFromException{
+	public void accuser() throws NoPlayersToChooseFromException{
 		System.out.println("Choose a player to accuse!");
 		Joueur jAccusee;
 		jAccusee = this.choisirJoueurAccusation();
