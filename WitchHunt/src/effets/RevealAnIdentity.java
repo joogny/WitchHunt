@@ -13,7 +13,7 @@ public class RevealAnIdentity extends Effet {
 	private static final String enoncé = "Reveal another player's identity. \nWitch: You gain 2pts. You take next turn. \nVillager:You lose 2pts. They take next turn.";
 	private static final String nomCarteBloquante = "Broomstick";
 
-	public RevealAnIdentity(Carte c) {
+	public RevealAnIdentity() {
 		super(enoncé);
 		// TODO Auto-generated constructor stub
 	}
@@ -30,8 +30,10 @@ public class RevealAnIdentity extends Effet {
 			joueurs.remove(joueurCarte);
 			while(it.hasNext()) {
 				Iterator<Carte> itC = it.next().getRevealedCards().iterator();
-				if(itC.next().getNomCarte()==nomCarteBloquante) {
-					it.remove();
+				while(itC.hasNext()) {
+					if(itC.next().getNomCarte()==nomCarteBloquante) {
+						it.remove();
+					}
 				}
 			}
 			

@@ -21,6 +21,7 @@ public class Joueur {
 		this.nomJoueur=nom;
 		this.main=new ArrayList<Carte>();
 		this.score=0;
+		this.elimine=false;
 		this.revelee=false;
 		this.untargetablePlayer = new HashSet<>();
 		effetsAvantTour = new ArrayList<EffetAvantTour>();
@@ -121,11 +122,10 @@ public class Joueur {
 		
 		
 		System.out.println("What do you want to do?");
-		//check s'il a des cartes jouables
 		ArrayList<Joueur> joueurs = new ArrayList<>();
 		joueurs.addAll(Partie.getInstance().getListeJoueurs().getJoueursNonRevelées());
 		joueurs.remove(this);
-		if(joueurs.size()==0 && this.getPlayableCards().size()==0) {
+		if(joueurs.size()==0 && this.getPlayableHuntCards().size()==0) {
 			System.out.println("You don't have any cards to play and you can't accuse anyone so you have to skip your turn!");
 			System.exit(score);
 		}
@@ -137,7 +137,7 @@ public class Joueur {
 				System.out.println("ERROR");
 			}
 		}
-		else if(this.getPlayableCards().size()==0) {
+		else if(this.getPlayableHuntCards().size()==0) {
 			System.out.println("Because you have no playable cards you have to accuse someone!");
 			
 			try {
@@ -205,9 +205,11 @@ public class Joueur {
 	
 	private void etreAccuse(Joueur accusateur) {
 		System.out.println("What'll " + this.toString() + " do to answer this accusation? \n");
-		if(this.getPlayableCards().size()!=0) {
-			System.out.println("Type I to reveal your Identity Card");
-			System.out.println("Type R to reveal a Rumour card from your hand and play it face up in front of yourself, resolving it's Hunt? Effect.");
+		if(this.getPlayableWitchCards().size()!=0) {
+			if(!this.estSorciere) {
+				System.out.println("Type I to reveal your Identity Card");
+				System.out.println("Type R to reveal a Rumour card from your hand and play it face up in front of yourself, resolving it's Hunt? Effect.");
+			}
 			String resultat = this.chooseBetween2Options("I", "R");
 			if(resultat.equals("I")) {
 				System.out.println(this.toString() + "decided to reveal their identity!");
@@ -218,6 +220,7 @@ public class Joueur {
 					System.out.println(this.toString() + "decided to reveal a Rumour Card!");
 					this.playWitchCard(accusateur);
 				} catch (NoCardsToChooseFromException e) {
+					System.out.println(e);
 					System.out.println(e);
 					etreAccuse(accusateur);
 				}
@@ -363,7 +366,14 @@ public class Joueur {
 		return null;
 	}
 	
-	
+	public void reset() {
+		this.main=new ArrayList<Carte>();
+		this.score=0;
+		this.revelee=false;
+		this.elimine=false;
+		this.untargetablePlayer = new HashSet<>();
+		effetsAvantTour = new ArrayList<EffetAvantTour>();
+	}
 	public Joueur choisirJoueurAccusation() throws NoPlayersToChooseFromException {
 		ArrayList<Joueur> joueurs = new ArrayList<Joueur>();
 		joueurs.addAll(Partie.getInstance().getListeJoueurs().getJoueursNonRevelées());
@@ -482,7 +492,7 @@ public class Joueur {
 				}
 			}
 		}
-		else if(this.revelee&&!(this.getPlayableCards().size()==0)) {
+		else if(this.revelee&&!(this.getPlayableWitchCards().size()==0)) {
 			try {
 				System.out.println("Your identity is already revealed so you have to discard a card!");
 				Carte c;

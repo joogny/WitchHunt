@@ -16,7 +16,6 @@ public class TakeNextTurn extends Effet {
 	@Override
 	public void activerEffet(Joueur joueurCarte,Joueur accusateur) {
 		Partie.getInstance().getListeJoueurs().movePlayerFirst(joueurCarte);
-		System.out.println(joueurCarte.getNomJoueur()+" will take the next turn");
 		
 	}
 	

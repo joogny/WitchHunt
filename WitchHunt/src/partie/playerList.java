@@ -1,10 +1,10 @@
 package partie;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Scanner;
 
 public class playerList {
 	private LinkedList<Joueur> listeJoueurs;
@@ -24,7 +24,14 @@ public class playerList {
 	public Joueur getFirstPlayer() {
 		return listeJoueurs.getFirst();
 	}
-	
+	public void reset() {
+		listeJoueurs.addAll(listeJoueursElimine);
+		listeJoueursElimine = new ArrayList<>();
+		Iterator<Joueur> it = listeJoueurs.iterator();
+		while(it.hasNext()) {
+			it.next().reset();
+		}
+	}
 	public void movePlayerLast(Joueur j ) {
 		Iterator<Joueur> it = listeJoueurs.iterator();
 		boolean playerFound = false;
@@ -61,8 +68,9 @@ public class playerList {
 	}
 	
 	public ArrayList<Joueur> sortedListByScore() {
-		ArrayList<Joueur> allPlayers = this.getAllPlayers();
+		ArrayList<Joueur> allPlayers=this.getAllPlayers();
 		allPlayers.sort(Comparator.comparing(a -> a.getScore()));
+		Collections.reverse(allPlayers);
 		return allPlayers;
 	}
 	

@@ -122,8 +122,20 @@ public class Partie {
 			dernierJoueur.addToScore(1);
 		}
 		this.displayEndScore();
-		//displayEndScore
+		System.out.println("Type Y if you want to play again");
+		while(true) {
+			String s = sc.next();
+			if(s.equals("Y")) {
+				Joueur j = listeJoueurs.sortedListByScore().get(0);
+				this.listeJoueurs.reset();
+				listeJoueurs.movePlayerFirst(j);
+				distributionCartes();
+				displayCards();
+				demarrerPartie();
+			}
+		}
 	}
+
 	private void displayEndScore() {
 		ArrayList<Joueur> joueurs = listeJoueurs.sortedListByScore();
 		
