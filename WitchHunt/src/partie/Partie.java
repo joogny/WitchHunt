@@ -44,7 +44,7 @@ public class Partie {
 		return MAX_PLAYER_COUNT;
 	}
 	private void askForRealPlayers() {
-		System.out.println("How many l players are there? (up to 6)");
+		System.out.println("How many real players are there? (up to 6)");
 		int playerCount = this.askNumber(0,6);
 		String playerName;
 		if(playerCount>0) {
@@ -111,7 +111,7 @@ public class Partie {
 		finPartie();			
 	}
 	public void finPartie() {
-		System.out.println("GAME OVER!");
+		System.out.println("\nGAME OVER!\n");
 		Joueur dernierJoueur = listeJoueurs.getJoueursNonRevelées().getFirst();
 		if(dernierJoueur.estSorciere()) {
 			System.out.println(dernierJoueur.toString() + " was a Witch! They gain 2 points");

@@ -48,7 +48,7 @@ public class JoueurVirtuel extends Joueur {
 
 	
 	public String toString() {
-		return this.getNomJoueur()+"(bot)" + (super.estSorciere() ? "V":"W");
+		return this.getNomJoueur()+"(bot)";
 	}
 
 	public String chooseBetween2Options(String a, String b) {
