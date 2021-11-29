@@ -165,7 +165,8 @@ public class Joueur {
 		
 	
 	}
-	public void accuseOrUseCard() throws NoPlayersToChooseFromException, NoCardsToChooseFromException  {
+	
+	protected void accuseOrUseCard() throws NoPlayersToChooseFromException, NoCardsToChooseFromException  {
 		String resultat = this.chooseBetween2Options("A", "R");
 		if(resultat.equals("A")) {
 			System.out.println(this.toString() + " decided to accuse someone");
@@ -174,6 +175,18 @@ public class Joueur {
 		else if (resultat.equals("R")) {
 				System.out.println(this.toString() + " decided to reveal a Rumour Card");
 				playHuntCard();
+		}
+	}
+	
+	protected void revealIdentityOrUseCard(Joueur accusateur) throws NoCardsToChooseFromException  {
+		String resultat = this.chooseBetween2Options("I", "R");
+		if(resultat.equals("I")) {
+			System.out.println(this.toString() + "decided to reveal their identity!");
+			this.revelerIdentite(accusateur);
+		}
+		else if(resultat.equals("R")) {
+				System.out.println(this.toString() + "decided to reveal a Rumour Card!");
+				this.playWitchCard(accusateur);
 		}
 	}
 	public Carte choisirCarteAJouer() throws NoCardsToChooseFromException {
@@ -206,24 +219,14 @@ public class Joueur {
 	private void etreAccuse(Joueur accusateur) {
 		System.out.println("What'll " + this.toString() + " do to answer this accusation? \n");
 		if(this.getPlayableWitchCards().size()!=0) {
-			if(!this.estSorciere) {
+			if(!this.isABot()) {
 				System.out.println("Type I to reveal your Identity Card");
 				System.out.println("Type R to reveal a Rumour card from your hand and play it face up in front of yourself, resolving it's Hunt? Effect.");
 			}
-			String resultat = this.chooseBetween2Options("I", "R");
-			if(resultat.equals("I")) {
-				System.out.println(this.toString() + "decided to reveal their identity!");
-				this.revelerIdentite(accusateur);
-			}
-			else if(resultat.equals("R")) {
-				try {
-					System.out.println(this.toString() + "decided to reveal a Rumour Card!");
-					this.playWitchCard(accusateur);
-				} catch (NoCardsToChooseFromException e) {
-					System.out.println(e);
-					System.out.println(e);
-					etreAccuse(accusateur);
-				}
+			try {
+				this.revealIdentityOrUseCard(accusateur);
+			} catch (NoCardsToChooseFromException e) {
+				System.out.println(e);
 			}
 		}
 		else {
@@ -232,7 +235,7 @@ public class Joueur {
 		}
 	}
 	
-	private void playWitchCard(Joueur accusateur) throws NoCardsToChooseFromException {
+	protected void playWitchCard(Joueur accusateur) throws NoCardsToChooseFromException {
 		System.out.println("Choose a card to play!");
 		Carte c = choisirCarte(this.getPlayableWitchCards());
 		c.activerEffetWitch(this,accusateur);
@@ -353,7 +356,6 @@ public class Joueur {
 	
 	
 	public String chooseBetween2Options(String a, String b) {
-		boolean actionChosen=false;
 		Scanner sc = Partie.getInstance().getScanner();
 		String s = sc.next();
 		if(s.equals(a)) {

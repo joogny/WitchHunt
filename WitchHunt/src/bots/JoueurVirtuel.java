@@ -75,8 +75,8 @@ public class JoueurVirtuel extends Joueur {
 			throw new NoCardsToChooseFromException(this.toString() + " has no cards to choose from!");
 		}
 	}
-	
-	public void accuseOrUseCard() throws NoPlayersToChooseFromException, NoCardsToChooseFromException {
+	@Override
+	protected void accuseOrUseCard() throws NoPlayersToChooseFromException, NoCardsToChooseFromException {
 		if(strategy.accuseInsteadOfCard()) {
 			super.accuser();
 		}
@@ -84,6 +84,24 @@ public class JoueurVirtuel extends Joueur {
 			super.playHuntCard();
 		}
 	}
+	
+	
+	@Override
+	protected void revealIdentityOrUseCard(Joueur accusateur) throws NoCardsToChooseFromException {
+		if(super.estSorciere()) {
+			super.playWitchCard(accusateur);
+		}
+		else {
+			if(strategy.revealIdentityInsteadOfCard()) {
+				this.revelerIdentite(accusateur);
+			}
+			else {
+				super.playWitchCard(accusateur);	
+			}
+		}
+		
+	}
+
 	public void secretlyLookAtIdentity(Joueur joueurVisé) {
 		System.out.println("\n \n" + this.toString() + "secretly looked at "+ joueurVisé.getNomJoueur() + "'s identity!");
 	}
