@@ -7,6 +7,8 @@ import java.util.LinkedList;
 import java.util.Random;
 import java.util.Scanner;
 
+import bots.AccuserStrategy;
+import bots.BotStrategy;
 import bots.JoueurVirtuel;
 import bots.RandomStrategy;
 import effets.DiscardCardFromHand;
@@ -71,7 +73,7 @@ public class Partie {
 			System.out.println("How many bots are there? (from " + minBotCount+ " to "+maxBotCount+")");
 			botCount = this.askNumber(minBotCount,maxBotCount);
 			if(botCount>0) {
-				System.out.println("\n"+"Here are the names we've chosen for the bots:" + "\n");
+				System.out.println("\n"+"Here are the bots :" + "\n");
 			}
 			for(int i = 0; i <botCount;i++) {
 				boolean redoName = false;
@@ -86,8 +88,16 @@ public class Partie {
 						}
 					}
 				} while(redoName);
-				listeJoueurs.addPlayer(new JoueurVirtuel(botName,new RandomStrategy()));
-				System.out.println(botName);
+				System.out.println("This bot will be named " + botName);
+				System.out.println("Which strategy should " + botName + " follow?");
+				BotStrategy[] strats = {new AccuserStrategy(), new RandomStrategy()};
+				for(int j =1;j<=strats.length;j++) {
+					System.out.println(j + " : " + strats[j-1].toString());
+				}
+				int number = this.askNumber(1, strats.length);
+				
+				listeJoueurs.addPlayer(new JoueurVirtuel(botName,strats[number-1]));
+				System.out.println();
 			}
 		}
 		System.out.println();

@@ -15,4 +15,8 @@ public class AccuserStrategy implements BotStrategy {
 		return rd.nextBoolean();
 	}
 
+	
+	public String toString() {
+		return "Accuser Strategy : will always try to accuse other players!";
+	}
 }

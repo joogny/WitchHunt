@@ -20,4 +20,8 @@ public class RandomStrategy implements BotStrategy{
 		return rd.nextBoolean();
 	}
 
+	
+	public String toString() {
+		return "Random bot : acts randomly for everything!";
+	}
 }
