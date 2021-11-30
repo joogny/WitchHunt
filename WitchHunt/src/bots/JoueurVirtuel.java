@@ -78,9 +78,11 @@ public class JoueurVirtuel extends Joueur {
 	@Override
 	protected void accuseOrUseCard() throws NoPlayersToChooseFromException, NoCardsToChooseFromException {
 		if(strategy.accuseInsteadOfCard()) {
+			System.out.println(this.toString() + " decided to accuse someone\n");
 			super.accuser();
 		}
 		else {
+			System.out.println(this.toString() + " decided to play a card\n");
 			super.playHuntCard();
 		}
 	}
@@ -89,13 +91,16 @@ public class JoueurVirtuel extends Joueur {
 	@Override
 	protected void revealIdentityOrUseCard(Joueur accusateur) throws NoCardsToChooseFromException {
 		if(super.estSorciere()) {
+			System.out.println(this.toString() + " decided to play a card\n");
 			super.playWitchCard(accusateur);
 		}
 		else {
 			if(strategy.revealIdentityInsteadOfCard()) {
+				System.out.println(this.toString() + " decided to reveal their identity.\n");
 				this.revelerIdentite(accusateur);
 			}
 			else {
+				System.out.println(this.toString() + " decided to play a card\n");
 				super.playWitchCard(accusateur);	
 			}
 		}

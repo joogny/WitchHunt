@@ -13,7 +13,7 @@ public class Joueur {
 	private int score;
 	private boolean elimine;
 	private boolean revelee;
-	private HashSet<Joueur> untargetablePlayer;
+	private Joueur untargetablePlayer;
 	private ArrayList<Carte> main;
 	private ArrayList<EffetAvantTour> effetsAvantTour;
 	
@@ -23,7 +23,7 @@ public class Joueur {
 		this.score=0;
 		this.elimine=false;
 		this.revelee=false;
-		this.untargetablePlayer = new HashSet<>();
+		this.untargetablePlayer=null;
 		effetsAvantTour = new ArrayList<EffetAvantTour>();
 	}
 	
@@ -125,6 +125,10 @@ public class Joueur {
 		ArrayList<Joueur> joueurs = new ArrayList<>();
 		joueurs.addAll(Partie.getInstance().getListeJoueurs().getJoueursNonRevelées());
 		joueurs.remove(this);
+		if(untargetablePlayer!=null) {
+			joueurs.remove(untargetablePlayer);
+			System.out.println("Because of their last card, you can't accuse " + untargetablePlayer.toString());
+		}
 		if(joueurs.size()==0 && this.getPlayableHuntCards().size()==0) {
 			System.out.println("You don't have any cards to play and you can't accuse anyone so you have to skip your turn!");
 			System.exit(score);
@@ -376,13 +380,17 @@ public class Joueur {
 		this.score=0;
 		this.revelee=false;
 		this.elimine=false;
-		this.untargetablePlayer = new HashSet<>();
+		this.untargetablePlayer=null;
+		this.untargetablePlayer = null;
 		effetsAvantTour = new ArrayList<EffetAvantTour>();
 	}
 	public Joueur choisirJoueurAccusation() throws NoPlayersToChooseFromException {
 		ArrayList<Joueur> joueurs = new ArrayList<Joueur>();
 		joueurs.addAll(Partie.getInstance().getListeJoueurs().getJoueursNonRevelées());
 		joueurs.remove(this);
+		if(untargetablePlayer!=null) {
+			joueurs.remove(untargetablePlayer);
+		}
 		return this.choisirJoueur(joueurs);
 	}
 	public Joueur choisirJoueur(ArrayList<Joueur> joueurs) throws NoPlayersToChooseFromException {
@@ -519,9 +527,7 @@ public class Joueur {
 		
 	}
 
-
-
-	public void addUntargetablePlayer(Joueur j) {
-		untargetablePlayer.add(j);
+	public void setUntargetablePlayer(Joueur j) {
+		this.untargetablePlayer=j;
 	}
 }

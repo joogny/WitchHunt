@@ -18,7 +18,7 @@ public class CantReaccuse extends Effet {
 		Joueur j = joueurCarte.choisirJoueur();
 		System.out.println(j.toString() + " will take next turn!");
 		Partie.getInstance().getListeJoueurs().movePlayerFirst(j);
-		j.addUntargetablePlayer(joueurCarte);
+		j.setUntargetablePlayer(joueurCarte);
 	}
 
 
