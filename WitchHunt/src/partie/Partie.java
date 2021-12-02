@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 import bots.AccuserStrategy;
 import bots.BotStrategy;
+import bots.CartesStrategy;
 import bots.JoueurVirtuel;
 import bots.RandomStrategy;
 import effets.DiscardCardFromHand;
@@ -90,7 +91,7 @@ public class Partie {
 				} while(redoName);
 				System.out.println("This bot will be named " + botName);
 				System.out.println("Which strategy should " + botName + " follow?");
-				BotStrategy[] strats = {new AccuserStrategy(), new RandomStrategy()};
+				BotStrategy[] strats = {new AccuserStrategy(), new RandomStrategy(),new CartesStrategy()};
 				for(int j =1;j<=strats.length;j++) {
 					System.out.println(j + " : " + strats[j-1].toString());
 				}
