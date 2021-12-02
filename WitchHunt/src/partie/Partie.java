@@ -173,6 +173,7 @@ public class Partie {
 	}
 	private void displayCards() {
 		Iterator<Joueur> it = listeJoueurs.getListeJoueurs().iterator();
+		sc.nextLine();
 		while(it.hasNext()) {
 			Joueur j = it.next();
 			j.discoverHand();
