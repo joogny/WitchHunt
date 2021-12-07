@@ -301,6 +301,8 @@ public class Partie {
 		listeEffets huntPetNewt = new listeEffets();
 		huntPetNewt.ajouterEffet(EffetNom.TAKEREVEALEDCARDFROMANYPLAYERS);
 		huntPetNewt.ajouterEffet(EffetNom.CHOOSENEXTPLAYER);
+		Carte PetNewt = new Carte("Pet Newt",witchPetNewt,huntPetNewt);
+		cartes.add(PetNewt);
 		Collections.shuffle(cartes);
 		
 		float cardsPerPlayer = cartes.size() / listeJoueurs.getListeJoueurs().size();
