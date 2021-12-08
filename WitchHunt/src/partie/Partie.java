@@ -208,7 +208,7 @@ public class Partie {
 		huntAngryMob.ajouterEffet(EffetNom.REVEALANIDENTITY);
 		
 		Carte angryMob = new Carte("Angry Mob",witchAngryMob,huntAngryMob);
-		cartes.add(angryMob);
+		cartes.add(angryMob);//1
 		
 		//The Inquisition
 		listeEffets witchInquisition = new listeEffets();
@@ -217,7 +217,7 @@ public class Partie {
 		listeEffets huntInquisition = new listeEffets(false,true);
 		huntInquisition.ajouterEffet(EffetNom.LOOKATIDENTITYBEFORETURN);
 		Carte Inquisition = new Carte("The Inquisition",witchInquisition,huntInquisition);
-		cartes.add(Inquisition);
+		cartes.add(Inquisition);//2
 		
 		//PointedHat
 		listeEffets witchPointedHat = new listeEffets(true,false);
@@ -227,7 +227,7 @@ public class Partie {
 		huntPointedHat.ajouterEffet(EffetNom.TAKEREVEALEDCARDTOHAND);
 		huntPointedHat.ajouterEffet(EffetNom.CHOOSENEXTPLAYER);
 		Carte PointedHat = new Carte("Pointed Hat",witchPointedHat,huntPointedHat);
-		cartes.add(PointedHat);
+		cartes.add(PointedHat);//3
 		
 		//Hooked Nose 
 		listeEffets witchHookedNose = new listeEffets();
@@ -236,7 +236,7 @@ public class Partie {
 		listeEffets huntHookedNose = new listeEffets();
 		huntHookedNose.ajouterEffet(EffetNom.TAKECARDFROMHANDBEFORETURN);
 		Carte HookedNose = new Carte("Hooked Nose",witchHookedNose,huntHookedNose);
-		cartes.add(HookedNose);
+		cartes.add(HookedNose);//4
 		
 		
 		
@@ -248,10 +248,10 @@ public class Partie {
 		huntBroomstickWart.ajouterEffet(EffetNom.CHOOSENEXTPLAYER);
 		
 		Carte Broomstick = new Carte("Broomstick",witchBroomstickWartCauldron,huntBroomstickWart);
-		cartes.add(Broomstick);
+		cartes.add(Broomstick);//5
 		
 		Carte Wart = new Carte("Wart",witchBroomstickWartCauldron,huntBroomstickWart);
-		cartes.add(Wart);
+		cartes.add(Wart);//6
 		
 		//Ducking Stool
 		listeEffets witchDuckingStool = new listeEffets();
@@ -259,7 +259,7 @@ public class Partie {
 		listeEffets huntDuckingStool = new listeEffets();
 		huntDuckingStool.ajouterEffet(EffetNom.REVEALORDISCARD);
 		Carte DuckingStool = new Carte("Ducking Stool",witchDuckingStool,huntDuckingStool);
-		cartes.add(DuckingStool);
+		cartes.add(DuckingStool);//7
 		
 		//Cauldron
 		listeEffets witchCauldron = new listeEffets();
@@ -267,7 +267,7 @@ public class Partie {
 		listeEffets huntCauldron = new listeEffets();
 		huntCauldron.ajouterEffet(EffetNom.REVEALYOURIDENTITY);
 		Carte Cauldron = new Carte("Cauldron",witchCauldron,huntCauldron);
-		cartes.add(Cauldron);
+		cartes.add(Cauldron);//8
 
 		//Evil Eye
 		listeEffets witchEvilEye = new listeEffets();
@@ -275,7 +275,7 @@ public class Partie {
 		huntEvilEye.ajouterEffet(EffetNom.CANTREACCUSE);
 		witchEvilEye.ajouterEffet(EffetNom.CANTREACCUSE);
 		Carte EvilEye = new Carte("Evil Eye",witchEvilEye,huntEvilEye);
-		cartes.add(EvilEye);
+		cartes.add(EvilEye);//9
 		
 		//Toad
 		listeEffets witchToad = new listeEffets();
@@ -283,7 +283,7 @@ public class Partie {
 		witchToad.ajouterEffet(EffetNom.TAKENEXTTURN);
 		huntToad.ajouterEffet(EffetNom.REVEALYOURIDENTITY);
 		Carte Toad = new Carte("Toad",witchToad,huntToad);
-		cartes.add(Toad);
+		cartes.add(Toad);//10
 		
 		//Black Cat
 		listeEffets witchBlackCat = new listeEffets();
@@ -292,7 +292,7 @@ public class Partie {
 		huntBlackCat.ajouterEffet(EffetNom.ADDDISCARDEDCARDTOHAND);
 		huntBlackCat.ajouterEffet(EffetNom.TAKENEXTTURN);
 		Carte BlackCat = new Carte("Black Cat",witchBlackCat,huntBlackCat);
-		cartes.add(BlackCat);
+		cartes.add(BlackCat);//11
 		
 		
 		//Pet Newt
@@ -301,9 +301,13 @@ public class Partie {
 		listeEffets huntPetNewt = new listeEffets();
 		huntPetNewt.ajouterEffet(EffetNom.TAKEREVEALEDCARDFROMANYPLAYERS);
 		huntPetNewt.ajouterEffet(EffetNom.CHOOSENEXTPLAYER);
+		Carte PetNewt = new Carte("Pet Newt",witchPetNewt,huntPetNewt);
+		cartes.add(PetNewt);
 		Collections.shuffle(cartes);
-		
+		System.out.println("Nb cartes: "+cartes.size());
+		System.out.println("Nb Joueurs: "+listeJoueurs.getListeJoueurs().size());
 		float cardsPerPlayer = cartes.size() / listeJoueurs.getListeJoueurs().size();
+		System.out.println("Nb cartes par joueur: "+cardsPerPlayer);
 		Iterator<Joueur> itJ = listeJoueurs.getListeJoueurs().iterator();
 		Iterator<Carte> itC = cartes.iterator();
 		while(itJ.hasNext()) {
