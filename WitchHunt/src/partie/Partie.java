@@ -122,7 +122,7 @@ public class Partie {
 		finPartie();			
 	}
 	public void finPartie() {
-		System.out.println("\nGAME OVER!\n");
+		System.out.println("\nROUND OVER!\n");
 		Joueur dernierJoueur = listeJoueurs.getJoueursNonRevelées().getFirst();
 		if(dernierJoueur.estSorciere()) {
 			System.out.println(dernierJoueur.toString() + " was a Witch! They gain 2 points");
@@ -132,18 +132,47 @@ public class Partie {
 			System.out.println(dernierJoueur.toString() + " was a Villager! They gain 1 point");
 			dernierJoueur.addToScore(1);
 		}
-		this.displayEndScore();
-		System.out.println("Type Y if you want to play again");
-		while(true) {
-			String s = sc.next();
-			if(s.equals("Y")) {
-				Joueur j = listeJoueurs.sortedListByScore().get(0);
-				this.listeJoueurs.reset();
-				listeJoueurs.movePlayerFirst(j);
-				distributionCartes();
-				displayCards();
-				demarrerPartie();
+		// RETURN 2: La partie n'est pas terminée
+		if(checkFinRound()==2) {
+			this.displayEndScore();
+			System.out.println("Type Y if you want to play a new Round");
+			while(true) {
+				String s = sc.next();
+				if(s.equals("Y")) {
+					Joueur j = listeJoueurs.sortedListByScore().get(0);
+					this.listeJoueurs.reset();
+					listeJoueurs.movePlayerFirst(j);
+					distributionCartes();
+					displayCards();
+					demarrerPartie();
+				}
 			}
+		}
+		// RETURN 1: La partie est terminée et le Joueur 1 a gagné
+		else if (checkFinRound()==1) {
+			this.displayEndScore();
+			System.out.println("\nGAME OVER!\n");
+			Joueur j=listeJoueurs.sortedListByScore().get(0); // Joueur Gagnant
+			System.out.println(j.toString()+" has "+j.getScore()+" points : He is the winner");
+			System.exit(1); // La Partie est finie on sort du programme
+		}
+		// RETURN 0: La partie est terminée avec une égalité
+		else if (checkFinRound()==0) {
+			this.displayEndScore();
+			System.out.println("\nGAME OVER\n");
+			Joueur j1=listeJoueurs.sortedListByScore().get(0);
+			Joueur j2=listeJoueurs.sortedListByScore().get(1);
+			System.out.println("There is an equality between: "+j1.toString()+" and "+j2.toString());
+			System.out.println("This is a Monkey Knife Fights the two players will fight to death...");
+			Random rd = new Random();
+			//SI TRUE J1 WIN
+			if(rd.nextBoolean()) {
+				System.out.println(j1.toString()+" won the fight: He is the winner");
+			}
+			else {
+				System.out.println(j2.toString()+" won the fight: He is the winner");
+			}
+			System.exit(1);
 		}
 	}
 
@@ -158,7 +187,26 @@ public class Partie {
 		
 		
 	}
-
+	public int checkFinRound() {
+		ArrayList<Joueur> joueurs = listeJoueurs.sortedListByScore();
+		
+		Iterator<Joueur> it = joueurs.iterator();
+		// On recupere les deux premiers joueurs de la liste triée par score
+		Joueur j1=it.next();
+		Joueur j2=it.next();
+		// On check si la partie est finie
+		if (j1.getScore()>=5) {
+			if(j1.getScore()==j2.getScore()) {
+				return 0; // Egalité des deux premiers joueurs RETURN 0
+			}
+			else {
+				return 1; // Victoire de j1 RETURN 1
+			}
+		}
+		else {
+			return 2; // Personne n'a atteint 5 points, la partie n'est pas finie RETURN 2
+		}
+	}
 	public void setup() {
 		
 		this.listeJoueurs = new playerList();
@@ -299,15 +347,13 @@ public class Partie {
 		listeEffets witchPetNewt = new listeEffets();
 		witchPetNewt.ajouterEffet(EffetNom.TAKENEXTTURN);
 		listeEffets huntPetNewt = new listeEffets();
-		huntPetNewt.ajouterEffet(EffetNom.TAKEREVEALEDCARDFROMANYPLAYERS);
+    	huntPetNewt.ajouterEffet(EffetNom.TAKEREVEALEDCARDFROMANYPLAYERS);
 		huntPetNewt.ajouterEffet(EffetNom.CHOOSENEXTPLAYER);
 		Carte PetNewt = new Carte("Pet Newt",witchPetNewt,huntPetNewt);
-		cartes.add(PetNewt);
+		cartes.add(PetNewt);//12
+		
 		Collections.shuffle(cartes);
-		System.out.println("Nb cartes: "+cartes.size());
-		System.out.println("Nb Joueurs: "+listeJoueurs.getListeJoueurs().size());
 		float cardsPerPlayer = cartes.size() / listeJoueurs.getListeJoueurs().size();
-		System.out.println("Nb cartes par joueur: "+cardsPerPlayer);
 		Iterator<Joueur> itJ = listeJoueurs.getListeJoueurs().iterator();
 		Iterator<Carte> itC = cartes.iterator();
 		while(itJ.hasNext()) {
