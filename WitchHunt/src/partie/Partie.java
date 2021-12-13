@@ -122,7 +122,7 @@ public class Partie {
 		finPartie();			
 	}
 	public void finPartie() {
-		System.out.println("\nGAME OVER!\n");
+		System.out.println("\nROUND OVER!\n");
 		Joueur dernierJoueur = listeJoueurs.getJoueursNonRevelées().getFirst();
 		if(dernierJoueur.estSorciere()) {
 			System.out.println(dernierJoueur.toString() + " was a Witch! They gain 2 points");
@@ -132,18 +132,47 @@ public class Partie {
 			System.out.println(dernierJoueur.toString() + " was a Villager! They gain 1 point");
 			dernierJoueur.addToScore(1);
 		}
-		this.displayEndScore();
-		System.out.println("Type Y if you want to play again");
-		while(true) {
-			String s = sc.next();
-			if(s.equals("Y")) {
-				Joueur j = listeJoueurs.sortedListByScore().get(0);
-				this.listeJoueurs.reset();
-				listeJoueurs.movePlayerFirst(j);
-				distributionCartes();
-				displayCards();
-				demarrerPartie();
+		// RETURN 2: La partie n'est pas terminée
+		if(checkFinRound()==2) {
+			this.displayEndScore();
+			System.out.println("Type Y if you want to play a new Round");
+			while(true) {
+				String s = sc.next();
+				if(s.equals("Y")) {
+					Joueur j = listeJoueurs.sortedListByScore().get(0);
+					this.listeJoueurs.reset();
+					listeJoueurs.movePlayerFirst(j);
+					distributionCartes();
+					displayCards();
+					demarrerPartie();
+				}
 			}
+		}
+		// RETURN 1: La partie est terminée et le Joueur 1 a gagné
+		else if (checkFinRound()==1) {
+			this.displayEndScore();
+			System.out.println("\nGAME OVER!\n");
+			Joueur j=listeJoueurs.sortedListByScore().get(0); // Joueur Gagnant
+			System.out.println(j.toString()+" has "+j.getScore()+" points : He is the winner");
+			System.exit(1); // La Partie est finie on sort du programme
+		}
+		// RETURN 0: La partie est terminée avec une égalité
+		else if (checkFinRound()==0) {
+			this.displayEndScore();
+			System.out.println("\nGAME OVER\n");
+			Joueur j1=listeJoueurs.sortedListByScore().get(0);
+			Joueur j2=listeJoueurs.sortedListByScore().get(1);
+			System.out.println("There is an equality between: "+j1.toString()+" and "+j2.toString());
+			System.out.println("This is a Monkey Knife Fights the two players will fight to death...");
+			Random rd = new Random();
+			//SI TRUE J1 WIN
+			if(rd.nextBoolean()) {
+				System.out.println(j1.toString()+" won the fight: He is the winner");
+			}
+			else {
+				System.out.println(j2.toString()+" won the fight: He is the winner");
+			}
+			System.exit(1);
 		}
 	}
 
@@ -158,7 +187,26 @@ public class Partie {
 		
 		
 	}
-
+	public int checkFinRound() {
+		ArrayList<Joueur> joueurs = listeJoueurs.sortedListByScore();
+		
+		Iterator<Joueur> it = joueurs.iterator();
+		// On recupere les deux premiers joueurs de la liste triée par score
+		Joueur j1=it.next();
+		Joueur j2=it.next();
+		// On check si la partie est finie
+		if (j1.getScore()>=5) {
+			if(j1.getScore()==j2.getScore()) {
+				return 0; // Egalité des deux premiers joueurs RETURN 0
+			}
+			else {
+				return 1; // Victoire de j1 RETURN 1
+			}
+		}
+		else {
+			return 2; // Personne n'a atteint 5 points, la partie n'est pas finie RETURN 2
+		}
+	}
 	public void setup() {
 		
 		this.listeJoueurs = new playerList();
@@ -208,7 +256,7 @@ public class Partie {
 		huntAngryMob.ajouterEffet(EffetNom.REVEALANIDENTITY);
 		
 		Carte angryMob = new Carte("Angry Mob",witchAngryMob,huntAngryMob);
-		cartes.add(angryMob);
+		cartes.add(angryMob);//1
 		
 		//The Inquisition
 		listeEffets witchInquisition = new listeEffets();
@@ -217,7 +265,7 @@ public class Partie {
 		listeEffets huntInquisition = new listeEffets(false,true);
 		huntInquisition.ajouterEffet(EffetNom.LOOKATIDENTITYBEFORETURN);
 		Carte Inquisition = new Carte("The Inquisition",witchInquisition,huntInquisition);
-		cartes.add(Inquisition);
+		cartes.add(Inquisition);//2
 		
 		//PointedHat
 		listeEffets witchPointedHat = new listeEffets(true,false);
@@ -227,7 +275,7 @@ public class Partie {
 		huntPointedHat.ajouterEffet(EffetNom.TAKEREVEALEDCARDTOHAND);
 		huntPointedHat.ajouterEffet(EffetNom.CHOOSENEXTPLAYER);
 		Carte PointedHat = new Carte("Pointed Hat",witchPointedHat,huntPointedHat);
-		cartes.add(PointedHat);
+		cartes.add(PointedHat);//3
 		
 		//Hooked Nose 
 		listeEffets witchHookedNose = new listeEffets();
@@ -236,7 +284,7 @@ public class Partie {
 		listeEffets huntHookedNose = new listeEffets();
 		huntHookedNose.ajouterEffet(EffetNom.TAKECARDFROMHANDBEFORETURN);
 		Carte HookedNose = new Carte("Hooked Nose",witchHookedNose,huntHookedNose);
-		cartes.add(HookedNose);
+		cartes.add(HookedNose);//4
 		
 		
 		
@@ -248,10 +296,10 @@ public class Partie {
 		huntBroomstickWart.ajouterEffet(EffetNom.CHOOSENEXTPLAYER);
 		
 		Carte Broomstick = new Carte("Broomstick",witchBroomstickWartCauldron,huntBroomstickWart);
-		cartes.add(Broomstick);
+		cartes.add(Broomstick);//5
 		
 		Carte Wart = new Carte("Wart",witchBroomstickWartCauldron,huntBroomstickWart);
-		cartes.add(Wart);
+		cartes.add(Wart);//6
 		
 		//Ducking Stool
 		listeEffets witchDuckingStool = new listeEffets();
@@ -259,7 +307,7 @@ public class Partie {
 		listeEffets huntDuckingStool = new listeEffets();
 		huntDuckingStool.ajouterEffet(EffetNom.REVEALORDISCARD);
 		Carte DuckingStool = new Carte("Ducking Stool",witchDuckingStool,huntDuckingStool);
-		cartes.add(DuckingStool);
+		cartes.add(DuckingStool);//7
 		
 		//Cauldron
 		listeEffets witchCauldron = new listeEffets();
@@ -267,7 +315,7 @@ public class Partie {
 		listeEffets huntCauldron = new listeEffets();
 		huntCauldron.ajouterEffet(EffetNom.REVEALYOURIDENTITY);
 		Carte Cauldron = new Carte("Cauldron",witchCauldron,huntCauldron);
-		cartes.add(Cauldron);
+		cartes.add(Cauldron);//8
 
 		//Evil Eye
 		listeEffets witchEvilEye = new listeEffets();
@@ -275,7 +323,7 @@ public class Partie {
 		huntEvilEye.ajouterEffet(EffetNom.CANTREACCUSE);
 		witchEvilEye.ajouterEffet(EffetNom.CANTREACCUSE);
 		Carte EvilEye = new Carte("Evil Eye",witchEvilEye,huntEvilEye);
-		cartes.add(EvilEye);
+		cartes.add(EvilEye);//9
 		
 		//Toad
 		listeEffets witchToad = new listeEffets();
@@ -283,7 +331,7 @@ public class Partie {
 		witchToad.ajouterEffet(EffetNom.TAKENEXTTURN);
 		huntToad.ajouterEffet(EffetNom.REVEALYOURIDENTITY);
 		Carte Toad = new Carte("Toad",witchToad,huntToad);
-		cartes.add(Toad);
+		cartes.add(Toad);//10
 		
 		//Black Cat
 		listeEffets witchBlackCat = new listeEffets();
@@ -292,19 +340,21 @@ public class Partie {
 		huntBlackCat.ajouterEffet(EffetNom.ADDDISCARDEDCARDTOHAND);
 		huntBlackCat.ajouterEffet(EffetNom.TAKENEXTTURN);
 		Carte BlackCat = new Carte("Black Cat",witchBlackCat,huntBlackCat);
-		cartes.add(BlackCat);
+		cartes.add(BlackCat);//11
 		
 		
 		//Pet Newt
 		listeEffets witchPetNewt = new listeEffets();
 		witchPetNewt.ajouterEffet(EffetNom.TAKENEXTTURN);
 		listeEffets huntPetNewt = new listeEffets();
-		huntPetNewt.ajouterEffet(EffetNom.TAKEREVEALEDCARDFROMANYPLAYERS);
+    	huntPetNewt.ajouterEffet(EffetNom.TAKEREVEALEDCARDFROMANYPLAYERS);
 		huntPetNewt.ajouterEffet(EffetNom.CHOOSENEXTPLAYER);
 		Carte PetNewt = new Carte("Pet Newt",witchPetNewt,huntPetNewt);
 		cartes.add(PetNewt);
 		Collections.shuffle(cartes);
+
 		
+		Collections.shuffle(cartes);
 		float cardsPerPlayer = cartes.size() / listeJoueurs.getListeJoueurs().size();
 		Iterator<Joueur> itJ = listeJoueurs.getListeJoueurs().iterator();
 		Iterator<Carte> itC = cartes.iterator();
