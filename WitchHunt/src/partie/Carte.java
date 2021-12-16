@@ -10,6 +10,7 @@ public class Carte {
 	private Carte carteBloquante;
 	private listeEffets effetsWitch;
 	private listeEffets effetsHunt;
+	private String filePath;
 	
 	public Carte(String nom) {
 		this.nomCarte=nom;
@@ -28,6 +29,11 @@ public class Carte {
 		this.carteBloquante=c;
 	}
 	
+
+	public Carte(String nom, String filePath) {
+		this(nom);
+		this.filePath=filePath;
+	}
 
 	//setters and getters 
 	public boolean isDefausse() {
@@ -125,6 +131,8 @@ public class Carte {
 		}
 	}
 
+	
+	
 	public void activerEffetHunt(Joueur joueur) {
 		for(Effet e : effetsHunt.getEffets()) {
 			e.activerEffet(joueur,null); //
@@ -132,5 +140,13 @@ public class Carte {
 		
 	}
 	
+
+	public String getFilePath() {
+		return filePath;
+	}
+
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
 
 }

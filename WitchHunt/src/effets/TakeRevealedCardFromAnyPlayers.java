@@ -20,12 +20,12 @@ public class TakeRevealedCardFromAnyPlayers extends Effet{
 	@Override
 	public void activerEffet(Joueur joueurCarte, Joueur accusateur) {
 		ArrayList<Carte> cartes = new ArrayList<>();
-		cartes.addAll(Partie.getInstance().getCartes());
-		Iterator<Carte> it = cartes.iterator();
+		
+		Iterator<Carte> it = Partie.getInstance().getCartes().iterator();
 		while(it.hasNext()) {
 			Carte c = it.next();
-			if(!c.isRevelee()) {
-				cartes.remove(c);
+			if(c.isRevelee()) {
+				cartes.add(c);
 			}
 		}
 		if(cartes.size()==0) {
