@@ -18,8 +18,8 @@ public class Carte {
 		this.effetsHunt = new listeEffets();
 	}
 	
-	public Carte(String nom,listeEffets witch, listeEffets hunt) {
-		this(nom);
+	public Carte(String nom,listeEffets witch, listeEffets hunt,String path) {
+		this(nom,path);
 		this.effetsWitch=witch;
 		this.effetsHunt=hunt;
 	}
@@ -77,8 +77,8 @@ public class Carte {
 		return carteBloquante;
 	}
 	
-	public String toString() {
-		/*StringBuffer sb = new StringBuffer();
+	public String affichageCarte() {
+		StringBuffer sb = new StringBuffer();
 		for(int i=0;i<80;i++) {
 			sb.append("*");
 		}
@@ -110,7 +110,9 @@ public class Carte {
 			sb.append("*");
 		}
 		sb.append("\n");
-		return sb.toString();*/
+		return sb.toString();
+	}
+	public String toString() {
 		return this.nomCarte;
 	}
 	

@@ -211,7 +211,6 @@ public class Partie {
 	public void setup() {
 		
 		
-		Joueur.setCartesGUI(new CartesGUI());
 		this.listeJoueurs = new playerList();
 		System.out.println("Welcome to WitchHunt");
 		System.out.println("************************");
@@ -258,7 +257,7 @@ public class Partie {
 		listeEffets huntAngryMob = new listeEffets(false,true);
 		huntAngryMob.ajouterEffet(EffetNom.REVEALANIDENTITY);
 		
-		Carte angryMob = new Carte("Angry Mob",witchAngryMob,huntAngryMob);
+		Carte angryMob = new Carte("Angry Mob",witchAngryMob,huntAngryMob,"./src/images/angry_mob.png.png");
 		cartes.add(angryMob);//1
 		
 		//The Inquisition
@@ -267,7 +266,7 @@ public class Partie {
 		witchInquisition.ajouterEffet(EffetNom.TAKENEXTTURN);
 		listeEffets huntInquisition = new listeEffets(false,true);
 		huntInquisition.ajouterEffet(EffetNom.LOOKATIDENTITYBEFORETURN);
-		Carte Inquisition = new Carte("The Inquisition",witchInquisition,huntInquisition);
+		Carte Inquisition = new Carte("The Inquisition",witchInquisition,huntInquisition,"./src/images/the_inquisition.png");
 		cartes.add(Inquisition);//2
 		
 		//PointedHat
@@ -277,7 +276,7 @@ public class Partie {
 		listeEffets huntPointedHat = new listeEffets(false,true);
 		huntPointedHat.ajouterEffet(EffetNom.TAKEREVEALEDCARDTOHAND);
 		huntPointedHat.ajouterEffet(EffetNom.CHOOSENEXTPLAYER);
-		Carte PointedHat = new Carte("Pointed Hat",witchPointedHat,huntPointedHat);
+		Carte PointedHat = new Carte("Pointed Hat",witchPointedHat,huntPointedHat,"./src/images/pointed_hat.png");
 		cartes.add(PointedHat);//3
 		
 		//Hooked Nose 
@@ -286,7 +285,7 @@ public class Partie {
 		witchHookedNose.ajouterEffet(EffetNom.TAKENEXTTURN);
 		listeEffets huntHookedNose = new listeEffets();
 		huntHookedNose.ajouterEffet(EffetNom.TAKECARDFROMHANDBEFORETURN);
-		Carte HookedNose = new Carte("Hooked Nose",witchHookedNose,huntHookedNose);
+		Carte HookedNose = new Carte("Hooked Nose",witchHookedNose,huntHookedNose,"./src/images/hooked_nose.png");
 		cartes.add(HookedNose);//4
 		
 		
@@ -298,10 +297,10 @@ public class Partie {
 		listeEffets huntBroomstickWart = new listeEffets();
 		huntBroomstickWart.ajouterEffet(EffetNom.CHOOSENEXTPLAYER);
 		
-		Carte Broomstick = new Carte("Broomstick",witchBroomstickWartCauldron,huntBroomstickWart);
+		Carte Broomstick = new Carte("Broomstick",witchBroomstickWartCauldron,huntBroomstickWart,"./src/images/broomstick.png");
 		cartes.add(Broomstick);//5
 		
-		Carte Wart = new Carte("Wart",witchBroomstickWartCauldron,huntBroomstickWart);
+		Carte Wart = new Carte("Wart",witchBroomstickWartCauldron,huntBroomstickWart,"./src/images/wart.png");
 		cartes.add(Wart);//6
 		
 		//Ducking Stool
@@ -309,7 +308,7 @@ public class Partie {
 		witchDuckingStool.ajouterEffet(EffetNom.CHOOSENEXTPLAYER);
 		listeEffets huntDuckingStool = new listeEffets();
 		huntDuckingStool.ajouterEffet(EffetNom.REVEALORDISCARD);
-		Carte DuckingStool = new Carte("Ducking Stool",witchDuckingStool,huntDuckingStool);
+		Carte DuckingStool = new Carte("Ducking Stool",witchDuckingStool,huntDuckingStool,"./src/images/ducking_stool.png");
 		cartes.add(DuckingStool);//7
 		
 		//Cauldron
@@ -317,7 +316,7 @@ public class Partie {
 		witchCauldron.ajouterEffet(EffetNom.ACCUSERDISCARDS);
 		listeEffets huntCauldron = new listeEffets();
 		huntCauldron.ajouterEffet(EffetNom.REVEALYOURIDENTITY);
-		Carte Cauldron = new Carte("Cauldron",witchCauldron,huntCauldron);
+		Carte Cauldron = new Carte("Cauldron",witchCauldron,huntCauldron,"./src/images/cauldron.png");
 		cartes.add(Cauldron);//8
 
 		//Evil Eye
@@ -325,7 +324,7 @@ public class Partie {
 		listeEffets huntEvilEye = new listeEffets();
 		huntEvilEye.ajouterEffet(EffetNom.CANTREACCUSE);
 		witchEvilEye.ajouterEffet(EffetNom.CANTREACCUSE);
-		Carte EvilEye = new Carte("Evil Eye",witchEvilEye,huntEvilEye);
+		Carte EvilEye = new Carte("Evil Eye",witchEvilEye,huntEvilEye,"./src/images/evil_eye.png");
 		cartes.add(EvilEye);//9
 		
 		//Toad
@@ -333,7 +332,7 @@ public class Partie {
 		listeEffets huntToad = new listeEffets();
 		witchToad.ajouterEffet(EffetNom.TAKENEXTTURN);
 		huntToad.ajouterEffet(EffetNom.REVEALYOURIDENTITY);
-		Carte Toad = new Carte("Toad",witchToad,huntToad);
+		Carte Toad = new Carte("Toad",witchToad,huntToad,"./src/images/toad.png");
 		cartes.add(Toad);//10
 		
 		//Black Cat
@@ -342,7 +341,7 @@ public class Partie {
 		listeEffets huntBlackCat = new listeEffets();
 		huntBlackCat.ajouterEffet(EffetNom.ADDDISCARDEDCARDTOHAND);
 		huntBlackCat.ajouterEffet(EffetNom.TAKENEXTTURN);
-		Carte BlackCat = new Carte("Black Cat",witchBlackCat,huntBlackCat);
+		Carte BlackCat = new Carte("Black Cat",witchBlackCat,huntBlackCat,"./src/images/blackcat.png");
 		cartes.add(BlackCat);//11
 		
 		
@@ -352,7 +351,7 @@ public class Partie {
 		listeEffets huntPetNewt = new listeEffets();
     	huntPetNewt.ajouterEffet(EffetNom.TAKEREVEALEDCARDFROMANYPLAYERS);
 		huntPetNewt.ajouterEffet(EffetNom.CHOOSENEXTPLAYER);
-		Carte PetNewt = new Carte("Pet Newt",witchPetNewt,huntPetNewt);
+		Carte PetNewt = new Carte("Pet Newt",witchPetNewt,huntPetNewt,"./src/images/pet_newt.png");
 		cartes.add(PetNewt);
 
 		Collections.shuffle(cartes);

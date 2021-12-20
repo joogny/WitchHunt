@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Scanner;
 
+import Vue.CartesCLI;
 import Vue.CartesGUI;
 import effets.EffetAvantTour;
 
@@ -107,7 +108,7 @@ public class Joueur {
 	public void displayHand() {
 		Iterator<Carte> it = main.iterator();
 		while(it.hasNext()) {
-			System.out.println(it.next().toString());
+			System.out.println(it.next().affichageCarte());
 		}
 		
 	}
@@ -448,13 +449,22 @@ public class Joueur {
 
 
 	public void setChosenCard(Carte c) {
-		this.chosenCard=c;
+		synchronized(this) {
+			this.chosenCard=c;
+			this.notifyAll();
+		}
+	}
+	public Carte getChosenCard() {
+		return this.chosenCard;
+		
 	}
 	public Carte choisirCarte(ArrayList<Carte> cartes) throws NoCardsToChooseFromException {
+		chosenCard = null;
 		if(cartes.size()!=0) {
-			//afficher GUI
-			new CartesGUI(cartes,this);
 			
+			//afficher GUI
+			CartesGUI gui = new CartesGUI(cartes,this);
+			gui.setVisible(true);
 			
 			synchronized(this) {
 				while(chosenCard==null) {
@@ -465,22 +475,9 @@ public class Joueur {
 					}
 				}				
 			}
+			gui.setVisible(false);
 			System.out.println(chosenCard.getNomCarte());
-			
-			chosenCard=null;
-
-			Iterator<Carte> it = cartes.iterator();
-			int index=0;
-			while(it.hasNext()) {
-				index++;
-				Carte c  = it.next();
-				if(!this.isABot()) {
-					System.out.println(index+" : \n" + c.toString());
-				}
-			}
-			int number = this.askNumber(1, index);
-			System.out.println(this.toString() + " chose " + cartes.get(number-1));
-			return cartes.get(number-1);
+			return chosenCard;
 		}
 		else {
 			throw new NoCardsToChooseFromException(this.toString() + " has no cards to choose from!");
