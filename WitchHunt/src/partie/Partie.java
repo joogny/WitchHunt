@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.Random;
 import java.util.Scanner;
 
+import Vue.CartesGUI;
 import bots.AccuserStrategy;
 import bots.BotStrategy;
 import bots.CartesStrategy;
@@ -209,6 +210,8 @@ public class Partie {
 	}
 	public void setup() {
 		
+		
+		Joueur.setCartesGUI(new CartesGUI());
 		this.listeJoueurs = new playerList();
 		System.out.println("Welcome to WitchHunt");
 		System.out.println("************************");
@@ -351,10 +354,10 @@ public class Partie {
 		huntPetNewt.ajouterEffet(EffetNom.CHOOSENEXTPLAYER);
 		Carte PetNewt = new Carte("Pet Newt",witchPetNewt,huntPetNewt);
 		cartes.add(PetNewt);
-		cartes.add(PetNewt);
-		Collections.shuffle(cartes);
 
 		Collections.shuffle(cartes);
+		
+		
 		float cardsPerPlayer = cartes.size() / listeJoueurs.getListeJoueurs().size();
 		Iterator<Joueur> itJ = listeJoueurs.getListeJoueurs().iterator();
 		Iterator<Carte> itC = cartes.iterator();

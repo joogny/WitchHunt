@@ -78,7 +78,7 @@ public class Carte {
 	}
 	
 	public String toString() {
-		StringBuffer sb = new StringBuffer();
+		/*StringBuffer sb = new StringBuffer();
 		for(int i=0;i<80;i++) {
 			sb.append("*");
 		}
@@ -110,7 +110,8 @@ public class Carte {
 			sb.append("*");
 		}
 		sb.append("\n");
-		return sb.toString();
+		return sb.toString();*/
+		return this.nomCarte;
 	}
 	
 	public boolean equals(Object o) {

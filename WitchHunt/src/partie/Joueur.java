@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Scanner;
 
+import Vue.CartesGUI;
 import effets.EffetAvantTour;
 
 public class Joueur {
@@ -16,6 +17,9 @@ public class Joueur {
 	private Joueur untargetablePlayer;
 	private ArrayList<Carte> main;
 	private ArrayList<EffetAvantTour> effetsAvantTour;
+	
+	private Carte chosenCard;
+	
 	
 	public Joueur(String nom) {
 		this.nomJoueur=nom;
@@ -443,12 +447,30 @@ public class Joueur {
 	}
 
 
-
+	public void setChosenCard(Carte c) {
+		this.chosenCard=c;
+	}
 	public Carte choisirCarte(ArrayList<Carte> cartes) throws NoCardsToChooseFromException {
 		if(cartes.size()!=0) {
+			//afficher GUI
+			new CartesGUI(cartes,this);
+			
+			
+			synchronized(this) {
+				while(chosenCard==null) {
+					try {
+						this.wait();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}				
+			}
+			System.out.println(chosenCard.getNomCarte());
+			
+			chosenCard=null;
+
 			Iterator<Carte> it = cartes.iterator();
 			int index=0;
-			//lors de l'activation de l'effet : vérif playable if you have rumour card etc...
 			while(it.hasNext()) {
 				index++;
 				Carte c  = it.next();
