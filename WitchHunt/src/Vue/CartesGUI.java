@@ -1,4 +1,4 @@
-package VueTest;
+package Vue;
 
 import java.awt.EventQueue;
 import java.util.ArrayList;

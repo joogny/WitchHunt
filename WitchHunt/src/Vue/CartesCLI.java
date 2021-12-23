@@ -1,4 +1,4 @@
-package VueTest;
+package Vue;
 
 import java.util.ArrayList;
 import java.util.Iterator;
