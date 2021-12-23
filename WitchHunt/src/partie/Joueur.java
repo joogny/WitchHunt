@@ -6,8 +6,8 @@ import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Scanner;
 
-import Vue.CartesCLI;
-import Vue.CartesGUI;
+import VueTest.CartesCLI;
+import VueTest.CartesGUI;
 import effets.EffetAvantTour;
 
 public class Joueur extends Observable{

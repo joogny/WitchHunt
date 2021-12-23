@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.Random;
 import java.util.Scanner;
 
-import Vue.CartesGUI;
+import VueTest.CartesGUI;
 import bots.AccuserStrategy;
 import bots.BotStrategy;
 import bots.CartesStrategy;

@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 
-import Vue.CartesGUI;
+import VueTest.CartesGUI;
 import partie.Carte;
 import partie.Joueur;
 
