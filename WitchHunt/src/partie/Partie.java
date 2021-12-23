@@ -373,8 +373,13 @@ public class Partie {
 			c.setDefausse(true);
 			System.out.println("The " + c.getNomCarte() + " card was discarded.");
 		}
+		
+		this.setupViews();
 	} 
 	
+	private void setupViews() {
+		CartesGUI cartesGUI = new CartesGUI(this.cartes,this.listeJoueurs.getAllPlayers());
+	}
 	public Scanner getScanner() {
 		return sc;
 	}

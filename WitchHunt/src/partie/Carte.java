@@ -1,8 +1,9 @@
 package partie;
 
 import java.util.Iterator;
+import java.util.Observable;
 
-public class Carte {
+public class Carte extends Observable{
 
 	private boolean defausse;
 	private String nomCarte;
@@ -150,6 +151,12 @@ public class Carte {
 
 	public void setFilePath(String filePath) {
 		this.filePath = filePath;
+	}
+
+	public void updateCard() {
+		this.setChanged();
+		this.notifyObservers();
+		
 	}
 
 }

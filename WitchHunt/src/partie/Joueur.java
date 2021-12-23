@@ -3,13 +3,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Observable;
 import java.util.Scanner;
 
 import Vue.CartesCLI;
 import Vue.CartesGUI;
 import effets.EffetAvantTour;
 
-public class Joueur {
+public class Joueur extends Observable{
 	private String nomJoueur;
 	private boolean estSorciere;
 	private int score;
@@ -20,7 +21,7 @@ public class Joueur {
 	private ArrayList<EffetAvantTour> effetsAvantTour;
 	
 	private Carte chosenCard;
-	
+	private static PlayerAction playerAction;
 	
 	public Joueur(String nom) {
 		this.nomJoueur=nom;
@@ -299,7 +300,12 @@ public class Joueur {
 	public boolean isABot() {
 		return false;
 	}
-
+	public static PlayerAction getPlayerAction() {
+		return Joueur.playerAction;
+	}
+	public static void setPlayerAction(PlayerAction p) {
+		Joueur.playerAction=p;
+	}
 
 	public void discoverHand() {
 		Scanner sc = Partie.getInstance().getScanner();
@@ -461,10 +467,14 @@ public class Joueur {
 	public Carte choisirCarte(ArrayList<Carte> cartes) throws NoCardsToChooseFromException {
 		chosenCard = null;
 		if(cartes.size()!=0) {
-			
-			//afficher GUI
-			CartesGUI gui = new CartesGUI(cartes,this);
-			gui.setVisible(true);
+			Joueur.playerAction = PlayerAction.CHOOSECARD;
+			this.setChanged();
+			this.notifyObservers();
+			Iterator<Carte> it = cartes.iterator();
+			while(it.hasNext()) {
+				Carte c = it.next();
+				c.updateCard();
+			}
 			
 			synchronized(this) {
 				while(chosenCard==null) {
@@ -475,7 +485,7 @@ public class Joueur {
 					}
 				}				
 			}
-			gui.setVisible(false);
+
 			System.out.println(chosenCard.getNomCarte());
 			return chosenCard;
 		}
