@@ -8,6 +8,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 import Vue.CartesGUI;
+import Vue.NouveauJoueurGUI;
 import bots.AccuserStrategy;
 import bots.BotStrategy;
 import bots.CartesStrategy;
@@ -23,10 +24,11 @@ public class Partie {
 	private static Partie instance;
 	private ArrayList<Carte> cartes;
 	private playerList listeJoueurs;
-	
+	private ArrayList<BotStrategy> strats;
 	private static final int MAX_PLAYER_COUNT = 6;
 	private static final int MIN_PLAYER_COUNT = 3;
 	private Scanner sc;
+	private boolean playerSetupDone;
 	private Partie() {
 	}
 	
@@ -60,6 +62,22 @@ public class Partie {
 			}
 		}
 	}
+	
+	public String randomBotName() {
+		boolean redoName = false;
+		String botName;
+		do {
+			redoName = false;
+			botName = JoueurVirtuel.getRandomName();
+			Iterator<Joueur> it = listeJoueurs.getListeJoueurs().iterator();
+			while(it.hasNext()) {
+				if(botName==it.next().getNomJoueur()) {
+					redoName = true;
+				}
+			}
+		} while(redoName);
+		return botName;
+	}
 	private void askForBots() {
 		int playerCount = listeJoueurs.getPlayerCount();
 		if(playerCount<MAX_PLAYER_COUNT) {
@@ -78,27 +96,15 @@ public class Partie {
 				System.out.println("\n"+"Here are the bots :" + "\n");
 			}
 			for(int i = 0; i <botCount;i++) {
-				boolean redoName = false;
-				String botName;
-				do {
-					redoName = false;
-					botName = JoueurVirtuel.getRandomName();
-					Iterator<Joueur> it = listeJoueurs.getListeJoueurs().iterator();
-					while(it.hasNext()) {
-						if(botName==it.next().getNomJoueur()) {
-							redoName = true;
-						}
-					}
-				} while(redoName);
+				String botName = randomBotName();
 				System.out.println("This bot will be named " + botName);
 				System.out.println("Which strategy should " + botName + " follow?");
-				BotStrategy[] strats = {new AccuserStrategy(), new RandomStrategy(),new CartesStrategy()};
-				for(int j =1;j<=strats.length;j++) {
-					System.out.println(j + " : " + strats[j-1].toString());
+				for(int j =1;j<=strats.size();j++) {
+					System.out.println(j + " : " + strats.get(i).toString());
 				}
-				int number = this.askNumber(1, strats.length);
+				int number = this.askNumber(1, strats.size());
 				
-				listeJoueurs.addPlayer(new JoueurVirtuel(botName,strats[number-1]));
+				listeJoueurs.addPlayer(new JoueurVirtuel(botName,strats.get(number-1)));
 				System.out.println();
 			}
 		}
@@ -212,23 +218,45 @@ public class Partie {
 		
 		
 		this.listeJoueurs = new playerList();
+		this.strats = new ArrayList<>();
+		strats.add(new RandomStrategy());
+		strats.add(new AccuserStrategy());
+		strats.add(new RandomStrategy());
 		System.out.println("Welcome to WitchHunt");
 		System.out.println("************************");
 		this.sc = new Scanner(System.in);
-		this.askForRealPlayers();
-		this.askForBots();
+		
+		
+		this.setupJoueurs();
+		
+		//A MODIF PLUS TARD
+		//this.askForRealPlayers();
+		//this.askForBots();
 		
 		
 		distributionCartes();
 		displayCards();
 	}
+	private void setupJoueurs() {
+		NouveauJoueurGUI nouveauJoueurGUI = new NouveauJoueurGUI(listeJoueurs, strats);
+		synchronized(this) {
+			while(!this.playerSetupDone) {
+				try {
+					this.wait();
+				} catch (InterruptedException e) {
+				}
+			}
+		}
+		System.out.println(listeJoueurs.getAllPlayers().toString());
+	}
+
 	private void displayCards() {
 		Iterator<Joueur> it = listeJoueurs.getListeJoueurs().iterator();
-		sc.nextLine();
 		while(it.hasNext()) {
 			Joueur j = it.next();
 			j.discoverHand();
-			j.chooseIdentityCard();
+			//j.chooseIdentityCard(); 
+			//Pas utile dans le GUI : à modif
 			System.out.println();
 			if(!j.isABot()) {
 				System.out.println("When you're ready and want to remove your cards from the screen, press ENTER");
@@ -357,6 +385,7 @@ public class Partie {
 		Collections.shuffle(cartes);
 		
 		
+		
 		float cardsPerPlayer = cartes.size() / listeJoueurs.getListeJoueurs().size();
 		Iterator<Joueur> itJ = listeJoueurs.getListeJoueurs().iterator();
 		Iterator<Carte> itC = cartes.iterator();
@@ -373,19 +402,18 @@ public class Partie {
 			c.setDefausse(true);
 			System.out.println("The " + c.getNomCarte() + " card was discarded.");
 		}
-		
-		this.setupViews();
+
+		CartesGUI cartesGUI = new CartesGUI(this.cartes,this.listeJoueurs.getAllPlayers());
+	
 	} 
 	
-	private void setupViews() {
-		CartesGUI cartesGUI = new CartesGUI(this.cartes,this.listeJoueurs.getAllPlayers());
-	}
 	public Scanner getScanner() {
 		return sc;
 	}
 	
 	public static void main(String args[]) {
 		Partie.getInstance().setup();
+		
 		Partie.getInstance().demarrerPartie();
 	}
 
@@ -425,6 +453,18 @@ public class Partie {
 			}
 		}
 			
+	}
+
+	public void playerSetupDone() {
+		synchronized(this) {
+			this.playerSetupDone=true;
+			this.notifyAll();
+		}
+
+	}
+
+	public static int getMinPlayerCount() {
+		return MIN_PLAYER_COUNT;
 	}
 }
 
