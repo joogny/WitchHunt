@@ -22,39 +22,30 @@ import java.awt.event.ActionEvent;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
+import Controleur.ControleurChangementCarte;
 import Controleur.ControleurChoixCarte;
 
-@SuppressWarnings("deprecation")
-public class CartesGUI implements Observer{
+public class CartesGUI{
 
 	private JFrame frame;
 	private JComboBox<Carte> cardList;
 	private JLabel imageLabel;
 	private Joueur joueur;
 	private JButton btnChooseCard;
-	private final PlayerAction playerAction = PlayerAction.CHOOSECARD;
 	
 	/**
 	 * Create the application.
 	 * 
 	 * @param cartes
 	 */
-	public CartesGUI(ArrayList<Carte> cartes, ArrayList<Joueur> joueurs) {
-		
-		Iterator<Joueur> it = joueurs.iterator();
+	public CartesGUI(ArrayList<Carte> cartes, Joueur j) {
+		this.joueur=j;
+		cardList = new JComboBox<Carte>();
+		Iterator<Carte> it = cartes.iterator();
 		while(it.hasNext()) {
-			Joueur j = it.next();
-
-			j.addObserver(this);
+			cardList.addItem(it.next());
 		}
-		
-		Iterator<Carte> it2 = cartes.iterator();
-		while(it2.hasNext()) {
-			it2.next().addObserver(this);
-		}
-		
 		this.initialize();
-		
 	}
 
 	/**
@@ -67,18 +58,10 @@ public class CartesGUI implements Observer{
 
 		frame.getContentPane().setLayout(null);
 
-		cardList = new JComboBox<Carte>();
 		cardList.setBounds(10, 11, 333, 34);
 		frame.getContentPane().add(cardList);
 
-		// mise à jour de l'image en fonction de la carte choisie
-		cardList.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Carte c = (Carte) cardList.getSelectedItem();
-				if(c!=null) {
-					imageLabel.setIcon(new ImageIcon(((Carte) cardList.getSelectedItem()).getFilePath()));				}
-			}
-		});
+
 
 		imageLabel = new JLabel(new ImageIcon());
 		imageLabel.setBounds(10, 56, 333, 472);
@@ -89,27 +72,14 @@ public class CartesGUI implements Observer{
 
 		frame.getContentPane().add(btnChooseCard);
 		
-		btnChooseCard.addActionListener(new ControleurChoixCarte(this));
+		
+		// mise à jour de l'image en fonction de la carte choisie
+		new ControleurChangementCarte(cardList,imageLabel);
+		imageLabel.setIcon(new ImageIcon(((Carte) cardList.getSelectedItem()).getFilePath()));		
+		btnChooseCard.addActionListener(new ControleurChoixCarte(joueur, cardList, btnChooseCard));
+		this.frame.setVisible(true);
 	}
 	
-	@Override
-	public void update(Observable o, Object arg) {
-		if(Joueur.getPlayerAction()==this.playerAction) {
-			this.frame.setVisible(true);
-			if(o instanceof Joueur) {
-				Joueur j = (Joueur) o;
-					this.joueur=j;
-			}
-			if(o instanceof Carte) {
-				Carte c = (Carte) o;
-				cardList.addItem(c);
-			}
-		}
-		else {
-			this.frame.setVisible(false);
-		}
-		
-	}
 
 	/**
 	 * Launch the application.

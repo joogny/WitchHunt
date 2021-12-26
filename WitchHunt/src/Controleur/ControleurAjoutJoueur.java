@@ -18,24 +18,19 @@ import partie.Partie;
 import partie.playerList;
 
 public class ControleurAjoutJoueur {
-	public ControleurAjoutJoueur(JButton btnAjoutWitch, JButton btnAjoutVillager, DefaultListModel<Joueur> model,
+	public ControleurAjoutJoueur(JButton btnAjoutJoueur,
 			playerList joueurs, JTextField playerName, JLabel errorField,JButton btnAjoutBot,JComboBox<BotStrategy> listStrats, JButton btnOK) {
 		
 		
-		btnAjoutWitch.addActionListener(new ActionListener() {
+		btnAjoutJoueur.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				ajouterJoueur(model, joueurs, playerName, errorField, false, btnOK);
-			}
-		});
-		btnAjoutVillager.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				ajouterJoueur(model, joueurs, playerName, errorField, true, btnOK);
+				ajouterJoueur(joueurs, playerName, errorField, btnOK);
 			}
 		});
 		
 		btnAjoutBot.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ajouterBot(model,joueurs,listStrats,errorField, btnOK);
+				ajouterBot(joueurs,listStrats,errorField, btnOK);
 			}
 		});
 		
@@ -48,24 +43,23 @@ public class ControleurAjoutJoueur {
 	}
 
 
-	private void ajouterBot(DefaultListModel<Joueur> model, playerList joueurs, JComboBox<BotStrategy> listStrats,
+	private void ajouterBot(playerList joueurs, JComboBox<BotStrategy> listStrats,
 			JLabel errorField,JButton btnOK) {
 		JoueurVirtuel j = new JoueurVirtuel(Partie.getInstance().randomBotName(),(BotStrategy) listStrats.getSelectedItem());
-		ajouterAListe(j, joueurs, model, errorField, btnOK);
+		ajouterAListe(j, joueurs, errorField, btnOK);
 	}			
-	private void ajouterJoueur(DefaultListModel<Joueur> model, playerList joueurs, JTextField playerName,
-			JLabel errorField, boolean role,JButton btnOK) {
+	private void ajouterJoueur(playerList joueurs, JTextField playerName,
+			JLabel errorField,JButton btnOK) {
 		if (!playerName.getText().equals("")) {
 			Joueur j = new Joueur(playerName.getText());
-			ajouterAListe(j, joueurs, model, errorField, btnOK);
+			ajouterAListe(j, joueurs, errorField, btnOK);
 			playerName.setText("");
 		}
 	}
 	
-	private void ajouterAListe(Joueur j,playerList joueurs,DefaultListModel<Joueur> model,JLabel errorField,JButton btnOK) {
+	private void ajouterAListe(Joueur j,playerList joueurs,JLabel errorField,JButton btnOK) {
 		if (joueurs.getAllPlayers().size() < Partie.getMaxPlayerCount()) {
 				joueurs.addPlayer(j);
-				model.addElement(j);
 			}
 		else {
 			errorField.setVisible(true);

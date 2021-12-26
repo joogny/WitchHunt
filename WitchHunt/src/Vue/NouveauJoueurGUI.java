@@ -23,17 +23,21 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Observable;
+import java.util.Observer;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JComboBox;
-public class NouveauJoueurGUI {
+public class NouveauJoueurGUI implements Observer{
 
 	private JFrame frame;
 	private JTextField playerName;
 	private playerList joueurs;
 	private JComboBox comboBox;
+	private JList<Joueur> list;
+	private DefaultListModel<Joueur> model;
 	/**
 	 * Launch the application.
 	 */
@@ -67,6 +71,7 @@ public class NouveauJoueurGUI {
 	 * Create the application.
 	 */
 	public NouveauJoueurGUI(playerList listeJoueur,ArrayList<BotStrategy> strats) {
+		listeJoueur.addObserver(this);
 		this.joueurs=listeJoueur;
 		comboBox = new JComboBox<BotStrategy>();
 		Iterator<BotStrategy> it = strats.iterator();
@@ -87,8 +92,8 @@ public class NouveauJoueurGUI {
 		frame.getContentPane().setLayout(null);
 		
 		
-		DefaultListModel<Joueur> model = new DefaultListModel<Joueur>();
-		JList<Joueur> list = new JList<Joueur>(model);
+		model = new DefaultListModel<Joueur>();
+		list = new JList<Joueur>(model);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setBounds(10, 11, 120, 309);
 		frame.getContentPane().add(list);
@@ -98,16 +103,11 @@ public class NouveauJoueurGUI {
 		frame.getContentPane().add(playerName);
 		playerName.setColumns(10);
 		
-		JButton addWitch = new JButton("Add a Witch");
-		addWitch.setBounds(174, 108, 113, 42);
-		frame.getContentPane().add(addWitch);
+		JButton addPlayer = new JButton("Add player");
+		addPlayer.setBounds(174, 108, 113, 42);
+		frame.getContentPane().add(addPlayer);
 		
-		JButton addVillager = new JButton("Add a Villager");
-
-		addVillager.setBounds(174, 153, 113, 42);
-		frame.getContentPane().add(addVillager);
-		
-		JLabel errorField = new JLabel("Le nombre de joueurs maximum est de 6!");
+		JLabel errorField = new JLabel("There can only be up to 6 players!");
 		errorField.setFont(new Font("Tahoma", Font.BOLD, 15));
 		errorField.setForeground(Color.RED);
 		errorField.setBounds(158, 285, 322, 35);
@@ -132,8 +132,17 @@ public class NouveauJoueurGUI {
 		btnOK.setVisible(false);
 		frame.getContentPane().add(btnOK);
 		
+		new ControleurAjoutJoueur(addPlayer, joueurs, playerName, errorField, btnAddABot, comboBox, btnOK);
 		
-		new ControleurAjoutJoueur(addWitch, addVillager, model, joueurs, playerName,errorField, btnAddABot, comboBox,btnOK);
-		
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {;
+		if(o instanceof playerList) {
+			if(arg instanceof Joueur) {
+				model.addElement((Joueur) arg);
+				System.out.println(arg.toString());
+			}
+		}
 	}
 }

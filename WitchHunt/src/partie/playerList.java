@@ -5,8 +5,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Observable;
 
-public class playerList {
+public class playerList extends Observable{
 	private LinkedList<Joueur> listeJoueurs;
 	private Joueur accuser;
 	private ArrayList<Joueur> listeJoueursElimine;
@@ -100,6 +101,8 @@ public class playerList {
 
 	public void addPlayer(Joueur joueur) {
 		this.listeJoueurs.add(joueur);
+		this.setChanged();
+		this.notifyObservers(joueur);
 	}
 	public int getPlayerCount() {
 		return this.listeJoueurs.size();

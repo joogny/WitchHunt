@@ -15,17 +15,18 @@ public class ControleurChoixCarte implements ActionListener {
 	private CartesGUI cartesGUI;
 
 	
-	public ControleurChoixCarte(CartesGUI cartesGUI) {
-		this.cartesGUI = cartesGUI;
+	public ControleurChoixCarte(Joueur j, JComboBox comboBox,JButton btnChooseCard) {
+		btnChooseCard.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				j.setChosenCard((Carte) comboBox.getSelectedItem());
+				comboBox.removeAllItems();
+			}
+		});
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		Joueur joueur = cartesGUI.getJoueur();
-		JComboBox comboBox = cartesGUI.getCardList();
-		joueur.setChosenCard((Carte) comboBox.getSelectedItem());
-		cartesGUI.getFrame().setVisible(false);
-		comboBox.removeAllItems();
+
 		
 	}
 }

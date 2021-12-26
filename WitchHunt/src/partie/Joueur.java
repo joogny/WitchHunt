@@ -12,7 +12,7 @@ import effets.EffetAvantTour;
 
 public class Joueur extends Observable{
 	private String nomJoueur;
-	private boolean estSorciere;
+	private Boolean estSorciere;
 	private int score;
 	private boolean elimine;
 	private boolean revelee;
@@ -288,11 +288,16 @@ public class Joueur extends Observable{
 	public int getScore() {
 		return score;
 	}
-	public boolean estSorciere() {
+	public Boolean estSorciere() {
 		return this.estSorciere;
 	}
 	public void setEstSorciere(boolean role) {
-		this.estSorciere=role;
+		synchronized(this) {
+			this.estSorciere=role;
+			this.notifyAll();
+		}
+
+		
 	}
 	public void setEstRevele() {
 		this.revelee=true;
@@ -305,6 +310,9 @@ public class Joueur extends Observable{
 	}
 	public static void setPlayerAction(PlayerAction p) {
 		Joueur.playerAction=p;
+	}
+	public ArrayList<Carte> getCards() {
+		return this.main;
 	}
 
 	public void discoverHand() {
@@ -466,15 +474,9 @@ public class Joueur extends Observable{
 	}
 	public Carte choisirCarte(ArrayList<Carte> cartes) throws NoCardsToChooseFromException {
 		chosenCard = null;
+		System.out.println("choix");
 		if(cartes.size()!=0) {
-			Joueur.playerAction = PlayerAction.CHOOSECARD;
-			this.setChanged();
-			this.notifyObservers();
-			Iterator<Carte> it = cartes.iterator();
-			while(it.hasNext()) {
-				Carte c = it.next();
-				c.updateCard();
-			}
+			CartesGUI vue = new CartesGUI(cartes,this);
 			
 			synchronized(this) {
 				while(chosenCard==null) {
@@ -559,4 +561,15 @@ public class Joueur extends Observable{
 	public void setUntargetablePlayer(Joueur j) {
 		this.untargetablePlayer=j;
 	}
+
+
+
+	public void updatePlayer() {
+		this.setChanged();
+		this.notifyObservers();
+		
+	}
+
+
+
 }

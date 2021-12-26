@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.Random;
 import java.util.Scanner;
 
-import Vue.CartesGUI;
+import Vue.ChoixRoleGUI;
 import Vue.NouveauJoueurGUI;
 import bots.AccuserStrategy;
 import bots.BotStrategy;
@@ -150,7 +150,7 @@ public class Partie {
 					this.listeJoueurs.reset();
 					listeJoueurs.movePlayerFirst(j);
 					distributionCartes();
-					displayCards();
+					chooseRoles();
 					demarrerPartie();
 				}
 			}
@@ -235,7 +235,7 @@ public class Partie {
 		
 		
 		distributionCartes();
-		displayCards();
+		chooseRoles();
 	}
 	private void setupJoueurs() {
 		NouveauJoueurGUI nouveauJoueurGUI = new NouveauJoueurGUI(listeJoueurs, strats);
@@ -250,21 +250,27 @@ public class Partie {
 		System.out.println(listeJoueurs.getAllPlayers().toString());
 	}
 
-	private void displayCards() {
+	private void chooseRoles() {
+		ChoixRoleGUI GUI = new ChoixRoleGUI(listeJoueurs.getAllPlayers());
 		Iterator<Joueur> it = listeJoueurs.getListeJoueurs().iterator();
 		while(it.hasNext()) {
 			Joueur j = it.next();
-			j.discoverHand();
-			//j.chooseIdentityCard(); 
-			//Pas utile dans le GUI : à modif
-			System.out.println();
-			if(!j.isABot()) {
-				System.out.println("When you're ready and want to remove your cards from the screen, press ENTER");
-				sc.nextLine();
-				clearScreen();
+			if(!j.isABot()) {;
+				j.updatePlayer();
+				synchronized(j) {
+					while(j.estSorciere()==null) {
+						try {
+							j.wait();
+						} catch (InterruptedException e) {
+						}
+					}					
+				}
+				System.out.println(j.toString() + " : " + j.estSorciere());
 			}
+			//TODO : bot
+			}
+		GUI.hide();
 		}
-	}
 	
 	
 	
@@ -285,7 +291,7 @@ public class Partie {
 		listeEffets huntAngryMob = new listeEffets(false,true);
 		huntAngryMob.ajouterEffet(EffetNom.REVEALANIDENTITY);
 		
-		Carte angryMob = new Carte("Angry Mob",witchAngryMob,huntAngryMob,"./src/images/angry_mob.png.png");
+		Carte angryMob = new Carte("Angry Mob",witchAngryMob,huntAngryMob,"./src/images/angry_mob.png");
 		cartes.add(angryMob);//1
 		
 		//The Inquisition
@@ -387,6 +393,8 @@ public class Partie {
 		
 		
 		float cardsPerPlayer = cartes.size() / listeJoueurs.getListeJoueurs().size();
+
+		System.out.println(listeJoueurs.getListeJoueurs().size());
 		Iterator<Joueur> itJ = listeJoueurs.getListeJoueurs().iterator();
 		Iterator<Carte> itC = cartes.iterator();
 		while(itJ.hasNext()) {
@@ -403,7 +411,6 @@ public class Partie {
 			System.out.println("The " + c.getNomCarte() + " card was discarded.");
 		}
 
-		CartesGUI cartesGUI = new CartesGUI(this.cartes,this.listeJoueurs.getAllPlayers());
 	
 	} 
 	
