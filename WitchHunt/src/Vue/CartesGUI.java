@@ -1,10 +1,9 @@
 package Vue;
 
 import java.awt.EventQueue;
+
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
@@ -13,7 +12,6 @@ import javax.swing.JFrame;
 
 import partie.Carte;
 import partie.Joueur;
-import partie.PlayerAction;
 
 import java.awt.BorderLayout;
 import javax.swing.JLabel;

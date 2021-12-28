@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 import Vue.CartesCLI;
 import Vue.CartesGUI;
+import Vue.ChooseBetween2OptionsGUI;
 import effets.EffetAvantTour;
 
 public class Joueur extends Observable{
@@ -21,7 +22,7 @@ public class Joueur extends Observable{
 	private ArrayList<EffetAvantTour> effetsAvantTour;
 	
 	private Carte chosenCard;
-	private static PlayerAction playerAction;
+	private Action action;
 	
 	public Joueur(String nom) {
 		this.nomJoueur=nom;
@@ -305,12 +306,6 @@ public class Joueur extends Observable{
 	public boolean isABot() {
 		return false;
 	}
-	public static PlayerAction getPlayerAction() {
-		return Joueur.playerAction;
-	}
-	public static void setPlayerAction(PlayerAction p) {
-		Joueur.playerAction=p;
-	}
 	public ArrayList<Carte> getCards() {
 		return this.main;
 	}
@@ -379,7 +374,24 @@ public class Joueur extends Observable{
 	
 	
 	public String chooseBetween2Options(String a, String b) {
-		Scanner sc = Partie.getInstance().getScanner();
+		this.action=null;
+		ChooseBetween2OptionsGUI GUI = new ChooseBetween2OptionsGUI(a,b,this);
+		synchronized(this) {
+		while(this.action==null) {
+			try {
+				this.wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		if(this.action==Action.OPTION1) {
+			return a;
+		}
+		else {
+			return b;
+		}
+		}
+		/*Scanner sc = Partie.getInstance().getScanner();
 		String s = sc.next();
 		if(s.equals(a)) {
 			return a;
@@ -391,7 +403,7 @@ public class Joueur extends Observable{
 			System.out.println("Please type either "+ a+ " or " + b);
 			chooseBetween2Options(a, b);
 		}
-		return null;
+		return null;*/
 	}
 	
 	public void reset() {
@@ -568,6 +580,15 @@ public class Joueur extends Observable{
 		this.setChanged();
 		this.notifyObservers();
 		
+	}
+
+
+
+	public void setAction(Action action) {
+		synchronized(this) {
+			this.action=action;
+			this.notifyAll();
+		}
 	}
 
 
