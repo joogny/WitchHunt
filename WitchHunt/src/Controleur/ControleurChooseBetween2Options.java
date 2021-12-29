@@ -14,12 +14,14 @@ public class ControleurChooseBetween2Options {
 
 			public void actionPerformed(ActionEvent e) {
 				j.setAction(Action.OPTION1);
+				System.out.println("test1");
 			}
 		});
 		op2.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
 				j.setAction(Action.OPTION2);
+				System.out.println("test2");
 			}
 		});
 	}

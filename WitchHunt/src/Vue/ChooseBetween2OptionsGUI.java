@@ -69,6 +69,6 @@ public class ChooseBetween2OptionsGUI {
 		frame.getContentPane().add(lblInstruction);
 		frame.setVisible(true);
 		
-		new ControleurChooseBetween2Options(this.joueur, btnOption1, btnOption1);
+		new ControleurChooseBetween2Options(this.joueur, btnOption1, btnOption2);
 	}
 }

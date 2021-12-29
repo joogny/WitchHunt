@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Scanner;
 
+import Vue.AskNumberCLI;
 import Vue.CartesCLI;
 import Vue.CartesGUI;
 import Vue.ChooseBetween2OptionsGUI;
@@ -23,7 +24,6 @@ public class Joueur extends Observable{
 	
 	private Carte chosenCard;
 	private Action action;
-	
 	public Joueur(String nom) {
 		this.nomJoueur=nom;
 		this.main=new ArrayList<Carte>();
@@ -205,7 +205,7 @@ public class Joueur extends Observable{
 	}
 	
 	public int askNumber(int min, int max) {
-		return Partie.getInstance().askNumber(min, max);
+		return 0;//A MODIF;
 	}
 	public void playHuntCard() throws NoCardsToChooseFromException {
 		System.out.println("Choose a card to play!\n");
@@ -489,7 +489,7 @@ public class Joueur extends Observable{
 		System.out.println("choix");
 		if(cartes.size()!=0) {
 			CartesGUI vue = new CartesGUI(cartes,this);
-			
+			CartesCLI vueCLI = new CartesCLI(this,cartes);
 			synchronized(this) {
 				while(chosenCard==null) {
 					try {
@@ -590,6 +590,9 @@ public class Joueur extends Observable{
 			this.notifyAll();
 		}
 	}
+
+
+
 
 
 
