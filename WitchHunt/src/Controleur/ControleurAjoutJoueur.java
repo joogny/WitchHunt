@@ -64,8 +64,5 @@ public class ControleurAjoutJoueur {
 		else {
 			errorField.setVisible(true);
 		}
-		if(joueurs.getAllPlayers().size()>=Partie.getMinPlayerCount()) {
-			btnOK.setVisible(true);
-		}
 	}
 }

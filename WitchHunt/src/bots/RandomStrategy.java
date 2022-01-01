@@ -24,4 +24,9 @@ public class RandomStrategy implements BotStrategy{
 	public String toString() {
 		return "Random bot : acts randomly for everything!";
 	}
+
+	@Override
+	public String getStringToType() {
+		return "random";
+	}
 }

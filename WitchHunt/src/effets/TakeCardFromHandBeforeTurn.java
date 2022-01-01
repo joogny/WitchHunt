@@ -6,6 +6,7 @@ import partie.Carte;
 import partie.Effet;
 import partie.Joueur;
 import partie.NoCardsToChooseFromException;
+import partie.NoPlayersToChooseFromException;
 import partie.Partie;
 
 public class TakeCardFromHandBeforeTurn extends EffetAvantTour {
@@ -20,11 +21,18 @@ public class TakeCardFromHandBeforeTurn extends EffetAvantTour {
 
 	@Override
 	public void activerEffet(Joueur joueurCarte,Joueur accusateur) {
-		Joueur j = joueurCarte.choisirJoueur();
-		Partie.getInstance().getListeJoueurs().movePlayerFirst(j);
-		System.out.println(j.toString() + "will take next turn and will have a random card stolen!");
-		super.setJoueurCarte(joueurCarte);
-		j.ajouterEffetDebutTour(this);
+		ArrayList<Joueur> joueurs = new ArrayList<Joueur>(Partie.getInstance().getListeJoueurs().getJoueursNonEliminées());
+		joueurs.remove(joueurCarte);
+		Joueur j;
+		try {
+			j = joueurCarte.choisirJoueur(joueurs);
+			Partie.getInstance().getListeJoueurs().movePlayerFirst(j);
+			System.out.println(j.toString() + "will take next turn and will have a random card stolen!");
+			super.setJoueurCarte(joueurCarte);
+			j.ajouterEffetDebutTour(this);
+		} catch (NoPlayersToChooseFromException e) {
+			System.out.println(e);
+		}
 	}
 
 

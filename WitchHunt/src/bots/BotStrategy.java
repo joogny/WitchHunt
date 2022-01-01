@@ -7,4 +7,6 @@ public interface BotStrategy {
 	public boolean revealIdentityInsteadOfCard();
 	
 	public String toString();
+	
+	public String getStringToType();
 }

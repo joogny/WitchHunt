@@ -79,29 +79,8 @@ public class CartesGUI{
 	}
 	
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		ArrayList<Carte> cartes = new ArrayList<>();
-
-		cartes.add(new Carte("Angry Mob", "./src/images/the_inquisition.png"));
-		cartes.add(new Carte("The Inquisition", "./src/images/angry_mob.png"));
-
-		CartesGUI window = new CartesGUI(cartes, null);
-		window.frame.setVisible(true);
-	}
-
-	public Joueur getJoueur() {
-		return this.joueur;
-	}
-
-	public JComboBox<Carte> getCardList() {
-		return this.cardList;
-	}
-
-	public JFrame getFrame() {
-		return frame;
+	public void hide() {
+		this.frame.setVisible(false);
 	}
 
 

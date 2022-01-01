@@ -3,6 +3,7 @@ package effets;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Random;
 
 import partie.Carte;
 import partie.Effet;
@@ -18,17 +19,19 @@ public class AccuserDiscards extends Effet {
 		// TODO Auto-generated constructor stub
 	}
 
-
 	@Override
-	public void activerEffet(Joueur joueurCarte,Joueur accusateur) {
-			Carte c;
-			try {
-				c = accusateur.choisirCarteAJouer();
-				accusateur.defausseCarte(c);
-			} catch (NoCardsToChooseFromException e) {
-				System.out.println(accusateur.toString() + " had no cards left to discard");
-			}
-			
+	public void activerEffet(Joueur joueurCarte, Joueur accusateur) {
+		Carte c;
+		ArrayList<Carte> cartes;
+		System.out.println(enoncé);
+		cartes = accusateur.getMain();
+		if (cartes.size() == 0) {
+			System.out.println(accusateur.toString() + " had no cards left to discard");
+		} else {
+		    Random rand = new Random();
+		    c = cartes.get(rand.nextInt(cartes.size()));
+		    joueurCarte.defausseCarte(c);
+		    
 		}
 	}
-	
+}

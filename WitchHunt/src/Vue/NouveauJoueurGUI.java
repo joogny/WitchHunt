@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JTextField;
 
 import partie.Joueur;
+import partie.Partie;
 import partie.playerList;
 
 import javax.swing.JList;
@@ -38,39 +39,18 @@ public class NouveauJoueurGUI implements Observer{
 	private JComboBox comboBox;
 	private JList<Joueur> list;
 	private DefaultListModel<Joueur> model;
+	private JButton btnOK;
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		playerList p = new playerList();
-		ArrayList<BotStrategy> strats = new ArrayList<>();
-		strats.add(new AccuserStrategy());
-		strats.add(new CartesStrategy());
-		strats.add(new RandomStrategy());
 
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					NouveauJoueurGUI window = new NouveauJoueurGUI(p,strats);
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println(p.getAllPlayers().toString());
-	}
 
 	/**
 	 * Create the application.
+	 * @param partie 
 	 */
-	public NouveauJoueurGUI(playerList listeJoueur,ArrayList<BotStrategy> strats) {
+	public NouveauJoueurGUI(playerList listeJoueur,ArrayList<BotStrategy> strats, Partie partie) {
+		partie.addObserver(this);
 		listeJoueur.addObserver(this);
 		this.joueurs=listeJoueur;
 		comboBox = new JComboBox<BotStrategy>();
@@ -122,7 +102,7 @@ public class NouveauJoueurGUI implements Observer{
 		btnAddABot.setBounds(480, 108, 113, 42);
 		frame.getContentPane().add(btnAddABot);
 		
-		JButton btnOK = new JButton("OK");
+		btnOK = new JButton("OK");
 		btnOK.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.setVisible(false);
@@ -141,7 +121,16 @@ public class NouveauJoueurGUI implements Observer{
 		if(o instanceof playerList) {
 			if(arg instanceof Joueur) {
 				model.addElement((Joueur) arg);
-				System.out.println(arg.toString());
+			}
+			playerList list = (playerList) o;
+			if(list.getAllPlayers().size()>=Partie.getMinPlayerCount()) {
+				btnOK.setVisible(true);
+			}
+		}
+		if(o instanceof Partie) {
+			Partie p = (Partie) o;
+			if(p.getPlayerSetupDone()) {
+				this.frame.setVisible(false);
 			}
 		}
 	}

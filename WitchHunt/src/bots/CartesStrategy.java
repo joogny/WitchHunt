@@ -12,4 +12,9 @@ public class CartesStrategy implements BotStrategy {
 	public String toString() {
 		return "Cartes Strategy : will always try to play cards!";
 	}
+
+	@Override
+	public String getStringToType() {
+		return "cartes";
+	}
 }

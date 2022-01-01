@@ -1,7 +1,10 @@
 package effets;
 
+import java.util.ArrayList;
+
 import partie.Effet;
 import partie.Joueur;
+import partie.NoPlayersToChooseFromException;
 import partie.Partie;
 
 public class CantReaccuse extends Effet {
@@ -15,10 +18,16 @@ public class CantReaccuse extends Effet {
 
 	@Override
 	public void activerEffet(Joueur joueurCarte,Joueur accusateur) {
-		Joueur j = joueurCarte.choisirJoueur();
-		System.out.println(j.toString() + " will take next turn!");
-		Partie.getInstance().getListeJoueurs().movePlayerFirst(j);
-		j.setUntargetablePlayer(joueurCarte);
+		ArrayList<Joueur> joueurs = new ArrayList<Joueur>(Partie.getInstance().getListeJoueurs().getJoueursNonEliminées());
+		joueurs.remove(joueurCarte);
+		Joueur j;
+		try {
+			j = joueurCarte.choisirJoueur(joueurs);
+			Partie.getInstance().getListeJoueurs().movePlayerFirst(j);
+			j.setUntargetablePlayer(joueurCarte);
+		} catch (NoPlayersToChooseFromException e) {
+			System.out.println("No players left!");
+		}
 	}
 
 

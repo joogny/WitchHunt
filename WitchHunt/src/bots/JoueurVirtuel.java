@@ -13,6 +13,8 @@ import partie.Partie;
 
 public class JoueurVirtuel extends Joueur {
 	BotStrategy strategy;
+	
+	
 	public JoueurVirtuel(String nom,BotStrategy strat) {
 		super(nom);
 		this.strategy = strat;
@@ -27,54 +29,59 @@ public class JoueurVirtuel extends Joueur {
 	}
 
 	@Override
-	public void discoverHand() {
-		System.out.println(this.getNomJoueur() + " discovered their hand...");
-	}
-	@Override
-	public void chooseIdentityCard() {
-		Random r = new Random();
-		this.setEstSorciere(r.nextBoolean());
-		System.out.println(this.getNomJoueur() + " chose their role!");
-	}
-	@Override
 	public boolean isABot() {
 		return true;
 	}
 	
 	
-
+	
 	
 	public String toString() {
 		return this.getNomJoueur()+"(bot)";
 	}
 
 	@Override
-	public String chooseBetween2Options(String a, String b) {
+	public String chooseBetween2Options(String a, String b,String AFull,String BFull) {
 		Random rd = new Random();
 		if(rd.nextBoolean()) {
 			return a;
 		}
 		return b;
 	}
-	@Override
-	public int askNumber(int min, int max) {
+	private int askNumber(int min, int max) {
 		Random rd = new Random();
 		if(min==max) {
 			return min;
 		}
-		return rd.nextInt(max + 1 - min) + min;
+		int number = rd.nextInt(max + 1 - min) + min;
+		System.out.println(number);
+		return number;
 	}
 	
 	public Carte choisirCarte(ArrayList<Carte> cartes) throws NoCardsToChooseFromException {
 		if(cartes.size()!=0) {
 			int number = this.askNumber(1, cartes.size());
-			System.out.println(this.toString() + " chose \n" + cartes.get(number-1).toString());
+			System.out.println(this.toString() + " chose " + cartes.get(number-1).toString());
+			System.out.println(cartes.get(number-1).affichageCarte());
 			return cartes.get(number-1);
 		}
 		else {
 			throw new NoCardsToChooseFromException(this.toString() + " has no cards to choose from!");
 		}
 	}
+
+	@Override
+	public Joueur choisirJoueur(ArrayList<Joueur> joueurs) throws NoPlayersToChooseFromException {
+		if(joueurs.size()!=0) {
+			int number = this.askNumber(1, joueurs.size());
+			System.out.println(this.toString() + " chose " + joueurs.get(number-1).toString());
+			return joueurs.get(number-1);
+		}
+		else {
+			throw new NoPlayersToChooseFromException("You can't choose any players");
+		}
+	}
+
 	@Override
 	protected void accuseOrUseCard() throws NoPlayersToChooseFromException, NoCardsToChooseFromException {
 		if(strategy.accuseInsteadOfCard()) {

@@ -41,12 +41,13 @@ public class TakeRevealedCardFromAnyPlayers extends Effet{
 					Joueur j = itJoueur.next();
 					cartesJoueur=j.getRevealedCards();
 					if(cartesJoueur.contains(c)) {
-						cartesJoueur.remove(c);
+						j.removeCardFromHand(c);
 					}
 				}
 				c.setRevelee(false);
 				c.setDefausse(false);
 				joueurCarte.addCardToHand(c);
+				
 				
 				
 			} catch (NoCardsToChooseFromException e) {

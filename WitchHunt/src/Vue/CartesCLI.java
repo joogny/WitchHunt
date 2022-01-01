@@ -11,61 +11,33 @@ import java.util.Observer;
 import partie.Carte;
 import partie.Joueur;
 
-public class CartesCLI implements Runnable {
+public class CartesCLI extends NumberBasedCLI{
 	private ArrayList<Carte> cartes;
-	private Joueur j;
-	private boolean stop;
+
 	
 	public CartesCLI(Joueur j, ArrayList<Carte> cartes) {
 		this.cartes=cartes;
 		this.j=j;
-		this.stop=false;
-		Thread t = new Thread(this);
-		t.start();
+		this.max=cartes.size();
+		this.min=1;
 	}
 	@Override
-	public void run() {
+	protected void passValue(int nb) {
+		j.setChosenCard(cartes.get(nb));
+	}
+	@Override
+	public void setup() {
+		this.ErrorMessage();
 		Iterator<Carte> it = cartes.iterator();
+		int index=1;
 		while(it.hasNext()) {
+			System.out.println(index+" : ");
 			System.out.println(it.next().affichageCarte());
+			System.out.println();
+			index++;
 		}
-		int min=1;
-		int max=cartes.size();
-		String ErrorMessage = "Please input a number between " + min + " and " + max+".";
-		System.out.println(ErrorMessage);
-		String saisie = null;
-		int nb;
-		while(!stop) {
-			saisie = lireChaine();
-			try {
-				nb = Integer.parseInt(saisie);
-				if(nb>max||nb<min) {
-					System.out.println(ErrorMessage);
-				}
-				else {
-					j.setChosenCard(cartes.get(nb-1));
-					this.stop();
-				}
-			} catch (NumberFormatException e) {
-				System.out.println(ErrorMessage);
-			}
-		}
-
 	}
 	
-	private void stop() {
-		this.stop=true;
-	}
-	private String lireChaine() {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		String resultat = null;
-		try {
-			resultat = br.readLine();
-		} catch (IOException e) {
-			System.err.println(e.getMessage());
-		}
-		return resultat;
-	}
 	
 	
 }

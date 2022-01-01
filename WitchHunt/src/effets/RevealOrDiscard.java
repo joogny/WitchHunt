@@ -52,7 +52,7 @@ public class RevealOrDiscard extends Effet {
 				Partie.getInstance().getListeJoueurs().movePlayerFirst(j);
 			}
 			else {
-				j.chooseRevealOrIdentity(joueurCarte);
+				j.revealOrDiscard(joueurCarte);
 			}
 		} catch (NoPlayersToChooseFromException e1) {
 			System.out.println("You have no one to use this effect on! The only player remaining has the " + nomCarteBloquante + " card!");

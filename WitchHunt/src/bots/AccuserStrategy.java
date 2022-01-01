@@ -19,4 +19,9 @@ public class AccuserStrategy implements BotStrategy {
 	public String toString() {
 		return "Accuser Strategy : will always try to accuse other players!";
 	}
+
+	@Override
+	public String getStringToType() {
+		return "accuser";
+	}
 }
