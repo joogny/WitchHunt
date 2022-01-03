@@ -21,21 +21,6 @@ public class ChooseBetween2OptionsGUI implements Observer {
 	private JButton btnOption2;
 	private JLabel lblInstruction;
 	private Joueur joueur;
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ChooseBetween2OptionsGUI window = new ChooseBetween2OptionsGUI("a","b",new Joueur("lol"));	
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the application.

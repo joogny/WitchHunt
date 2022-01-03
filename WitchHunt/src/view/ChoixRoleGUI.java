@@ -29,21 +29,7 @@ public class ChoixRoleGUI implements Observer {
 	private	JLabel instructionLabel;
 	private JButton btnPlayAsAVillager;
 	private JButton btnPlayAsWitch;
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ChoixRoleGUI window = new ChoixRoleGUI(null);
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	
 
 	/**
 	 * Create the application.

@@ -38,14 +38,9 @@ public class NouveauJoueurGUI implements Observer{
 	private JList<Joueur> list;
 	private DefaultListModel<Joueur> model;
 	private JButton btnOK;
-	/**
-	 * Launch the application.
-	 */
-
 
 	/**
 	 * Create the application.
-	 * @param partie 
 	 */
 	public NouveauJoueurGUI(playerList listeJoueur,ArrayList<BotStrategy> strats, Partie partie) {
 		partie.addObserver(this);
