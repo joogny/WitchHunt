@@ -369,6 +369,7 @@ public class Joueur extends Observable {
 		this.revelee = false;
 		this.elimine = false;
 		this.untargetablePlayer = null;
+		this.estSorciere=null;
 		effetsAvantTour = new ArrayList<EffetAvantTour>();
 	}
 

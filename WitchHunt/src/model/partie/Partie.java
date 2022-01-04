@@ -17,6 +17,8 @@ import model.bots.RandomStrategy;
 import model.effets.DiscardCardFromHand;
 import model.effets.RevealAnIdentity;
 import model.effets.TakeNextTurn;
+import view.AffichageScore;
+import view.AffichageScoreCLI;
 import view.ChoixRoleCLI;
 import view.ChoixRoleGUI;
 import view.NouveauJoueurCLI;
@@ -34,6 +36,7 @@ public class Partie extends Observable {
 	private static final int MIN_PLAYER_COUNT = 3;
 	private boolean playerSetupDone;
 	private TextInterface textInterface;
+	private String newRound;
 
 	private Partie() {
 	}
@@ -105,7 +108,7 @@ public class Partie extends Observable {
 		if (checkFinRound() == 2) {
 			this.displayEndScore();
 			System.out.println("New round!");
-
+			
 			Joueur j = listeJoueurs.sortedListByScore().get(0);
 			this.listeJoueurs.reset();
 			listeJoueurs.movePlayerFirst(j);
@@ -143,14 +146,28 @@ public class Partie extends Observable {
 
 	private void displayEndScore() {
 		ArrayList<Joueur> joueurs = listeJoueurs.sortedListByScore();
-
-		Iterator<Joueur> it = joueurs.iterator();
-		while (it.hasNext()) {
-			Joueur j = it.next();
-			System.out.println(j.toString() + " : " + j.getScore() + "pts");
+		AffichageScore GUI = new AffichageScore(joueurs);
+		AffichageScoreCLI CLI = new AffichageScoreCLI(joueurs);
+		Partie.getInstance().getTextInterface().setCLI(CLI);
+		this.newRound=null;
+		synchronized (this) {
+			while (this.newRound == null) {
+				try {
+					this.wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
 		}
-
+		GUI.hide();
 	}
+
+public void setNewRound(String newRound) {
+	synchronized (this) {
+		this.newRound = newRound;
+		this.notifyAll();
+	}
+}
 
 	public int checkFinRound() {
 		ArrayList<Joueur> joueurs = listeJoueurs.sortedListByScore();

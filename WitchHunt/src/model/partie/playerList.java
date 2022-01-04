@@ -9,12 +9,10 @@ import java.util.Observable;
 
 public class playerList extends Observable{
 	private LinkedList<Joueur> listeJoueurs;
-	private Joueur accuser;
 	private ArrayList<Joueur> listeJoueursElimine;
 	
 	public playerList() {
 		this.listeJoueurs=new LinkedList<>();
-		accuser=null;
 		this.listeJoueursElimine=new ArrayList<>();
 	}
 	
@@ -57,9 +55,6 @@ public class playerList extends Observable{
 		}
 	}
 
-	public Joueur getAccuser() {
-		return accuser;
-	}
 	
 	public ArrayList<Joueur> getAllPlayers() {
 		ArrayList<Joueur> allPlayers = new ArrayList<>();
@@ -94,9 +89,6 @@ public class playerList extends Observable{
 		listeJoueurs.remove(j);
 		System.out.println(j.toString() + " is eliminated");
 		listeJoueursElimine.add(j);
-	}
-	public void setAccuser(Joueur j) {
-		this.accuser=j;
 	}
 
 	public void addPlayer(Joueur joueur) {
