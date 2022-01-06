@@ -22,7 +22,7 @@ public class AffichageScore {
 	private JButton btnNewRound;
 
 	public AffichageScore(ArrayList<Joueur> joueurs) {
-		Object[][] donnees=new Object[5][5];
+		Object[][] donnees=new Object[6][6];
 		String[]entete= {"Rank","Player Name","Score"};
 		int i=0;
 		Iterator it=joueurs.iterator();
